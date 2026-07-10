@@ -375,6 +375,20 @@ a { color: inherit; }
 .screen-head-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .screen-title { margin: 0; font-size: clamp(1.2rem, 4vw, 1.7rem); }
 .screen-sub { margin-top: 4px; color: rgba(255,255,255,.78); font-size: .82rem; }
+.quiz-home-button {
+  flex: 0 0 auto;
+  min-height: 40px;
+  padding: 8px 11px;
+  border: 2px solid rgba(255,255,255,.5);
+  border-radius: 12px;
+  color: white;
+  background: rgba(255,255,255,.12);
+  font-size: .78rem;
+  font-weight: 1000;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.quiz-home-button:active { transform: scale(.97); background: rgba(255,255,255,.2); }
 .quiz-status {
   display: grid;
   grid-template-columns: 94px minmax(0, 1fr);
@@ -450,118 +464,448 @@ a { color: inherit; }
 
 .batting-stage {
   position: relative;
-  min-height: 450px;
+  min-height: 520px;
   overflow: hidden;
+  isolation: isolate;
   background:
-    linear-gradient(180deg, #67b9f3 0 48%, #3d9e58 48% 69%, #a55f2e 69% 100%);
+    radial-gradient(circle at 50% 12%, rgba(255,255,255,.85) 0 1px, transparent 2px),
+    linear-gradient(180deg, #4ba9e8 0 34%, #5db96e 34% 59%, #9a5c31 59% 100%);
+  perspective: 900px;
 }
-.batting-stage::before {
+.batting-stage::after {
   content: "";
   position: absolute;
-  left: 50%; bottom: 20px;
-  width: 320px; height: 180px;
+  z-index: 1;
+  left: -12%; right: -12%; bottom: -18%;
+  height: 53%;
+  background:
+    linear-gradient(84deg, transparent 48.9%, rgba(255,255,255,.88) 49.2% 49.7%, transparent 50%),
+    linear-gradient(96deg, transparent 48.9%, rgba(255,255,255,.88) 49.2% 49.7%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, #b97542 0 32%, #8d4d28 33% 52%, transparent 53%);
+  transform: rotateX(60deg);
+  transform-origin: bottom;
+  opacity: .95;
+  pointer-events: none;
+}
+.stadium-cloud {
+  position: absolute;
+  z-index: 0;
+  width: 110px; height: 34px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.72);
+  filter: blur(.2px);
+  box-shadow: 28px -13px 0 2px rgba(255,255,255,.72), 58px 1px 0 -4px rgba(255,255,255,.68);
+}
+.stadium-cloud.cloud-a { left: 7%; top: 62px; transform: scale(.62); }
+.stadium-cloud.cloud-b { right: 8%; top: 92px; transform: scale(.46); opacity: .72; }
+.stadium-light {
+  position: absolute;
+  z-index: 2;
+  top: 54px;
+  width: 15px; height: 165px;
+  background: linear-gradient(90deg,#4c5562,#a4adb8 45%,#3e4752);
+  transform-origin: bottom;
+  opacity: .92;
+}
+.stadium-light::before {
+  content: "";
+  position: absolute;
+  left: 50%; top: -14px;
+  width: 78px; height: 32px;
   transform: translateX(-50%);
-  border: 4px solid rgba(255,255,255,.85);
-  border-radius: 50% 50% 10% 10%;
+  border: 4px solid #515a65;
+  border-radius: 5px;
+  background:
+    radial-gradient(circle, #fffbd4 0 3px, #ffe36a 4px 6px, transparent 7px) 0 0/18px 16px,
+    #313944;
+  box-shadow: 0 0 24px rgba(255,243,160,.62);
+}
+.stadium-light.left { left: 6%; transform: rotate(-6deg); }
+.stadium-light.right { right: 6%; transform: rotate(6deg); }
+.stands {
+  position: absolute;
+  z-index: 1;
+  left: 0; right: 0; top: 142px;
+  height: 124px;
+  overflow: hidden;
+  border-top: 8px solid #263c4c;
+  border-bottom: 9px solid #17303d;
+  background:
+    radial-gradient(circle, #ffca45 0 2px, transparent 2.8px) 0 0/18px 15px,
+    radial-gradient(circle, #e84932 0 2px, transparent 2.8px) 8px 7px/21px 17px,
+    radial-gradient(circle, #e7edf2 0 2px, transparent 3px) 2px 4px/25px 19px,
+    linear-gradient(180deg,#465e6b,#263c48);
+  transform: perspective(500px) rotateX(-7deg);
+}
+.outfield-wall {
+  position: absolute;
+  z-index: 2;
+  left: 0; right: 0; top: 252px;
+  height: 66px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff3c3;
+  border-top: 4px solid #d5aa49;
+  border-bottom: 4px solid #0c2536;
+  background: linear-gradient(180deg,#0a3b36,#072821);
+  font-weight: 1000;
+  letter-spacing: .12em;
+  text-shadow: 0 3px 0 rgba(0,0,0,.55);
+}
+.outfield-wall::before,
+.outfield-wall::after {
+  content: "🔥";
+  margin: 0 22px;
 }
 .scoreboard-strip {
   position: relative;
-  z-index: 3;
+  z-index: 9;
   margin: 12px;
   padding: 10px 12px;
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px 12px;
+  align-items: center;
+  border: 2px solid rgba(255,211,101,.8);
   border-radius: 13px;
   color: white;
-  background: rgba(3,19,46,.86);
-  font-size: .83rem;
+  background: linear-gradient(180deg,rgba(3,19,46,.96),rgba(8,47,84,.94));
+  box-shadow: 0 8px 20px rgba(0,0,0,.28);
+  font-size: .8rem;
   font-weight: 900;
 }
-.pitcher, .batter {
-  position: absolute;
-  bottom: 82px;
-  display: grid;
-  place-items: center;
-  width: 86px; height: 132px;
-  border-radius: 40px 40px 22px 22px;
-  color: white;
-  background: linear-gradient(180deg, #0b3475, #091d43);
-  border: 4px solid #fff;
-  font-size: 3rem;
-  box-shadow: 0 12px 20px rgba(0,0,0,.25);
+.scoreboard-main { font-size: .92rem; }
+.scoreboard-sub { color: #ffe17a; text-align: right; }
+.pitch-meter {
+  grid-column: 1 / -1;
+  height: 5px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: rgba(255,255,255,.18);
 }
-.pitcher { left: 7%; transform: scale(.78); }
-.batter { right: 4%; }
-.pitcher.throwing { animation: pitcherThrow .65s ease; }
-.batter.swinging { animation: batterSwing .42s ease; }
+.pitch-meter > i {
+  display: block;
+  width: 0;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg,#62d8ff,#fff16b,#ff562f);
+  transition: width .2s ease;
+}
+.field-marking {
+  position: absolute;
+  z-index: 3;
+  left: 50%; bottom: 28px;
+  width: 360px; height: 235px;
+  transform: translateX(-50%) perspective(600px) rotateX(56deg);
+  transform-origin: bottom;
+  border: 4px solid rgba(255,255,255,.88);
+  border-top: 0;
+  clip-path: polygon(50% 0,100% 100%,0 100%);
+  pointer-events: none;
+}
+.pitchers-mound {
+  position: absolute;
+  z-index: 4;
+  left: 46%; top: 55%;
+  width: 88px; height: 30px;
+  transform: translate(-50%,-50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center,#c98851 0 42%,#8a4e2b 68%,transparent 70%);
+  box-shadow: inset 0 4px 7px rgba(255,255,255,.22);
+}
+.home-plate {
+  position: absolute;
+  z-index: 6;
+  right: 13%; bottom: 66px;
+  width: 44px; height: 37px;
+  background: #f4f2e7;
+  border: 2px solid #9b9b93;
+  clip-path: polygon(10% 0,90% 0,100% 58%,50% 100%,0 58%);
+  filter: drop-shadow(0 4px 2px rgba(0,0,0,.22));
+}
+.batters-box {
+  position: absolute;
+  z-index: 5;
+  right: 2%; bottom: 48px;
+  width: 155px; height: 122px;
+  border: 3px solid rgba(255,255,255,.82);
+  transform: skewY(-6deg);
+  opacity: .82;
+}
+.player-shadow {
+  position: absolute;
+  left: 50%; bottom: -7px;
+  width: 90%; height: 18px;
+  transform: translateX(-50%);
+  border-radius: 50%;
+  background: rgba(0,0,0,.28);
+  filter: blur(5px);
+}
+.pitcher-real,
+.batter-real {
+  position: absolute;
+  z-index: 7;
+  transform-origin: 50% 88%;
+  filter: drop-shadow(0 8px 9px rgba(0,0,0,.28));
+}
+.pitcher-real {
+  left: 35%; top: 45%;
+  width: 76px; height: 143px;
+  transform: scale(.68);
+}
+.batter-real {
+  right: 4.5%; bottom: 79px;
+  width: 104px; height: 178px;
+}
+.player-head {
+  position: absolute;
+  z-index: 5;
+  left: 50%; top: 4px;
+  width: 45px; height: 48px;
+  transform: translateX(-50%);
+  border-radius: 48% 48% 44% 44%;
+  background: linear-gradient(135deg,#f8be87,#d88756);
+  border: 2px solid #6d321f;
+}
+.player-cap {
+  position: absolute;
+  z-index: 7;
+  left: 50%; top: 0;
+  width: 50px; height: 25px;
+  transform: translateX(-50%);
+  border-radius: 50% 50% 25% 25%;
+  background: #071f4a;
+  border-bottom: 5px solid #d92920;
+}
+.player-cap::after {
+  content: "";
+  position: absolute;
+  right: -12px; bottom: -4px;
+  width: 24px; height: 8px;
+  border-radius: 100% 20% 40% 20%;
+  background: #d92920;
+}
+.player-body {
+  position: absolute;
+  z-index: 4;
+  left: 50%; top: 46px;
+  width: 56px; height: 68px;
+  transform: translateX(-50%);
+  border-radius: 17px 17px 10px 10px;
+  background: linear-gradient(90deg,#071d42,#123b76 50%,#071d42);
+  border: 2px solid #e34332;
+}
+.player-body::before {
+  content: "F";
+  position: absolute;
+  left: 50%; top: 14px;
+  transform: translateX(-50%);
+  color: white;
+  font-size: 24px;
+  font-weight: 1000;
+  text-shadow: 2px 2px 0 #d92920;
+}
+.player-leg {
+  position: absolute;
+  z-index: 3;
+  top: 108px;
+  width: 20px; height: 59px;
+  border-radius: 5px 5px 12px 12px;
+  background: linear-gradient(90deg,#ececef,#fff,#d7d7d9);
+  border: 2px solid #7f858d;
+  transform-origin: top;
+}
+.player-leg.left { left: 26px; }
+.player-leg.right { right: 26px; }
+.player-shoe {
+  position: absolute;
+  bottom: -3px;
+  width: 28px; height: 13px;
+  border-radius: 50% 60% 32% 26%;
+  background: #141820;
+  border-bottom: 3px solid #d92920;
+}
+.player-leg.left .player-shoe { left: -8px; }
+.player-leg.right .player-shoe { right: -8px; transform: scaleX(-1); }
+.throw-arm,
+.glove-arm,
+.bat-arm-front,
+.bat-arm-back {
+  position: absolute;
+  z-index: 6;
+  top: 58px;
+  width: 16px; height: 63px;
+  border-radius: 10px;
+  background: linear-gradient(90deg,#f4b37c,#d98857);
+  border: 2px solid #6d321f;
+  transform-origin: 50% 8px;
+}
+.pitcher-real .throw-arm { right: 7px; transform: rotate(-54deg); }
+.pitcher-real .glove-arm { left: 8px; transform: rotate(43deg); }
+.glove {
+  position: absolute;
+  left: -8px; bottom: -14px;
+  width: 35px; height: 38px;
+  border-radius: 48% 48% 38% 46%;
+  background: #8b4c27;
+  border: 3px solid #4c2917;
+  box-shadow: inset 0 0 0 3px #b8794d;
+}
+.batter-real .bat-arm-front { left: 12px; transform: rotate(-47deg); }
+.batter-real .bat-arm-back { right: 13px; transform: rotate(49deg); }
+.batter-real .player-body { width: 65px; height: 79px; }
+.batter-real .player-leg { top: 120px; height: 61px; }
+.batter-real .player-leg.left { left: 31px; transform: rotate(5deg); }
+.batter-real .player-leg.right { right: 30px; transform: rotate(-8deg); }
+.batter-bat {
+  position: absolute;
+  z-index: 8;
+  right: 6px; top: 1px;
+  width: 12px; height: 132px;
+  border-radius: 8px 8px 5px 5px;
+  background: linear-gradient(90deg,#15191e,#b4bac1 26%,#eef1f4 54%,#444b53 78%,#101419);
+  border: 2px solid #0b0d10;
+  transform: rotate(-28deg);
+  transform-origin: 50% 91%;
+  box-shadow: inset -2px 0 0 rgba(255,255,255,.45);
+}
+.pitcher-real.throwing { animation: pitcherDrive .82s cubic-bezier(.25,.8,.3,1); }
+.pitcher-real.throwing .throw-arm { animation: throwingArm .82s cubic-bezier(.35,.8,.3,1); }
+.pitcher-real.throwing .player-leg.left { animation: strideLeg .82s ease; }
+.batter-real.swinging { animation: batterWeightShift .48s cubic-bezier(.2,.8,.25,1); }
+.batter-real.swinging .batter-bat { animation: realisticBatSwing .48s cubic-bezier(.13,.7,.24,1) forwards; }
+.batter-real.swinging .bat-arm-front { animation: frontArmSwing .48s ease forwards; }
+.batter-real.swinging .bat-arm-back { animation: backArmSwing .48s ease forwards; }
 .pitch-lane {
   position: absolute;
-  left: 15%; right: 14%; top: 53%;
-  height: 66px;
+  z-index: 10;
+  inset: 0;
+  pointer-events: none;
 }
 .perfect-zone {
   position: absolute;
-  left: 68%;
-  width: 15%;
-  top: 0; bottom: 0;
-  border: 3px dashed #ffeb3b;
-  border-radius: 12px;
-  background: rgba(255,227,55,.18);
-  box-shadow: 0 0 24px rgba(255,235,59,.65);
+  right: 14%;
+  bottom: 92px;
+  width: 88px;
+  height: 104px;
+  border: 3px solid rgba(255,227,70,.95);
+  border-radius: 18px;
+  background: linear-gradient(180deg,rgba(255,240,92,.06),rgba(255,177,27,.2));
+  box-shadow: 0 0 0 5px rgba(255,224,62,.12), 0 0 30px rgba(255,229,87,.66), inset 0 0 24px rgba(255,255,255,.18);
+}
+.perfect-zone::before {
+  content: "ホームランゾーン";
+  position: absolute;
+  left: 50%; top: -26px;
+  transform: translateX(-50%);
+  white-space: nowrap;
+  padding: 3px 8px;
+  border-radius: 99px;
+  color: #362200;
+  background: #ffe35b;
+  font-size: .62rem;
+  font-weight: 1000;
+  box-shadow: 0 3px 7px rgba(0,0,0,.2);
 }
 .ball {
   position: absolute;
-  left: 0; top: 17px;
-  width: 34px; height: 34px;
+  left: 0; top: 0;
+  width: 30px; height: 30px;
   border-radius: 50%;
-  background: radial-gradient(circle at 35% 30%, white 0 35%, #ffde62 37% 100%);
-  border: 2px solid #b41f22;
-  box-shadow: 0 5px 10px rgba(0,0,0,.28);
-  transform: translateX(0) scale(.6);
   opacity: 0;
+  background:
+    radial-gradient(circle at 34% 28%, #fffef1 0 24%, #f9db58 53%, #d7a319 100%);
+  border: 1px solid #9c7010;
+  box-shadow: 0 4px 10px rgba(0,0,0,.38), inset -5px -5px 7px rgba(132,85,5,.28);
+  transform-origin: 50% 50%;
+  will-change: transform, opacity;
 }
+.ball::before,
+.ball::after {
+  content: "";
+  position: absolute;
+  top: 4px;
+  width: 6px; height: 20px;
+  border: 2px dashed #c3282e;
+  border-top: 0;
+  border-bottom: 0;
+  border-radius: 50%;
+}
+.ball::before { left: 4px; transform: rotate(18deg); }
+.ball::after { right: 4px; transform: rotate(-18deg); }
 .ball.live { opacity: 1; }
-.ball.hit { animation: ballHit .9s ease-out forwards; }
-.ball.homer { animation: ballHomer 1.2s ease-out forwards; }
+.pitch-trail {
+  position: absolute;
+  z-index: 9;
+  width: 0;
+  height: 5px;
+  opacity: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg,transparent,rgba(255,255,255,.75));
+  filter: blur(1px);
+  transform-origin: left center;
+  pointer-events: none;
+}
+.pitch-trail.live { opacity: .72; }
+.contact-spark {
+  position: absolute;
+  z-index: 14;
+  right: 14%; bottom: 123px;
+  width: 0; height: 0;
+  pointer-events: none;
+}
+.contact-spark.active::before,
+.contact-spark.active::after {
+  content: "";
+  position: absolute;
+  left: 0; top: 0;
+  width: 84px; height: 84px;
+  transform: translate(-50%,-50%);
+  background: repeating-conic-gradient(from 0deg,#fff 0 4deg,#ffcf3a 4deg 8deg,transparent 8deg 20deg);
+  clip-path: polygon(50% 0,58% 37%,83% 10%,69% 41%,100% 40%,69% 53%,92% 74%,62% 62%,65% 100%,51% 68%,36% 96%,42% 61%,9% 79%,33% 53%,0 44%,39% 43%);
+  animation: contactBurst .42s ease-out forwards;
+}
+.contact-spark.active::after { transform: translate(-50%,-50%) rotate(22deg) scale(.62); filter: blur(.4px); }
 .batting-controls {
   position: relative;
-  z-index: 4;
+  z-index: 20;
   padding: 14px;
-  background: rgba(255,251,240,.98);
+  background: rgba(255,251,240,.99);
+  border-top: 3px solid #d7ab43;
 }
-.batting-message { min-height: 48px; margin: 0 0 10px; text-align: center; font-weight: 900; line-height: 1.45; }
+.batting-message { min-height: 54px; margin: 0 0 10px; text-align: center; font-weight: 900; line-height: 1.5; }
+.timing-hint {
+  display: flex;
+  justify-content: center;
+  gap: 14px;
+  margin: -2px 0 11px;
+  color: #5d6880;
+  font-size: .73rem;
+  font-weight: 900;
+}
 .swing-button {
   width: 100%;
-  min-height: 68px;
+  min-height: 72px;
   border: 4px solid #ffda63;
   border-radius: 22px;
   color: white;
-  background: linear-gradient(180deg, #ff5a28, #c50f18);
-  box-shadow: 0 8px 0 #7b1115;
+  background:
+    radial-gradient(circle at 20% 18%,rgba(255,255,255,.23),transparent 25%),
+    linear-gradient(180deg,#ff5f2d,#c50f18);
+  box-shadow: 0 8px 0 #7b1115, 0 15px 25px rgba(161,14,20,.28);
   font-size: 1.55rem;
   font-weight: 1000;
   cursor: pointer;
+  touch-action: manipulation;
 }
-.swing-button:disabled { filter: grayscale(.6); opacity: .55; box-shadow: none; }
+.swing-button:not(:disabled):active { transform: translateY(5px); box-shadow: 0 3px 0 #7b1115; }
+.swing-button:disabled { filter: grayscale(.55); opacity: .58; box-shadow: none; }
 .pitch-button { margin-top: 10px; }
-.result-flash {
-  position: absolute;
-  z-index: 6;
-  inset: 0;
-  display: grid;
-  place-items: center;
-  padding: 20px;
-  color: white;
-  text-align: center;
-  background: rgba(3,19,46,.72);
-  font-size: clamp(2rem, 9vw, 4rem);
-  font-weight: 1000;
-  text-shadow: 0 4px 0 #9b1717;
-  animation: popIn .35s ease;
-}
-.fire-particles { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.fire-particles { position: absolute; z-index: 15; inset: 0; pointer-events: none; overflow: hidden; }
 .fire-particles i { position: absolute; bottom: -30px; font-style: normal; animation: rise 1.2s ease-out forwards; }
+.batting-stage.stadium-shake { animation: stadiumShake .46s ease; }
+
 
 .result-card { padding: 18px; }
 .result-rank {
@@ -597,18 +941,47 @@ a { color: inherit; }
   animation: toast .3s ease;
 }
 
-@keyframes pitcherThrow {
-  0% { transform: scale(.78) rotate(0); }
-  45% { transform: scale(.78) rotate(-16deg) translateY(-8px); }
-  100% { transform: scale(.78) rotate(8deg); }
+@keyframes pitcherDrive {
+  0% { transform: scale(.68) translate(0,0) rotate(0); }
+  28% { transform: scale(.68) translate(-5px,-9px) rotate(-8deg); }
+  58% { transform: scale(.68) translate(12px,2px) rotate(13deg); }
+  100% { transform: scale(.68) translate(20px,6px) rotate(5deg); }
 }
-@keyframes batterSwing {
-  0% { transform: rotate(0); }
-  55% { transform: rotate(-18deg) translateX(-5px); }
-  100% { transform: rotate(0); }
+@keyframes throwingArm {
+  0% { transform: rotate(-54deg); }
+  28% { transform: rotate(-145deg); }
+  60% { transform: rotate(62deg); }
+  100% { transform: rotate(118deg); }
 }
-@keyframes ballHit { to { transform: translate(170px,-170px) scale(.45); opacity: 0; } }
-@keyframes ballHomer { to { transform: translate(220px,-390px) scale(.25); opacity: 0; } }
+@keyframes strideLeg {
+  0%,25% { transform: rotate(0); }
+  65%,100% { transform: rotate(-34deg) translate(-9px,-2px); }
+}
+@keyframes batterWeightShift {
+  0% { transform: rotate(0) translateX(0); }
+  42% { transform: rotate(-5deg) translateX(-4px); }
+  100% { transform: rotate(8deg) translateX(-10px); }
+}
+@keyframes realisticBatSwing {
+  0% { transform: rotate(-28deg); }
+  38% { transform: rotate(-78deg) translateY(-3px); }
+  70% { transform: rotate(-162deg) translate(-5px,10px); }
+  100% { transform: rotate(-218deg) translate(-9px,16px); }
+}
+@keyframes frontArmSwing { to { transform: rotate(-104deg) translateY(5px); } }
+@keyframes backArmSwing { to { transform: rotate(-73deg) translate(-6px,7px); } }
+@keyframes contactBurst {
+  0% { opacity: 0; transform: translate(-50%,-50%) scale(.1) rotate(0); }
+  40% { opacity: 1; transform: translate(-50%,-50%) scale(1.1) rotate(12deg); }
+  100% { opacity: 0; transform: translate(-50%,-50%) scale(1.55) rotate(28deg); }
+}
+@keyframes stadiumShake {
+  0%,100% { transform: translate(0,0); }
+  20% { transform: translate(-5px,2px); }
+  40% { transform: translate(5px,-2px); }
+  60% { transform: translate(-3px,1px); }
+  80% { transform: translate(3px,-1px); }
+}
 @keyframes popIn { from { opacity: 0; transform: scale(.75); } }
 @keyframes rise { to { transform: translateY(-560px) rotate(180deg); opacity: 0; } }
 @keyframes toast { from { opacity: 0; transform: translate(-50%,20px); } }
@@ -628,6 +1001,18 @@ a { color: inherit; }
   .badge-medal { width: 48px; height: 56px; font-size: 1.5rem; }
   .badge-item { font-size: .58rem; }
   .result-rank { grid-template-columns: 120px minmax(0,1fr); }
+}
+
+@media (max-width: 620px) {
+  .batting-stage { min-height: 500px; }
+  .pitcher-real { left: 30%; top: 47%; transform: scale(.59); }
+  .batter-real { right: 1.5%; bottom: 76px; transform: scale(.9); transform-origin: bottom right; }
+  .perfect-zone { right: 12%; bottom: 91px; width: 78px; height: 95px; }
+  .home-plate { right: 12%; }
+  .batters-box { right: -4%; width: 142px; }
+  .outfield-wall { font-size: .8rem; }
+  .stadium-light { opacity: .7; }
+  .scoreboard-strip { margin: 9px; }
 }
 
 @media (max-width: 370px) {
@@ -2864,7 +3249,7 @@ window.QUESTIONS = [
           <div class="ruling-row"><strong>走者の処置：</strong>${esc(question.runnerPlacement)}</div>
         </div>` : '';
       feedback = `
-        <div class="feedback ${isCorrect ? 'success' : 'error'}">
+        <div class="feedback ${isCorrect ? 'success' : 'error'}" id="answerFeedback">
           <h3>${isCorrect ? '🔥 正解！ナイスプレー！' : '🥎 惜しい！次の1球へ！'}</h3>
           <p><strong>正しい答え：</strong>${esc(state.displayChoices[state.correctDisplayIndex].text)}</p>
           <p>${esc(question.explanation)}</p>
@@ -2880,9 +3265,9 @@ window.QUESTIONS = [
           <div class="screen-head-row">
             <div>
               <h1 class="screen-title">${esc(course.title)}</h1>
-              <div class="screen-sub">問題 ${state.index + 1} / ${state.questions.length}</div>
+              <div class="screen-sub">問題 ${state.index + 1} / ${state.questions.length}｜${state.correct} 正解</div>
             </div>
-            <strong>${state.correct} 正解</strong>
+            <button class="quiz-home-button" data-action="quiz-home" type="button" aria-label="クイズを終了してはじめに戻る">⌂ はじめに戻る</button>
           </div>
         </header>
 
@@ -2933,6 +3318,15 @@ window.QUESTIONS = [
 
     playTone(isCorrect ? 'correct' : 'wrong');
     renderQuiz();
+    // iPhone Safariでも、解説と「次の問題へ」ボタンまで自動で移動する。
+    window.setTimeout(() => {
+      const feedback = document.getElementById('answerFeedback');
+      if (feedback) {
+        feedback.scrollIntoView({ behavior: 'smooth', block: 'end' });
+      } else {
+        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+      }
+    }, 90);
   }
 
   function nextQuestion() {
@@ -2956,7 +3350,12 @@ window.QUESTIONS = [
       score: 0,
       rafId: 0,
       startTime: 0,
-      duration: 1650
+      duration: 1450,
+      releaseDelay: 640,
+      released: false,
+      ballX: 0,
+      ballY: 0,
+      ballTransform: ''
     };
     const quizScore = Math.round((state.correct / state.questions.length) * 90);
     const course = COURSES[state.course];
@@ -2968,17 +3367,46 @@ window.QUESTIONS = [
           <div class="screen-sub">${esc(course.title)}｜クイズ得点 ${quizScore} / 90</div>
         </header>
         <div class="batting-stage" id="battingStage">
-          <div class="scoreboard-strip"><span>タイミングよくスイング！</span><span>ホームラン確率 50%</span></div>
-          <div class="pitcher" id="pitcher" aria-label="ピッチャー">⚾</div>
-          <div class="batter" id="batter" aria-label="バッター">🏏</div>
+          <span class="stadium-cloud cloud-a"></span>
+          <span class="stadium-cloud cloud-b"></span>
+          <span class="stadium-light left"></span>
+          <span class="stadium-light right"></span>
+          <div class="stands"></div>
+          <div class="outfield-wall">北っ子ファイヤーズ</div>
+          <div class="field-marking"></div>
+          <div class="pitchers-mound"></div>
+          <div class="batters-box"></div>
+          <div class="home-plate"></div>
+
+          <div class="scoreboard-strip">
+            <span class="scoreboard-main">1球勝負｜ボールを最後まで見よう</span>
+            <span class="scoreboard-sub">完璧タイミング→HR 50%</span>
+            <span class="pitch-meter" aria-hidden="true"><i id="pitchMeterFill"></i></span>
+          </div>
+
+          <div class="pitcher-real" id="pitcher" aria-label="投球するピッチャー">
+            <span class="player-shadow"></span><span class="player-head"></span><span class="player-cap"></span>
+            <span class="player-body"></span><span class="throw-arm"></span><span class="glove-arm"><i class="glove"></i></span>
+            <span class="player-leg left"><i class="player-shoe"></i></span><span class="player-leg right"><i class="player-shoe"></i></span>
+          </div>
+
+          <div class="batter-real" id="batter" aria-label="構えるバッター">
+            <span class="player-shadow"></span><span class="player-head"></span><span class="player-cap"></span>
+            <span class="player-body"></span><span class="bat-arm-front"></span><span class="bat-arm-back"></span><span class="batter-bat"></span>
+            <span class="player-leg left"><i class="player-shoe"></i></span><span class="player-leg right"><i class="player-shoe"></i></span>
+          </div>
+
           <div class="pitch-lane" id="pitchLane">
             <div class="perfect-zone" aria-label="ホームランタイミングゾーン"></div>
+            <div class="pitch-trail" id="pitchTrail"></div>
             <div class="ball" id="ball" aria-hidden="true"></div>
           </div>
+          <div class="contact-spark" id="contactSpark"></div>
           <div class="fire-particles" id="fireParticles"></div>
         </div>
         <div class="batting-controls" id="battingControls">
-          <p class="batting-message" id="battingMessage">「投球開始」を押し、ボールが黄色いゾーンに来たらスイング！<br>押さなければアウトです。</p>
+          <p class="batting-message" id="battingMessage">「投球開始」を押すと、投手が本当に投げます。<br>ボールが黄色いゾーンに入った瞬間にスイング！</p>
+          <div class="timing-hint"><span>早くても遅くてもヒット</span><span>振らなければアウト</span></div>
           <button class="swing-button" id="swingButton" data-action="swing" type="button" disabled>🔥 スイング！</button>
           <button class="secondary-cta pitch-button" id="pitchButton" data-action="start-pitch" type="button">🥎 投球開始</button>
         </div>
@@ -2990,52 +3418,121 @@ window.QUESTIONS = [
     const batting = state.batting;
     if (!batting || batting.started || batting.resolved) return;
     batting.started = true;
-    batting.startTime = performance.now();
+
     const ball = document.getElementById('ball');
     const pitcher = document.getElementById('pitcher');
     const swingButton = document.getElementById('swingButton');
     const pitchButton = document.getElementById('pitchButton');
     const message = document.getElementById('battingMessage');
-    ball?.classList.add('live');
+    const meter = document.getElementById('pitchMeterFill');
     pitcher?.classList.add('throwing');
-    if (swingButton) swingButton.disabled = false;
     if (pitchButton) pitchButton.disabled = true;
-    if (message) message.textContent = 'ボールをよく見て……スイング！';
+    if (message) message.textContent = '投手が振りかぶった……ボールをよく見て！';
+    if (meter) meter.style.width = '28%';
     playTone('pitch');
 
-    const tick = now => {
+    window.setTimeout(() => {
       if (!state.batting || state.batting.resolved) return;
-      const lane = document.getElementById('pitchLane');
-      const currentBall = document.getElementById('ball');
-      if (!lane || !currentBall) return;
-      const elapsed = now - batting.startTime;
-      batting.progress = Math.min(1, elapsed / batting.duration);
-      const travel = Math.max(0, lane.clientWidth - 34);
-      const scale = 0.55 + batting.progress * 0.7;
-      currentBall.style.transform = `translateX(${travel * batting.progress}px) scale(${scale})`;
-      if (batting.progress >= 1) {
-        settleBatting('out');
-        return;
-      }
+      batting.released = true;
+      batting.startTime = performance.now();
+      ball?.classList.add('live');
+      if (swingButton) swingButton.disabled = false;
+      if (message) message.textContent = 'リリース！ボールがホームへ向かっています！';
+      if (meter) meter.style.width = '100%';
+
+      const tick = now => {
+        if (!state.batting || state.batting.resolved) return;
+        const stage = document.getElementById('battingStage');
+        const currentBall = document.getElementById('ball');
+        const trail = document.getElementById('pitchTrail');
+        if (!stage || !currentBall) return;
+
+        const elapsed = now - batting.startTime;
+        batting.progress = Math.min(1, elapsed / batting.duration);
+        const w = stage.clientWidth;
+        const h = stage.clientHeight;
+        const startX = w * .455;
+        const startY = h * .515;
+        const endX = w * .815;
+        const endY = h * .765;
+        const p = batting.progress;
+        const x = startX + (endX - startX) * p;
+        const y = startY + (endY - startY) * p - Math.sin(Math.PI * p) * 17;
+        const scale = .34 + p * .92;
+        const rotation = p * 900;
+        batting.ballX = x;
+        batting.ballY = y;
+        batting.ballTransform = `translate3d(${x - 15}px,${y - 15}px,0) scale(${scale}) rotate(${rotation}deg)`;
+        currentBall.style.transform = batting.ballTransform;
+
+        if (trail) {
+          const dx = x - startX;
+          const dy = y - startY;
+          const len = Math.sqrt(dx * dx + dy * dy);
+          const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+          trail.classList.add('live');
+          trail.style.left = `${startX}px`;
+          trail.style.top = `${startY}px`;
+          trail.style.width = `${Math.max(0, len - 18)}px`;
+          trail.style.transform = `rotate(${angle}deg)`;
+        }
+
+        if (p >= 1) {
+          settleBatting('out');
+          return;
+        }
+        batting.rafId = requestAnimationFrame(tick);
+      };
       batting.rafId = requestAnimationFrame(tick);
-    };
-    batting.rafId = requestAnimationFrame(tick);
+    }, batting.releaseDelay);
   }
 
   function swingBat() {
     const batting = state.batting;
-    if (!batting || !batting.started || batting.resolved) return;
+    if (!batting || !batting.started || !batting.released || batting.resolved) return;
     const batter = document.getElementById('batter');
     const swingButton = document.getElementById('swingButton');
     batter?.classList.add('swinging');
     if (swingButton) swingButton.disabled = true;
 
-    const perfect = batting.progress >= 0.68 && batting.progress <= 0.83;
+    const perfect = batting.progress >= 0.70 && batting.progress <= 0.84;
+    window.setTimeout(() => {
+      const spark = document.getElementById('contactSpark');
+      spark?.classList.add('active');
+    }, 90);
+    playTone('hit');
+
     if (perfect) {
       settleBatting(Math.random() < 0.5 ? 'homerun' : 'hit-perfect');
     } else {
       settleBatting('hit');
     }
+  }
+
+  function animateBattedBall(result) {
+    const batting = state.batting;
+    const stage = document.getElementById('battingStage');
+    const ball = document.getElementById('ball');
+    if (!batting || !stage || !ball || result === 'out') return;
+
+    const w = stage.clientWidth;
+    const h = stage.clientHeight;
+    const start = batting.ballTransform || `translate3d(${batting.ballX}px,${batting.ballY}px,0)`;
+    const targetX = result === 'homerun' ? w * .48 : w * .39;
+    const targetY = result === 'homerun' ? -h * .22 : h * .25;
+    const middleX = result === 'homerun' ? w * .62 : w * .52;
+    const middleY = result === 'homerun' ? h * .04 : h * .17;
+    const duration = result === 'homerun' ? 1500 : 980;
+
+    ball.animate([
+      { transform: start, opacity: 1, offset: 0 },
+      { transform: `translate3d(${middleX}px,${middleY}px,0) scale(.72) rotate(650deg)`, opacity: 1, offset: .48 },
+      { transform: `translate3d(${targetX}px,${targetY}px,0) scale(.22) rotate(1280deg)`, opacity: .18, offset: 1 }
+    ], {
+      duration,
+      easing: result === 'homerun' ? 'cubic-bezier(.15,.62,.25,1)' : 'cubic-bezier(.18,.7,.35,1)',
+      fill: 'forwards'
+    });
   }
 
   function settleBatting(result) {
@@ -3047,34 +3544,38 @@ window.QUESTIONS = [
     const ball = document.getElementById('ball');
     const swingButton = document.getElementById('swingButton');
     const message = document.getElementById('battingMessage');
+    const trail = document.getElementById('pitchTrail');
+    const stage = document.getElementById('battingStage');
     if (swingButton) swingButton.disabled = true;
+    trail?.classList.remove('live');
 
     let label = '';
     let detail = '';
     let score = 0;
     if (result === 'homerun') {
       label = '🔥 ファイヤー！ホームラン！';
-      detail = '完璧なタイミングから、50％抽選を突破！';
+      detail = '芯でとらえた大飛球！完璧なタイミングから50％抽選を突破！';
       score = 10;
-      ball?.classList.add('homer');
+      animateBattedBall(result);
       createFireParticles();
+      stage?.classList.add('stadium-shake');
       playTone('homerun');
-      if (navigator.vibrate) navigator.vibrate([80, 50, 120]);
+      if (navigator.vibrate) navigator.vibrate([80, 45, 120]);
     } else if (result === 'hit-perfect') {
-      label = '🥎 惜しい！完璧タイミングのヒット！';
-      detail = 'タイミングは完璧。抽選結果はナイスヒット！';
+      label = '🥎 完璧な当たり！外野へクリーンヒット！';
+      detail = 'タイミングは完璧。ホームラン抽選は外れましたが、会心のヒットです！';
       score = 5;
-      ball?.classList.add('hit');
+      animateBattedBall(result);
       playTone('hit');
     } else if (result === 'hit') {
       label = '👏 ナイスヒット！';
-      detail = 'タイミングは少しずれましたが、しっかり振り切りました。';
+      detail = '少しタイミングはずれましたが、しっかり振り切って外野へ運びました。';
       score = 5;
-      ball?.classList.add('hit');
+      animateBattedBall(result);
       playTone('hit');
     } else {
       label = '😵 見逃しアウト！';
-      detail = 'バットを振らなければ当たらない！';
+      detail = 'バットを振らなければ当たらない！次は思い切ってスイングしよう。';
       score = 0;
       ball?.classList.remove('live');
       playTone('wrong');
@@ -3084,13 +3585,12 @@ window.QUESTIONS = [
     batting.score = score;
     if (message) message.innerHTML = `<strong>${esc(label)}</strong><br>${esc(detail)}<br>打撃得点：${score}点`;
 
-    const stage = document.getElementById('battingStage');
     if (stage) {
       const flash = document.createElement('div');
       flash.className = 'result-flash';
       flash.textContent = label;
       stage.appendChild(flash);
-      setTimeout(() => flash.remove(), 1000);
+      window.setTimeout(() => flash.remove(), result === 'homerun' ? 1250 : 850);
     }
 
     const controls = document.getElementById('battingControls');
@@ -3281,6 +3781,8 @@ window.QUESTIONS = [
       startCourse(button.dataset.course);
     } else if (action === 'answer') {
       answerQuestion(Number(button.dataset.index));
+    } else if (action === 'quiz-home') {
+      if (window.confirm('クイズを途中で終了して、はじめの画面へ戻りますか？')) renderHome();
     } else if (action === 'next-question') {
       nextQuestion();
     } else if (action === 'start-pitch') {
