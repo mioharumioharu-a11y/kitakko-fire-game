@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>3D NEO BOMBER</title>
+    <title>RETRO BOMBER 2D</title>
     <style>
         * {
             box-sizing: border-box;
@@ -17,636 +17,398 @@
             width: 100%;
             height: 100%;
             background-color: #111;
-            font-family: 'Arial', sans-serif;
+            font-family: 'monospace', sans-serif;
         }
-        #canvas-container {
+        #game-container {
+            position: relative;
             width: 100%;
             height: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #0d140d;
         }
-        /* UI Layer */
+        canvas {
+            display: block;
+            max-width: 100%;
+            max-height: 70vh;
+            image-rendering: pixelated;
+            background-color: #2e4d2e;
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
+            border: 4px solid #4a6b4a;
+        }
         #ui-layer {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 10;
             pointer-events: none;
+            z-index: 10;
         }
-        /* Joystick (Left Side) */
-        #joystick-zone {
-            position: absolute;
-            bottom: 40px;
-            left: 40px;
-            width: 140px;
-            height: 140px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: auto;
-            touch-action: none;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-        }
-        #joystick-knob {
-            width: 60px;
-            height: 60px;
-            background: radial-gradient(circle, #ff007f 0%, #aa0055 100%);
-            border-radius: 50%;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.4), inset 0 2px 4px rgba(255,255,255,0.4);
-            transition: transform 0.05s ease;
-        }
-        /* Action Button (Right Side) */
-        #action-btn {
-            position: absolute;
-            bottom: 50px;
-            right: 50px;
-            width: 90px;
-            height: 90px;
-            background: radial-gradient(circle, #00f0ff 0%, #0077aa 100%);
-            border: 3px solid rgba(255, 255, 255, 0.6);
-            border-radius: 50%;
-            box-shadow: 0 6px 15px rgba(0,240,255,0.4), inset 0 3px 5px rgba(255,255,255,0.5);
-            pointer-events: auto;
-            touch-action: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 16px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.6);
-            letter-spacing: 1px;
-        }
-        #action-btn:active {
-            transform: scale(0.92);
-            background: radial-gradient(circle, #0077aa 0%, #00f0ff 100%);
-            box-shadow: 0 2px 5px rgba(0,240,255,0.2);
-        }
-        /* Score & HUD */
         #hud {
             position: absolute;
-            top: 20px;
-            left: 20px;
-            color: white;
-            font-size: 18px;
+            top: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ffff00;
+            font-size: 20px;
             font-weight: bold;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.7);
+            padding: 8px 24px;
+            border-radius: 4px;
+            border: 2px solid #ffff00;
+            text-shadow: 2px 2px 0px #000;
+            letter-spacing: 2px;
+            display: flex;
+            gap: 20px;
+        }
+        #controls {
+            position: absolute;
+            bottom: 30px;
+            left: 0;
+            width: 100%;
+            height: 160px;
+            pointer-events: none;
+        }
+        #joystick-zone {
+            position: absolute;
+            bottom: 10px;
+            left: 40px;
+            width: 130px;
+            height: 130px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 3px solid #fff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: auto;
+            touch-action: none;
+        }
+        #joystick-knob {
+            width: 50px;
+            height: 50px;
+            background: #ff0055;
+            border: 3px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 4px 0px #990033;
+        }
+        #action-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            width: 90px;
+            height: 90px;
+            background: #00ccff;
+            border: 4px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 6px 0px #0088cc;
+            pointer-events: auto;
+            touch-action: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            text-shadow: 2px 2px 0px #000;
+        }
+        #action-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 2px 0px #0088cc;
+        }
+        #game-over {
+            display: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 20;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: #ff0033;
+            font-size: 40px;
+            font-weight: bold;
+            text-shadow: 3px 3px 0px #000;
+        }
+        #restart-btn {
+            margin-top: 20px;
             padding: 10px 20px;
-            border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.2);
-            backdrop-filter: blur(5px);
+            font-size: 20px;
+            background: #ffff00;
+            color: #000;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 4px;
         }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
 
-    <div id="canvas-container"></div>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+    </div>
 
     <div id="ui-layer">
-        <div id="hud">SCORE: <span id="score-val">0</span></div>
-        
-        <div id="joystick-zone">
-            <div id="joystick-knob"></div>
+        <div id="hud">
+            <div>SCORE:<span id="score-val">0</span></div>
+            <div>LIFE:<span id="life-val">3</span></div>
         </div>
+        <div id="controls">
+            <div id="joystick-zone"><div id="joystick-knob"></div></div>
+            <div id="action-btn">BOMB</div>
+        </div>
+    </div>
 
-        <div id="action-btn">BOMB</div>
+    <div id="game-over">
+        <div>GAME OVER</div>
+        <button id="restart-btn" onclick="resetGame()">RESTART</button>
     </div>
 
     <script>
-        // --- ゲーム設定 ---
-        const GRID_SIZE = 11; // 11x11のフィールド
-        const CELL_SIZE = 2;
-        const WALL_HEIGHT = 2;
-        const PLAYER_SPEED = 0.08;
-        const BOMB_LIFETIME = 2000; // 2秒で爆発
-        const EXPLOSION_DURATION = 500;
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
 
-        // マップ構築用 (0: 空地, 1: 破壊不可壁, 2: 破壊可能ブロック)
-        const MAP = [];
-        
-        // --- Three.js & ゲーム状態変数 ---
-        let scene, camera, renderer;
-        let player, playerVelocity = { x: 0, z: 0 };
+        const GRID_SIZE = 13; 
+        const TILE_SIZE = 32; 
+        canvas.width = GRID_SIZE * TILE_SIZE;
+        canvas.height = GRID_SIZE * TILE_SIZE;
+
+        let MAP = [];
+        let player = { x: 0, y: 0, radius: 12, speed: 2.5, vx: 0, vy: 0, lives: 3, score: 0 };
+        let enemies = [];
+        let bombs = [];
+        let explosions = [];
+        let particles = [];
+
         let joystickActive = false;
         let joystickStart = { x: 0, y: 0 };
-        let joystickCur = { x: 0, y: 0 };
-        const joystickMaxDist = 50;
-
-        const blocks = []; // 破壊可能ブロックのメッシュ配列
-        const fixedWalls = []; // 破壊不可壁のメッシュ配列
-        const bombs = [];
-        const particles = [];
-        
-        let score = 0;
-
-        // UI要素
+        const joystickMaxDist = 40;
         const knob = document.getElementById('joystick-knob');
-        const scoreVal = document.getElementById('score-val');
 
-        // --- 初期化 ---
-        init();
-        animate();
+        initGame();
 
-        function init() {
-            // 1. シーン・カメラ・レンダラーの設定
-            scene = new THREE.Scene();
-            scene.background = new THREE.Color(0x0a0a16);
-            scene.fog = new THREE.FogExp2(0x0a0a16, 0.03);
-
-            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
-            
-            renderer = new THREE.WebGLRenderer({ antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.shadowMap.enabled = true;
-            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-            renderer.toneMapping = THREE.ACESFilmicToneMapping;
-            renderer.toneMappingExposure = 1.0;
-            document.getElementById('canvas-container').appendChild(renderer.domElement);
-
-            // 2. ライティング（次世代感を演出するサイバー調）
-            const ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
-            scene.add(ambientLight);
-
-            const dirLight = new THREE.DirectionalLight(0xffffff, 0.8);
-            dirLight.position.set(20, 40, 20);
-            dirLight.castShadow = true;
-            dirLight.shadow.mapSize.width = 2048;
-            dirLight.shadow.mapSize.height = 2048;
-            dirLight.shadow.camera.near = 0.5;
-            dirLight.shadow.camera.far = 100;
-            const d = 20;
-            dirLight.shadow.camera.left = -d;
-            dirLight.shadow.camera.right = d;
-            dirLight.shadow.camera.top = d;
-            dirLight.shadow.camera.bottom = -d;
-            scene.add(dirLight);
-
-            // ポイントライトでサイバー感を強調
-            const neonLight = new THREE.PointLight(0x00f0ff, 1, 30);
-            neonLight.position.set(0, 5, 0);
-            scene.add(neonLight);
-
-            // 3. マップ生成
-            generateMapData();
-            buildMap3D();
-
-            // 4. プレイヤー生成
-            createPlayer();
-
-            // 5. イベントリスナー
-            setupControls();
-            window.addEventListener('resize', onWindowResize, false);
-        }
-
-        // --- マップデータ生成ロジック ---
-        function generateMapData() {
-            for (let x = 0; x < GRID_SIZE; x++) {
-                MAP[x] = [];
-                for (let z = 0; z < GRID_SIZE; z++) {
-                    // 外周と1マスおきの柱は破壊不可壁(1)
-                    if (x === 0 || x === GRID_SIZE - 1 || z === 0 || z === GRID_SIZE - 1) {
-                        MAP[x][z] = 1;
-                    } else if (x % 2 === 0 && z % 2 === 0) {
-                        MAP[x][z] = 1;
+        function initGame() {
+            MAP = []; enemies = []; bombs = []; explosions = []; particles = [];
+            for (let r = 0; r < GRID_SIZE; r++) {
+                MAP[r] = [];
+                for (let c = 0; c < GRID_SIZE; c++) {
+                    if (r === 0 || r === GRID_SIZE - 1 || c === 0 || c === GRID_SIZE - 1 || (r % 2 === 0 && c % 2 === 0)) {
+                        MAP[r][c] = 1; 
                     } else {
-                        // プレイヤーの初期位置(1,1)とその周辺は空ける
-                        if ((x <= 2 && z <= 1) || (x <= 1 && z <= 2)) {
-                            MAP[x][z] = 0;
-                        } else {
-                            // 確率で破壊可能ブロック(2)を配置
-                            MAP[x][z] = Math.random() < 0.6 ? 2 : 0;
-                        }
+                        MAP[r][c] = ((r <= 2 && c === 1) || (r === 1 && c <= 2)) ? 0 : (Math.random() < 0.4 ? 2 : 0);
                     }
                 }
             }
-        }
 
-        // --- 3Dグラフィック構築 ---
-        function buildMap3D() {
-            // 床面
-            const floorGeo = new THREE.PlaneGeometry(GRID_SIZE * CELL_SIZE, GRID_SIZE * CELL_SIZE);
-            const floorMat = new THREE.MeshStandardMaterial({ 
-                color: 0x1f1f38, 
-                roughness: 0.4,
-                metalness: 0.2
+            let spawnPositions = [{r: GRID_SIZE-2, c: GRID_SIZE-2}, {r: 1, c: GRID_SIZE-2}, {r: GRID_SIZE-2, c: 1}];
+            spawnPositions.forEach((pos, idx) => {
+                enemies.push({
+                    x: pos.c * TILE_SIZE + TILE_SIZE/2, y: pos.r * TILE_SIZE + TILE_SIZE/2,
+                    radius: 12, speed: 1.2, dir: Math.floor(Math.random() * 4),
+                    color: idx === 0 ? '#ff4400' : '#ff8800', changeDirTimer: 0
+                });
             });
-            const floor = new THREE.Mesh(floorGeo, floorMat);
-            floor.rotation.x = -Math.PI / 2;
-            floor.position.set((GRID_SIZE * CELL_SIZE)/2 - CELL_SIZE/2, 0, (GRID_SIZE * CELL_SIZE)/2 - CELL_SIZE/2);
-            floor.receiveShadow = true;
-            scene.add(floor);
 
-            // グリッド線のエフェクトでサイバー感を演出
-            const gridHelper = new THREE.GridHelper(GRID_SIZE * CELL_SIZE, GRID_SIZE, 0x00f0ff, 0x444466);
-            gridHelper.position.set((GRID_SIZE * CELL_SIZE)/2 - CELL_SIZE/2, 0.01, (GRID_SIZE * CELL_SIZE)/2 - CELL_SIZE/2);
-            scene.add(gridHelper);
-
-            // 壁マテリアル
-            const wallGeo = new THREE.BoxGeometry(CELL_SIZE, WALL_HEIGHT, CELL_SIZE);
-            const fixedMat = new THREE.MeshStandardMaterial({ color: 0x3a3a55, roughness: 0.2, metalness: 0.8 });
-            const breakableMat = new THREE.MeshStandardMaterial({ color: 0xffaa00, roughness: 0.5, metalness: 0.1 });
-
-            for (let x = 0; x < GRID_SIZE; x++) {
-                for (let z = 0; z < GRID_SIZE; z++) {
-                    if (MAP[x][z] === 1) {
-                        const wall = new THREE.Mesh(wallGeo, fixedMat);
-                        wall.position.set(x * CELL_SIZE, WALL_HEIGHT / 2, z * CELL_SIZE);
-                        wall.castShadow = true;
-                        wall.receiveShadow = true;
-                        scene.add(wall);
-                        fixedWalls.push(wall);
-                    } else if (MAP[x][z] === 2) {
-                        const block = new THREE.Mesh(wallGeo, breakableMat);
-                        block.position.set(x * CELL_SIZE, WALL_HEIGHT / 2, z * CELL_SIZE);
-                        block.castShadow = true;
-                        block.receiveShadow = true;
-                        block.userData = { gridX: x, gridZ: z };
-                        scene.add(block);
-                        blocks.push(block);
-                    }
-                }
-            }
+            player.x = TILE_SIZE + TILE_SIZE/2; player.y = TILE_SIZE + TILE_SIZE/2;
+            player.vx = 0; player.vy = 0;
+            document.getElementById('game-over').style.display = 'none';
+            updateHUD();
         }
 
-        // --- プレイヤー作成 ---
-        function createPlayer() {
-            const playerGroup = new THREE.Group();
-
-            // 体（スタイリッシュなロボット風）
-            const bodyGeo = new THREE.SphereGeometry(0.6, 32, 32);
-            const bodyMat = new THREE.MeshStandardMaterial({ color: 0xff007f, roughness: 0.1, metalness: 0.5 });
-            const body = new THREE.Mesh(bodyGeo, bodyMat);
-            body.position.y = 0.6;
-            body.castShadow = true;
-            playerGroup.add(body);
-
-            // 目（発光エフェクト）
-            const eyeGeo = new THREE.BoxGeometry(0.6, 0.15, 0.2);
-            const eyeMat = new THREE.MeshBasicMaterial({ color: 0x00ffff });
-            const eye = new THREE.Mesh(eyeGeo, eyeMat);
-            eye.position.set(0, 0.8, 0.5);
-            playerGroup.add(eye);
-
-            // 初期位置をグリッド(1,1)の中心に設定
-            playerGroup.position.set(1 * CELL_SIZE, 0, 1 * CELL_SIZE);
-            scene.add(playerGroup);
-            player = playerGroup;
+        function updateHUD() {
+            document.getElementById('score-val').innerText = player.score;
+            document.getElementById('life-val').innerText = player.lives;
         }
 
-        // --- 操作系（ジョイスティック＆ボタン） ---
+        setupControls();
+
         function setupControls() {
             const zone = document.getElementById('joystick-zone');
             const actionBtn = document.getElementById('action-btn');
 
-            // タッチイベント
-            zone.addEventListener('touchstart', (e) => {
-                joystickActive = true;
-                const touch = e.touches[0];
-                joystickStart = { x: touch.clientX, y: touch.clientY };
-            }, { passive: true });
-
-            window.addEventListener('touchmove', (e) => {
+            const handleStart = (clientX, clientY) => { joystickActive = true; joystickStart = { x: clientX, y: clientY }; };
+            const handleMove = (clientX, clientY) => {
                 if (!joystickActive) return;
-                const touch = e.touches[0];
-                joystickCur = { x: touch.clientX, y: touch.clientY };
-
-                let dx = joystickCur.x - joystickStart.x;
-                let dy = joystickCur.y - joystickStart.y;
+                let dx = clientX - joystickStart.x; let dy = clientY - joystickStart.y;
                 const dist = Math.sqrt(dx * dx + dy * dy);
-
-                if (dist > joystickMaxDist) {
-                    dx = (dx / dist) * joystickMaxDist;
-                    dy = (dy / dist) * joystickMaxDist;
-                }
-
+                if (dist > joystickMaxDist) { dx = (dx / dist) * joystickMaxDist; dy = (dy / dist) * joystickMaxDist; }
                 knob.style.transform = `translate(${dx}px, ${dy}px)`;
+                player.vx = (dx / joystickMaxDist) * player.speed; player.vy = (dy / joystickMaxDist) * player.speed;
+            };
+            const handleEnd = () => { joystickActive = false; knob.style.transform = 'translate(0px, 0px)'; player.vx = 0; player.vy = 0; };
 
-                // 移動ベクトルの算出
-                playerVelocity.x = dx / joystickMaxDist;
-                playerVelocity.z = dy / joystickMaxDist;
-            }, { passive: true });
+            zone.addEventListener('touchstart', (e) => handleStart(e.touches[0].clientX, e.touches[0].clientY), {passive:true});
+            window.addEventListener('touchmove', (e) => handleMove(e.touches[0].clientX, e.touches[0].clientY), {passive:true});
+            window.addEventListener('touchend', handleEnd, {passive:true});
+            zone.addEventListener('mousedown', (e) => handleStart(e.clientX, e.clientY));
+            window.addEventListener('mousemove', (e) => handleMove(e.clientX, e.clientY));
+            window.addEventListener('mouseup', handleEnd);
 
-            window.addEventListener('touchend', () => {
-                resetJoystick();
-            }, { passive: true });
+            actionBtn.addEventListener('touchstart', (e) => { e.preventDefault(); deployBomb(); });
+            actionBtn.addEventListener('mousedown', () => deployBomb());
 
-            // マウスエミュレーション（PCテスト用）
-            zone.addEventListener('mousedown', (e) => {
-                joystickActive = true;
-                joystickStart = { x: e.clientX, y: e.clientY };
-            });
-
-            window.addEventListener('mousemove', (e) => {
-                if (!joystickActive) return;
-                let dx = e.clientX - joystickStart.x;
-                let dy = e.clientY - joystickStart.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-
-                if (dist > joystickMaxDist) {
-                    dx = (dx / dist) * joystickMaxDist;
-                    dy = (dy / dist) * joystickMaxDist;
-                }
-
-                knob.style.transform = `translate(${dx}px, ${dy}px)`;
-                playerVelocity.x = dx / joystickMaxDist;
-                playerVelocity.z = dy / joystickMaxDist;
-            });
-
-            window.addEventListener('mouseup', () => { if (joystickActive) resetJoystick(); });
-
-            // 爆弾ボタン
-            actionBtn.addEventListener('touchstart', (e) => {
-                e.preventDefault();
-                deployBomb();
-            });
-            actionBtn.addEventListener('mousedown', (e) => {
-                deployBomb();
-            });
-
-            // PCキーボードサポート
             window.addEventListener('keydown', (e) => {
                 if (e.key === ' ' || e.key === 'f') deployBomb();
-                if (e.key === 'ArrowUp' || e.key === 'w') playerVelocity.z = -1;
-                if (e.key === 'ArrowDown' || e.key === 's') playerVelocity.z = 1;
-                if (e.key === 'ArrowLeft' || e.key === 'a') playerVelocity.x = -1;
-                if (e.key === 'ArrowRight' || e.key === 'd') playerVelocity.x = 1;
+                if (e.key === 'ArrowUp' || e.key === 'w') player.vy = -player.speed;
+                if (e.key === 'ArrowDown' || e.key === 's') player.vy = player.speed;
+                if (e.key === 'ArrowLeft' || e.key === 'a') player.vx = -player.speed;
+                if (e.key === 'ArrowRight' || e.key === 'd') player.vx = player.speed;
             });
             window.addEventListener('keyup', (e) => {
-                if (['ArrowUp', 'w', 'ArrowDown', 's'].includes(e.key)) playerVelocity.z = 0;
-                if (['ArrowLeft', 'a', 'ArrowRight', 'd'].includes(e.key)) playerVelocity.x = 0;
+                if (['ArrowUp', 'w', 'ArrowDown', 's'].includes(e.key)) player.vy = 0;
+                if (['ArrowLeft', 'a', 'ArrowRight', 'd'].includes(e.key)) player.vx = 0;
             });
         }
 
-        function resetJoystick() {
-            joystickActive = false;
-            knob.style.transform = `translate(0px, 0px)`;
-            playerVelocity = { x: 0, z: 0 };
-        }
-
-        // --- 爆弾設置ロジック ---
         function deployBomb() {
-            // プレイヤーの現在位置から最も近いグリッド座標を算出
-            const gridX = Math.round(player.position.x / CELL_SIZE);
-            const gridZ = Math.round(player.position.z / CELL_SIZE);
-
-            // 既にそこに爆弾があるかチェック
-            const bombExists = bombs.some(b => b.gridX === gridX && b.gridZ === gridZ);
-            if (bombExists || MAP[gridX][gridZ] !== 0) return;
-
-            // 爆弾モデルの生成
-            const bombGeo = new THREE.SphereGeometry(0.5, 32, 32);
-            const bombMat = new THREE.MeshStandardMaterial({ 
-                color: 0x333333, 
-                roughness: 0.2, 
-                metalness: 0.8,
-                emissive: 0xff0000,
-                emissiveIntensity: 0.2
-            });
-            const bombMesh = new THREE.Mesh(bombGeo, bombMat);
-            bombMesh.position.set(gridX * CELL_SIZE, 0.5, gridZ * CELL_SIZE);
-            bombMesh.castShadow = true;
-            scene.add(bombMesh);
-
-            const bomb = {
-                mesh: bombMesh,
-                gridX: gridX,
-                gridZ: gridZ,
-                spawnTime: Date.now(),
-                pulsate: 0
-            };
-            bombs.push(bomb);
+            const c = Math.floor(player.x / TILE_SIZE); const r = Math.floor(player.y / TILE_SIZE);
+            if (bombs.some(b => b.r === r && b.c === c)) return;
+            bombs.push({ r: r, c: c, timer: 120, pulse: 0 });
         }
 
-        // --- 爆発処理 & エフェクト ---
-        function explode(bomb) {
-            scene.remove(bomb.mesh);
-            const range = 2; // 爆発の射程マス数
-            const directions = [{x:0, z:0}, {x:1, z:0}, {x:-1, z:0}, {x:0, z:1}, {x:0, z:-1}];
-
-            directions.forEach(dir => {
-                for (let i = (dir.x===0 && dir.z===0 ? 0 : 1); i <= range; i++) {
-                    const targetX = bomb.gridX + dir.x * i;
-                    const targetZ = bomb.gridZ + dir.z * i;
-
-                    // マップ外、または破壊不可壁に衝突したらその方向はストップ
-                    if (MAP[targetX][targetZ] === 1) break;
-
-                    // 爆発エフェクトの発生
-                    createExplosionParticles(targetX * CELL_SIZE, targetZ * CELL_SIZE);
-
-                    // 破壊可能ブロックの処理
-                    if (MAP[targetX][targetZ] === 2) {
-                        destroyBlock(targetX, targetZ);
-                        break; // ブロックの裏には爆風が抜けない
-                    }
-                }
-            });
-        }
-
-        function destroyBlock(gridX, gridZ) {
-            const index = blocks.findIndex(b => b.userData.gridX === gridX && b.userData.gridZ === gridZ);
-            if (index !== -1) {
-                const block = blocks[index];
-                
-                // ブロック破片エフェクト
-                createBlockDebris(block.position.x, block.position.z);
-
-                scene.remove(block);
-                blocks.splice(index, 1);
-                MAP[gridX][gridZ] = 0; // 空地に変更
-
-                score += 100;
-                scoreVal.innerText = score;
-            }
-        }
-
-        // 煌びやかな爆発パーティクル
-        function createExplosionParticles(x, z) {
-            const particleCount = 25;
-            const geo = new THREE.BoxGeometry(0.15, 0.15, 0.15);
-            
-            for (let i = 0; i < particleCount; i++) {
-                const mat = new THREE.MeshBasicMaterial({
-                    color: Math.random() > 0.3 ? 0xffaa00 : 0xff0033,
-                    transparent: true,
-                    opacity: 1
-                });
-                const p = new THREE.Mesh(geo, mat);
-                p.position.set(x + (Math.random() - 0.5) * 0.5, 0.5, z + (Math.random() - 0.5) * 0.5);
-                
-                p.userData = {
-                    vx: (Math.random() - 0.5) * 0.2,
-                    vy: Math.random() * 0.2 + 0.1,
-                    vz: (Math.random() - 0.5) * 0.2,
-                    life: 1.0
-                };
-                scene.add(p);
-                particles.push(p);
-            }
-        }
-
-        // ブロック破片パーティクル
-        function createBlockDebris(x, z) {
-            const particleCount = 15;
-            const geo = new THREE.BoxGeometry(0.2, 0.2, 0.2);
-            const mat = new THREE.MeshStandardMaterial({ color: 0xffaa00, roughness: 0.6 });
-
-            for (let i = 0; i < particleCount; i++) {
-                const p = new THREE.Mesh(geo, mat);
-                p.position.set(x + (Math.random() - 0.5) * 1, 1, z + (Math.random() - 0.5) * 1);
-                p.userData = {
-                    vx: (Math.random() - 0.5) * 0.15,
-                    vy: Math.random() * 0.15,
-                    vz: (Math.random() - 0.5) * 0.15,
-                    life: 1.0,
-                    isDebris: true
-                };
-                scene.add(p);
-                particles.push(p);
-            }
-        }
-
-        // --- 物理・当たり判定 ---
-        function updateMovement() {
-            if (playerVelocity.x === 0 && playerVelocity.z === 0) return;
-
-            // 次の想定移動位置
-            const nextX = player.position.x + playerVelocity.x * PLAYER_SPEED;
-            const nextZ = player.position.z + playerVelocity.z * PLAYER_SPEED;
-
-            const playerRadius = 0.4; // キャラクターの衝突半径
-
-            // X軸方向の判定
-            if (!checkCollision(nextX, player.position.z, playerRadius)) {
-                player.position.x = nextX;
-            }
-            // Z軸方向の判定
-            if (!checkCollision(player.position.x, nextZ, playerRadius)) {
-                player.position.z = nextZ;
-            }
-
-            // 移動方向へ滑らかに回転(滑らかなアニメーション)
-            const angle = Math.atan2(playerVelocity.x, playerVelocity.z);
-            const targetRotation = angle;
-            // 球面線形補間（slerp）ライクに滑らかに顔の向きを追従
-            let diff = targetRotation - player.rotation.y;
-            while (diff < -Math.PI) diff += Math.PI * 2;
-            while (diff > Math.PI) diff -= Math.PI * 2;
-            player.rotation.y += diff * 0.2;
-        }
-
-        function checkCollision(x, z, radius) {
-            // プレイヤーの周囲4マスをチェック
-            const minGridX = Math.floor((x - radius) / CELL_SIZE);
-            const maxGridX = Math.floor((x + radius) / CELL_SIZE);
-            const minGridZ = Math.floor((z - radius) / CELL_SIZE);
-            const maxGridZ = Math.floor((z + radius) / CELL_SIZE);
-
-            for (let gx = minGridX; gx <= maxGridX; gx++) {
-                for (let gz = minGridZ; gz <= maxGridZ; gz++) {
-                    if (gx < 0 || gx >= GRID_SIZE || gz < 0 || gz >= GRID_SIZE) return true;
-                    
-                    if (MAP[gx][gz] !== 0) {
-                        // タイルの矩形領域との重複確認
-                        const tileLeft = gx * CELL_SIZE - CELL_SIZE / 2;
-                        const tileRight = gx * CELL_SIZE + CELL_SIZE / 2;
-                        const tileTop = gz * CELL_SIZE - CELL_SIZE / 2;
-                        const tileBottom = gz * CELL_SIZE + CELL_SIZE / 2;
-
-                        // 簡易AABB-円判定
-                        const closestX = Math.max(tileLeft, Math.min(x, tileRight));
-                        const closestZ = Math.max(tileTop, Math.min(z, tileBottom));
-
-                        const distanceX = x - closestX;
-                        const distanceZ = z - closestZ;
-                        const distanceSquared = (distanceX * distanceX) + (distanceZ * distanceZ);
-
-                        if (distanceSquared < (radius * radius)) {
-                            return true; // 衝突検出
-                        }
+        function checkTileCollision(x, y, radius) {
+            const minC = Math.floor((x - radius) / TILE_SIZE); const maxC = Math.floor((x + radius) / TILE_SIZE);
+            const minR = Math.floor((y - radius) / TILE_SIZE); const maxR = Math.floor((y + radius) / TILE_SIZE);
+            for (let r = minR; r <= maxR; r++) {
+                for (let c = minC; c <= maxC; c++) {
+                    if (r < 0 || r >= GRID_SIZE || c < 0 || c >= GRID_SIZE) return true;
+                    if (MAP[r][c] !== 0) {
+                        if (x + radius > c * TILE_SIZE && x - radius < c * TILE_SIZE + TILE_SIZE &&
+                            y + radius > r * TILE_SIZE && y - radius < r * TILE_SIZE + TILE_SIZE) return true;
                     }
                 }
             }
             return false;
         }
 
-        // --- メインループ (毎フレーム処理) ---
-        function animate() {
-            requestAnimationFrame(animate);
+        function updateEnemies() {
+            enemies.forEach(enemy => {
+                enemy.changeDirTimer--;
+                let nextX = enemy.x; let nextY = enemy.y;
+                if (enemy.dir === 0) nextY -= enemy.speed; if (enemy.dir === 1) nextY += enemy.speed;
+                if (enemy.dir === 2) nextX -= enemy.speed; if (enemy.dir === 3) nextX += enemy.speed;
 
-            // 1. 移動・衝突処理
-            updateMovement();
+                if (!checkTileCollision(nextX, nextY, enemy.radius) && enemy.changeDirTimer > 0) {
+                    enemy.x = nextX; enemy.y = nextY;
+                } else {
+                    enemy.dir = Math.floor(Math.random() * 4);
+                    enemy.changeDirTimer = Math.floor(Math.random() * 60) + 30;
+                }
+                if (Math.hypot(player.x - enemy.x, player.y - enemy.y) < player.radius + enemy.radius) playerHit();
+            });
+        }
 
-            // 2. 爆弾のアニメーション（脈動）と爆発管理
-            const now = Date.now();
+        function playerHit() {
+            player.lives--; updateHUD();
+            if (player.lives <= 0) document.getElementById('game-over').style.display = 'flex';
+            else { player.x = TILE_SIZE + TILE_SIZE/2; player.y = TILE_SIZE + TILE_SIZE/2; }
+        }
+
+        function resetGame() { player.lives = 3; player.score = 0; initGame(); }
+
+        function updateBombs() {
             for (let i = bombs.length - 1; i >= 0; i--) {
-                const b = bombs[i];
-                const elapsed = now - b.spawnTime;
-
-                if (elapsed >= BOMB_LIFETIME) {
-                    explode(b);
-                    bombs.splice(i, 1);
-                } else {
-                    // 赤い発光をパルスさせる臨場感エフェクト
-                    b.pulsate += 0.15;
-                    const scale = 1 + Math.sin(b.pulsate) * 0.08;
-                    b.mesh.scale.set(scale, scale, scale);
-                    b.mesh.material.emissiveIntensity = 0.2 + Math.sin(b.pulsate) * 0.5;
-                }
+                bombs[i].timer--; bombs[i].pulse += 0.1;
+                if (bombs[i].timer <= 0) { explode(bombs[i].r, bombs[i].c); bombs.splice(i, 1); }
             }
+            for (let i = explosions.length - 1; i >= 0; i--) {
+                explosions[i].life--; if (explosions[i].life <= 0) explosions.splice(i, 1);
+            }
+        }
 
-            // 3. パーティクルの更新とフェードアウト
+        function explode(centerR, centerC) {
+            const range = 2; const directions = [{r:0, c:0}, {r:-1, c:0}, {r:1, c:0}, {r:0, c:-1}, {r:0, c:1}];
+            directions.forEach(dir => {
+                for (let i = (dir.r === 0 && dir.c === 0 ? 0 : 1); i <= range; i++) {
+                    const targetR = centerR + dir.r * i; const targetC = centerC + dir.c * i;
+                    if (targetR < 0 || targetR >= GRID_SIZE || targetC < 0 || targetC >= GRID_SIZE || MAP[targetR][targetC] === 1) break;
+                    
+                    explosions.push({ r: targetR, c: targetC, life: 15 });
+                    if (Math.floor(player.y / TILE_SIZE) === targetR && Math.floor(player.x / TILE_SIZE) === targetC) playerHit();
+
+                    for (let e = enemies.length - 1; e >= 0; e--) {
+                        if (Math.floor(enemies[e].y / TILE_SIZE) === targetR && Math.floor(enemies[e].x / TILE_SIZE) === targetC) {
+                            createParticles(enemies[e].x, enemies[e].y, '#ff0033');
+                            enemies.splice(e, 1); player.score += 200; updateHUD();
+                        }
+                    }
+                    if (MAP[targetR][targetC] === 2) {
+                        MAP[targetR][targetC] = 0;
+                        createParticles(targetC * TILE_SIZE + TILE_SIZE/2, targetR * TILE_SIZE + TILE_SIZE/2, '#aa6633');
+                        player.score += 50; updateHUD(); break;
+                    }
+                }
+            });
+        }
+
+        function createParticles(x, y, color) {
+            for (let i = 0; i < 8; i++) {
+                particles.push({ x: x, y: y, vx: (Math.random() - 0.5) * 4, vy: (Math.random() - 0.5) * 4, life: 20, color: color });
+            }
+        }
+
+        function updateParticles() {
             for (let i = particles.length - 1; i >= 0; i--) {
-                const p = particles[i];
-                p.position.x += p.userData.vx;
-                p.position.y += p.userData.vy;
-                p.position.z += p.userData.vz;
-                
-                if (p.userData.isDebris) {
-                    p.userData.vy -= 0.01; // 重力
-                    if (p.position.y < 0.1) p.position.y = 0.1;
-                }
+                particles[i].x += particles[i].vx; particles[i].y += particles[i].vy; particles[i].life--;
+                if (particles[i].life <= 0) particles.splice(i, 1);
+            }
+        }
 
-                p.userData.life -= 0.02;
-                if (p.userData.life <= 0) {
-                    scene.remove(p);
-                    particles.splice(i, 1);
-                } else {
-                    if (p.material) p.material.opacity = p.userData.life;
+        function loop() {
+            if (player.lives > 0) {
+                if (!checkTileCollision(player.x + player.vx, player.y, player.radius)) player.x += player.vx;
+                if (!checkTileCollision(player.x, player.y + player.vy, player.radius)) player.y += player.vy;
+            }
+            updateEnemies(); updateBombs(); updateParticles();
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            for (let r = 0; r < GRID_SIZE; r++) {
+                for (let c = 0; c < GRID_SIZE; c++) {
+                    if (MAP[r][c] === 1) {
+                        ctx.fillStyle = '#555555'; ctx.fillRect(c * TILE_SIZE, r * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                        ctx.strokeStyle = '#333333'; ctx.strokeRect(c * TILE_SIZE, r * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    } else if (MAP[r][c] === 2) {
+                        ctx.fillStyle = '#aa6633'; ctx.fillRect(c * TILE_SIZE + 2, r * TILE_SIZE + 2, TILE_SIZE - 4, TILE_SIZE - 4);
+                    } else {
+                        ctx.fillStyle = '#223e22'; ctx.fillRect(c * TILE_SIZE, r * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+                    }
                 }
             }
 
-            // 4. ドラマチックなダイナミックカメラワーク
-            // プレイヤーの背後少し上からスムーズに追従(遅延補間による気持ちよさ)
-            const targetCamX = player.position.x;
-            const targetCamY = player.position.y + 11;
-            const targetCamZ = player.position.z + 7;
+            bombs.forEach(b => {
+                ctx.fillStyle = '#111111'; ctx.beginPath();
+                ctx.arc(b.c * TILE_SIZE + TILE_SIZE/2, b.r * TILE_SIZE + TILE_SIZE/2, TILE_SIZE/2.5 + Math.sin(b.pulse)*2, 0, Math.PI*2);
+                ctx.fill();
+            });
 
-            camera.position.x += (targetCamX - camera.position.x) * 0.05;
-            camera.position.y += (targetCamY - camera.position.y) * 0.05;
-            camera.position.z += (targetCamZ - camera.position.z) * 0.05;
-            camera.lookAt(player.position.x, player.position.y, player.position.z - 1);
+            explosions.forEach(e => {
+                ctx.fillStyle = Math.random() > 0.5 ? '#ffcc00' : '#ff3300';
+                ctx.fillRect(e.c * TILE_SIZE, e.r * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+            });
 
-            // レンダリング
-            renderer.render(scene, camera);
+            enemies.forEach(enemy => {
+                ctx.fillStyle = enemy.color; ctx.beginPath(); ctx.arc(enemy.x, enemy.y, enemy.radius, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#ffffff'; ctx.fillRect(enemy.x - 5, enemy.y - 4, 3, 3); ctx.fillRect(enemy.x + 2, enemy.y - 4, 3, 3);
+            });
+
+            if (player.lives > 0) {
+                ctx.fillStyle = '#00ffff'; ctx.beginPath(); ctx.arc(player.x, player.y, player.radius, 0, Math.PI*2); ctx.fill();
+                ctx.fillStyle = '#ffffff'; ctx.fillRect(player.x - 7, player.y - 5, 14, 4);
+            }
+
+            particles.forEach(p => { ctx.fillStyle = p.color; ctx.fillRect(p.x, p.y, 3, 3); });
+            requestAnimationFrame(loop);
         }
 
-        // 画面リサイズ対応
-        function onWindowResize() {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-        }
+        requestAnimationFrame(loop);
     </script>
 </body>
 </html>
