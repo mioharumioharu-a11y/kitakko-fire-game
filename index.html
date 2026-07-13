@@ -1,480 +1,1149 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>トライくんの予防救急マスターへの道</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            user-select: none;
-            -webkit-user-select: none;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            background-color: #1a2238;
-            color: #fff;
-            font-family: 'Helvetica Neue', Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            min-height: 100vh;
-            padding-top: 10px;
-        }
-        #game-wrapper {
-            position: relative;
-            width: 100%;
-            max-width: 400px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        canvas {
-            background-color: #0d1b2a;
-            display: block;
-            width: 384px;
-            height: 380px;
-            border: 4px solid #f1c40f;
-            border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        #controller {
-            width: 384px;
-            margin-top: 12px;
-            background: #1b263b;
-            border: 2px solid #415a77;
-            border-radius: 8px;
-            padding: 12px;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
-        }
-        .ctrl-btn {
-            background: #415a77;
-            color: #fff;
-            border: none;
-            border-bottom: 4px solid #0d1b2a;
-            border-radius: 6px;
-            padding: 12px;
-            font-size: 13px;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: left;
-            line-height: 1.4;
-            transition: transform 0.1s;
-        }
-        .ctrl-btn:active {
-            transform: scale(0.98);
-            background: #e0a800;
-        }
-        .overlay {
-            position: absolute;
-            top: 4px;
-            left: 4px;
-            width: 376px;
-            height: 372px;
-            background: rgba(13, 27, 42, 0.95);
-            border-radius: 6px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            text-align: center;
-            padding: 20px;
-        }
-        .overlay h1 { color: #f1c40f; font-size: 22px; margin-bottom: 15px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-        .overlay p { margin-bottom: 20px; font-size: 14px; line-height: 1.6; }
-        .overlay button {
-            background: #e63946; color: #fff; border: none; padding: 12px 24px;
-            font-size: 16px; font-weight: bold; border-radius: 25px; cursor: pointer;
-            box-shadow: 0 4px 15px rgba(230,57,70,0.4);
-        }
-        .overlay button:active { transform: scale(0.95); }
-    </style>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>火災予防クイズ</title>
+
+<style>
+*{
+  box-sizing:border-box
+}
+
+body{
+  margin:0;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:linear-gradient(#fff2e8,#eef3f8);
+  color:#172236
+}
+
+button,input{
+  font:inherit
+}
+
+.s{
+  display:none;
+  min-height:100vh;
+  padding:18px 14px 40px
+}
+
+.s.on{
+  display:block
+}
+
+.w{
+  max-width:720px;
+  margin:auto
+}
+
+.hero{
+  background:linear-gradient(145deg,#c51f24,#751014);
+  color:#fff;
+  border-radius:28px;
+  padding:28px 18px;
+  text-align:center;
+  box-shadow:0 18px 40px #8a1b2235
+}
+
+h1{
+  font-size:clamp(32px,9vw,52px);
+  line-height:1.05;
+  margin:7px 0
+}
+
+.fire{
+  font-size:72px
+}
+
+.card{
+  background:#fff;
+  border-radius:21px;
+  padding:19px;
+  margin-top:15px;
+  box-shadow:0 8px 28px #13213b15;
+  border:1px solid #e7eaf0
+}
+
+input{
+  width:100%;
+  padding:15px;
+  border:2px solid #dfe3ea;
+  border-radius:14px;
+  font-size:17px
+}
+
+.btn{
+  width:100%;
+  border:0;
+  border-radius:15px;
+  padding:16px;
+  margin-top:12px;
+  font-weight:900;
+  font-size:18px
+}
+
+.pri{
+  background:linear-gradient(90deg,#c51f24,#f06b2d);
+  color:#fff
+}
+
+.sec{
+  background:#e9eef5;
+  color:#172236
+}
+
+.feat{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+  margin-top:15px
+}
+
+.feat div{
+  background:#fff2e7;
+  padding:11px 5px;
+  border-radius:13px;
+  text-align:center;
+  font-size:12px;
+  font-weight:800
+}
+
+.top{
+  position:sticky;
+  top:0;
+  padding:8px 0;
+  background:#f4f7fbe9;
+  backdrop-filter:blur(8px);
+  z-index:5
+}
+
+.pt{
+  display:flex;
+  justify-content:space-between;
+  font-weight:900;
+  font-size:13px
+}
+
+.bar{
+  height:11px;
+  background:#dce2eb;
+  border-radius:99px;
+  overflow:hidden;
+  margin-top:7px
+}
+
+.bar i{
+  display:block;
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,#f7b02d,#cb2025);
+  transition:.3s
+}
+
+.qn{
+  color:#ba2024;
+  font-weight:950
+}
+
+.q{
+  font-size:clamp(21px,5vw,28px);
+  font-weight:950;
+  line-height:1.45;
+  margin:10px 0 17px
+}
+
+.choices{
+  display:grid;
+  gap:10px
+}
+
+.choice{
+  display:flex;
+  gap:10px;
+  text-align:left;
+  padding:15px;
+  border:2px solid #e0e5ed;
+  background:#fff;
+  border-radius:16px;
+  font-weight:850;
+  line-height:1.45
+}
+
+.choice span{
+  flex:0 0 29px;
+  height:29px;
+  border-radius:50%;
+  background:#edf1f7;
+  display:grid;
+  place-items:center
+}
+
+.choice.ok{
+  border-color:#16944a;
+  background:#edfff3
+}
+
+.choice.ok span{
+  background:#16944a;
+  color:#fff
+}
+
+.choice.ng{
+  border-color:#d52a2f;
+  background:#fff0f0
+}
+
+.choice.ng span{
+  background:#d52a2f;
+  color:#fff
+}
+
+.choice.off{
+  pointer-events:none
+}
+
+.fb{
+  display:none;
+  margin-top:15px;
+  padding:16px;
+  border-radius:18px;
+  line-height:1.65
+}
+
+.fb.on{
+  display:block
+}
+
+.fb.good{
+  background:#eafbf0;
+  border:2px solid #58b979
+}
+
+.fb.bad{
+  background:#fff0ed;
+  border:2px solid #ed7866
+}
+
+.fbt{
+  font-size:20px;
+  font-weight:950
+}
+
+.basis{
+  background:#fff;
+  padding:11px;
+  border-radius:12px;
+  margin-top:10px;
+  font-size:13px
+}
+
+.result{
+  background:linear-gradient(145deg,#1c2b44,#08101d);
+  color:#fff;
+  border-radius:28px;
+  text-align:center;
+  padding:25px
+}
+
+.score{
+  font-size:72px;
+  color:#f6ca47;
+  font-weight:1000;
+  line-height:1
+}
+
+.rank{
+  font-size:25px;
+  font-weight:950
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-top:13px
+}
+
+.stat{
+  background:#fff;
+  border-radius:16px;
+  padding:15px;
+  text-align:center
+}
+
+.stat b{
+  display:block;
+  color:#c51f24;
+  font-size:25px
+}
+
+.review{
+  border-left:6px solid #ccc
+}
+
+.review.ok{
+  border-left-color:#159447
+}
+
+.review.ng{
+  border-left-color:#d52a2f
+}
+
+a{
+  color:#a7191e
+}
+
+@media(max-width:430px){
+  .feat{
+    grid-template-columns:1fr
+  }
+}
+</style>
 </head>
+
 <body>
 
-    <div id="game-wrapper">
-        <canvas id="gameCanvas"></canvas>
+<section id="start" class="s on">
+  <div class="w">
 
-        <div id="start-overlay" class="overlay">
-            <h1>トライくんの<br>予防救急マスターへの道</h1>
-            <p>クイズに正解してトライくんを<br>「救急隊員」から最高位の<br>「予防救急マスター」へランクアップさせよう！</p>
-            <button onclick="startGame()">訓練開始！</button>
-        </div>
-
-        <div id="result-overlay" class="overlay" style="display:none;">
-            <h1 id="result-title">最終評価</h1>
-            <p id="result-score">0 / 5 正解</p>
-            <p id="result-rank" style="font-size:18px; color:#f1c40f; font-weight:bold; margin-bottom:10px;"></p>
-            <p id="result-comment"></p>
-            <button onclick="location.reload()">再挑戦する</button>
-        </div>
-
-        <div id="controller">
-            <button class="ctrl-btn" id="btn-0" onclick="selectAnswer(1)">1. </button>
-            <button class="ctrl-btn" id="btn-1" onclick="selectAnswer(2)">2. </button>
-            <button class="ctrl-btn" id="btn-2" onclick="selectAnswer(3)">3. </button>
-            <button class="ctrl-btn" id="btn-3" onclick="selectAnswer(4)">4. </button>
-        </div>
+    <div class="hero">
+      <div class="fire">🔥🏠</div>
+      <h1>火災予防<br>クイズゲーム</h1>
+      <b>学んで守ろう！わが家と大切な命</b>
     </div>
 
-    <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
+    <div class="card">
+      <b>挑戦者の名前</b>
 
-        // ランクネームとカラー定義
-        const RANKS = [
-            { name: "一般市民", color: "#a8dadc" },
-            { name: "救急隊員", color: "#457b9d" },
-            { name: "上級救急隊員", color: "#1d3557" },
-            { name: "指導救命士", color: "#e63946" },
-            { name: "予防救急マスター", color: "#f1c40f" }
-        ];
+      <input
+        id="name"
+        maxlength="20"
+        placeholder="名前を入力してください"
+      >
 
-        const quizData = [
-            {
-                q: "【救急】熱中症が疑われる人を発見！\n意識がある場合、まず行うべきは？",
-                opts: ["冷たい水分・塩分を補給させる", "無理やり歩かせて病院に連れて行く", "厚着をさせて汗をかかせる", "すぐに心臓マッサージを行う"],
-                ans: 1,
-                desc: "意識があるなら自力での水分補給が有効！涼しい場所へ避難させ、服を緩めて体を冷やしましょう。"
-            },
-            {
-                q: "【救急】成人へのAED（自動体外式除電器）\n電極パッドを貼り付ける正しい位置は？",
-                opts: ["みぞおち と おへその下", "右胸の上（鎖骨の下）と 左胸の下", "両方の肩甲骨の間", "左胸の上 と 右胸の下"],
-                ans: 2,
-                desc: "心臓を挟み込むように「右胸の上」と「左胸の脇の下あたり」にしっかり貼り付けるのが正解です。"
-            },
-            {
-                q: "【予防】コンセントのホコリと湿気で\n突然発火する危険な現象の名前は？",
-                opts: ["スパーク現象", "トラッキング現象", "ショート現象", "オーバーロード現象"],
-                ans: 2,
-                desc: "長期間挿しっぱなしのプラグに起きる現象。定期的な清掃が最大の予防救急です！"
-            },
-            {
-                q: "【救急】喉に異物を詰まらせて苦しんでいる！\n意識がある場合、まず試みるべき応急手当は？",
-                opts: ["うがいをさせる", "背中の真ん中を何度も叩く（背部叩打法）", "お腹を思い切り膨らませる", "横向きに寝かせて放置する"],
-                ans: 2,
-                desc: "手のひらの付け根で、左右の肩甲骨の間を力強く何度も叩く「背部叩打法」などで異物除去を試みます。"
-            },
-            {
-                q: "【予防】119番通報時、救急車を呼ぶ際に\n最初にハッキリと伝えるべき最も重要なことは？",
-                opts: ["自分の名前と年齢", "現場の詳しい住所や目印", "怪我や病人の今の状態", "「火事」か「救急」かの区別"],
-                ans: 4,
-                desc: "指令員が最初に聞くのは「火事ですか？救急ですか？」です。落ち着いて「救急です」と答えましょう。"
-            }
-        ];
+      <button id="go" class="btn pri">
+        クイズに挑戦する
+      </button>
 
-        let currentIdx = 0;
-        let score = 0;
-        let currentRankIdx = 1; // 救急隊員スタート
-        let gameState = 'START'; 
-        let isCorrect = false;
-        let showDesc = false;
-        let animTimer = 0;
+      <div class="feat">
+        <div>
+          📚 全30問から<br>10問出題
+        </div>
 
-        // 効果音システム
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playSound(type) {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            const now = audioCtx.currentTime;
+        <div>
+          💡 全問に<br>解説付き
+        </div>
 
-            if (type === 'correct') {
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(523.25, now);
-                osc.frequency.setValueAtTime(659.25, now + 0.08);
-                osc.frequency.setValueAtTime(783.99, now + 0.16);
-                osc.frequency.setValueAtTime(1046.50, now + 0.24);
-                gain.gain.setValueAtTime(0.2, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.4);
-                osc.start(now); osc.stop(now + 0.4);
-            } else if (type === 'wrong') {
-                osc.type = 'sawtooth';
-                osc.frequency.setValueAtTime(220, now);
-                osc.frequency.linearRampToValueAtTime(110, now + 0.25);
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.25);
-                osc.start(now); osc.stop(now + 0.25);
-            } else if (type === 'rankup') {
-                osc.type = 'triangle';
-                for(let i=0; i<6; i++) {
-                    osc.frequency.setValueAtTime(440 + (i*100), now + (i*0.05));
-                }
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.4);
-                osc.start(now); osc.stop(now + 0.4);
-            }
-        }
+        <div>
+          🔎 公的資料の<br>根拠付き
+        </div>
+      </div>
+    </div>
 
-        function startGame() {
-            document.getElementById('start-overlay').style.display = 'none';
-            currentIdx = 0; score = 0; currentRankIdx = 1;
-            loadQuestion();
-            gameState = 'QUESTION';
-            animate();
-        }
+    <div class="card">
+      住宅用火災警報器、こんろ、電気、たばこ、ストーブ、
+      放火対策、避難、消火器などを4択で学べます。
+    </div>
 
-        function loadQuestion() {
-            showDesc = false;
-            gameState = 'QUESTION';
-            const q = quizData[currentIdx];
-            for (let i = 0; i < 4; i++) {
-                document.getElementById(`btn-${i}`).innerText = `${i+1}. ${q.opts[i]}`;
-                document.getElementById(`btn-${i}`).style.pointerEvents = "auto";
-                document.getElementById(`btn-${i}`).style.opacity = "1";
-            }
-        }
+  </div>
+</section>
 
-        function selectAnswer(userAns) {
-            if (gameState !== 'QUESTION') return;
-            
-            const q = quizData[currentIdx];
-            isCorrect = (userAns === q.ans);
-            
-            if (isCorrect) {
-                score++;
-                currentRankIdx = Math.min(currentRankIdx + 1, 4); // ランクアップ
-                playSound('rankup');
-            } else {
-                playSound('wrong');
-            }
+<section id="quiz" class="s">
+  <div class="w">
 
-            gameState = 'JUDGE';
-            showDesc = true;
-            animTimer = 0;
+    <div class="top">
+      <div class="pt">
+        <span id="pl"></span>
+        <span id="pg"></span>
+      </div>
 
-            for (let i = 0; i < 4; i++) {
-                document.getElementById(`btn-${i}`).style.pointerEvents = "none";
-                if (i !== q.ans - 1) document.getElementById(`btn-${i}`).style.opacity = "0.3";
-            }
+      <div class="bar">
+        <i id="bar"></i>
+      </div>
+    </div>
 
-            setTimeout(() => {
-                canvas.addEventListener('click', nextStep, { once: true });
-            }, 600);
-        }
+    <div class="card">
+      <div id="qn" class="qn"></div>
+      <div id="qt" class="q"></div>
 
-        function nextStep() {
-            currentIdx++;
-            if (currentIdx < quizData.length) {
-                loadQuestion();
-            } else {
-                endGame();
-            }
-        }
+      <div id="cs" class="choices"></div>
 
-        function endGame() {
-            gameState = 'END';
-            document.getElementById('result-overlay').style.display = 'flex';
-            document.getElementById('result-score').innerText = `5問中 ${score}問 正解`;
-            
-            const finalRank = RANKS[currentRankIdx];
-            document.getElementById('result-rank').innerText = `最終階級：【${finalRank.name}】`;
-            
-            let comment = "";
-            if (score === 5) comment = "素晴らしい！あなたは街の安全を守る本物のトップマスターです！";
-            else if (score >= 3) comment = "高度な応急手当の手腕を持っています。頼りにしています！";
-            else comment = "もう一度訓練を重ねて、立派なマスターを目指しましょう！";
-            document.getElementById('result-comment').innerText = comment;
-        }
+      <div id="fb" class="fb">
+        <div id="fbt" class="fbt"></div>
+        <div id="ex"></div>
 
-        // --- 3Dかんだした立体ドット絵風トライくんの描画ルーチン ---
-        function draw3DTryKun(x, y, rankIdx) {
-            animTimer += 0.05;
-            let bounce = Math.sin(animTimer) * 3; // 上下の揺らぎ演出
+        <div class="basis">
+          根拠：
+          <a id="src" target="_blank" rel="noopener"></a>
+        </div>
+      </div>
 
-            // シャドウ（足元の影）
-            ctx.fillStyle = 'rgba(0,0,0,0.3)';
-            ctx.beginPath();
-            ctx.ellipse(x + 20, y + 65, 25, 6, 0, 0, Math.PI * 2);
-            ctx.fill();
+      <button
+        id="next"
+        class="btn pri"
+        style="display:none"
+      >
+        次の問題へ
+      </button>
+    </div>
 
-            // 共通：顔と頭部
-            ctx.fillStyle = '#f3a35f'; // 肌色
-            ctx.fillRect(x, y + bounce, 40, 35); // 顔のベース
-            
-            // 目（立体感を出すための3Dシャドウ付き）
-            ctx.fillStyle = '#000';
-            ctx.fillRect(x + 8, y + 12 + bounce, 6, 8);
-            ctx.fillRect(x + 26, y + 12 + bounce, 6, 8);
+    <button id="quit" class="btn sec">
+      はじめに戻る
+    </button>
 
-            // にっこり口元
-            ctx.strokeStyle = '#000';
-            ctx.lineWidth = 2;
-            ctx.beginPath();
-            ctx.arc(x + 20, y + 22 + bounce, 6, 0, Math.PI);
-            ctx.stroke();
+  </div>
+</section>
 
-            // ランク別：制服・帽子の立体レイヤー
-            if (rankIdx === 1) { // 救急隊員 (ノーマル)
-                ctx.fillStyle = '#3a86c8'; // 青キャップ
-                ctx.fillRect(x - 4, y - 6 + bounce, 48, 12);
-                ctx.fillStyle = '#fff';
-                ctx.font = 'bold 9px Arial';
-                ctx.fillText("トライ", x + 6, y + 3 + bounce);
+<section id="result" class="s">
+  <div class="w">
 
-                ctx.fillStyle = '#778899'; // 一般制服ボディ
-                ctx.fillRect(x - 2, y + 35 + bounce, 44, 30);
-            } 
-            else if (rankIdx === 2) { // 上級救急隊員 (肩章・階級章プラス)
-                ctx.fillStyle = '#1d3557'; // 濃紺キャップ
-                ctx.fillRect(x - 4, y - 6 + bounce, 48, 12);
-                ctx.fillStyle = '#ff0'; // 金のライン
-                ctx.fillRect(x - 4, y + 4 + bounce, 48, 2);
+    <div class="result">
+      <div id="ico" style="font-size:48px">🏆</div>
 
-                ctx.fillStyle = '#457b9d'; // 上級制服ボディ
-                ctx.fillRect(x - 4, y + 35 + bounce, 48, 30);
-                // 金の特進肩章
-                ctx.fillStyle = '#f1c40f';
-                ctx.fillRect(x - 6, y + 35 + bounce, 6, 6);
-                ctx.fillRect(x + 40, y + 35 + bounce, 6, 6);
-            } 
-            else if (rankIdx === 3) { // 指導救命士 (ネクタイ、聴診器の3Dパーツ)
-                ctx.fillStyle = '#1d3557'; // 救命士帽子
-                ctx.fillRect(x - 4, y - 8 + bounce, 48, 14);
-                ctx.fillStyle = '#e63946'; // 赤いエンブレムリボン
-                ctx.fillRect(x + 14, y - 4 + bounce, 12, 6);
+      <div id="rn"></div>
 
-                ctx.fillStyle = '#334155'; // 重厚な制服
-                ctx.fillRect(x - 6, y + 35 + bounce, 52, 32);
-                // ネクタイ
-                ctx.fillStyle = '#0f172a';
-                ctx.fillRect(x + 18, y + 35 + bounce, 4, 15);
-                // 聴診器のメタリック表現
-                ctx.strokeStyle = '#cbd5e1';
-                ctx.lineWidth = 2;
-                ctx.beginPath();
-                ctx.arc(x + 10, y + 50 + bounce, 6, 0, Math.PI);
-                ctx.stroke();
-            } 
-            else if (rankIdx === 4) { // 予防救急マスター (豪華絢爛ゴールド仕様、たすき掛け)
-                // 絢爛なゴールドの3D冠・エンブレム
-                ctx.fillStyle = '#f1c40f';
-                ctx.fillRect(x - 6, y - 10 + bounce, 52, 16);
-                ctx.fillStyle = '#e63946'; // センターレッド
-                ctx.fillRect(x + 16, y - 6 + bounce, 8, 8);
+      <div class="score">
+        <span id="sc">0</span>
+        <small style="font-size:24px">点</small>
+      </div>
 
-                // マスタータキシードボディ
-                ctx.fillStyle = '#1e3a8a';
-                ctx.fillRect(x - 8, y + 35 + bounce, 56, 32);
+      <div id="rk" class="rank"></div>
+      <div id="msg"></div>
+    </div>
 
-                // 金のエポレット（肩のフリンジ飾り）
-                ctx.fillStyle = '#fbbf24';
-                ctx.fillRect(x - 12, y + 34 + bounce, 8, 8);
-                ctx.fillRect(x + 44, y + 34 + bounce, 8, 8);
+    <div class="grid">
+      <div class="stat">
+        <b id="cn"></b>
+        正解数
+      </div>
 
-                // 予防救急マスターの「たすき」
-                ctx.fillStyle = '#fbbf24';
-                ctx.lineWidth = 4;
-                ctx.beginPath();
-                ctx.moveTo(x - 4, y + 35 + bounce);
-                ctx.lineTo(x + 36, y + 67 + bounce);
-                ctx.stroke();
-            }
+      <div class="stat">
+        <b id="best"></b>
+        最高得点
+      </div>
+    </div>
 
-            // ゴールドネームプレート
-            ctx.fillStyle = 'rgba(0,0,0,0.6)';
-            ctx.fillRect(x - 30, y + 75, 100, 18);
-            ctx.strokeStyle = '#f1c40f';
-            ctx.strokeRect(x - 30, y + 75, 100, 18);
-            
-            ctx.fillStyle = '#fff';
-            ctx.font = 'bold 10px sans-serif';
-            ctx.textAlign = 'center';
-            ctx.fillText(RANKS[rankIdx].name, x + 20, y + 88);
-        }
+    <button id="retry" class="btn pri">
+      もう一度挑戦する
+    </button>
 
-        // --- メイン描画 ---
-        function draw() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+    <button id="home" class="btn sec">
+      トップに戻る
+    </button>
 
-            // 近未来的な3Dグリッド風の背景
-            ctx.fillStyle = '#0f172a';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            ctx.strokeStyle = 'rgba(65, 90, 119, 0.2)';
-            ctx.lineWidth = 1;
-            for(let i=0; i<canvas.width; i+=20) {
-                ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, canvas.height); ctx.stroke();
-                ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(canvas.width, i); ctx.stroke();
-            }
+    <h2>回答の振り返り</h2>
 
-            // 上部情報バー
-            ctx.fillStyle = '#1e293b';
-            ctx.fillRect(8, 8, canvas.width - 16, 40);
-            ctx.strokeStyle = '#415a77';
-            ctx.strokeRect(8, 8, canvas.width - 16, 40);
+    <div id="reviews"></div>
 
-            ctx.fillStyle = '#f1c40f';
-            ctx.font = 'bold 13px sans-serif';
-            ctx.textAlign = 'left';
-            ctx.fillText(`訓練問題: ${currentIdx + 1} / ${quizData.length}`, 20, 32);
-            ctx.textAlign = 'right';
-            ctx.fillText(`現在の階級: ${RANKS[currentRankIdx].name}`, canvas.width - 20, 32);
+  </div>
+</section>
 
-            // 問題テキスト枠
-            ctx.fillStyle = 'rgba(13, 27, 42, 0.9)';
-            ctx.fillRect(8, 56, canvas.width - 16, 90);
-            ctx.strokeRect(8, 56, canvas.width - 16, 90);
+<script>
+const Q = [
+  {
+    q:"住宅用火災警報器は、設置してから何年を目安に本体を交換しますか。",
+    c:["3年","5年","10年","20年"],
+    a:2,
+    e:"電池や電子部品が劣化するため、設置後10年を目安に本体を交換します。定期的な作動確認も必要です。",
+    b:"消防庁「住宅用火災警報器を設置しましょう！」",
+    u:"https://www.fdma.go.jp/relocation/html/life/juukei.html"
+  },
+  {
+    q:"住宅用火災警報器の点検として正しいものはどれですか。",
+    c:[
+      "音が鳴るとうるさいので電池を外す",
+      "定期的にボタンやひもで作動確認する",
+      "設置後は一度も確認しない",
+      "煙が出たときだけ確認する"
+    ],
+    a:1,
+    e:"いざというとき確実に作動するよう、定期的に点検ボタンや点検ひもで警報音を確認します。",
+    b:"消防庁「住宅用火災警報器を設置しましょう！」",
+    u:"https://www.fdma.go.jp/relocation/html/life/juukei.html"
+  },
+  {
+    q:"住宅用火災警報器の最も大きな役割はどれですか。",
+    c:[
+      "火災を自動で消す",
+      "火災を早く発見し避難につなげる",
+      "消防車を自動で呼ぶ",
+      "部屋を冷やす"
+    ],
+    a:1,
+    e:"煙や熱を感知して警報を鳴らし、早期発見と避難につなげる機器です。",
+    b:"消防庁「住宅用火災警報器を設置しましょう！」",
+    u:"https://www.fdma.go.jp/relocation/html/life/juukei.html"
+  },
+  {
+    q:"揚げ物中の鍋から火が出たとき、絶対にしてはいけないことはどれですか。",
+    c:[
+      "火を止める",
+      "鍋に水をかける",
+      "消火器を使う",
+      "安全なら鍋ぶたで覆う"
+    ],
+    a:1,
+    e:"油に水をかけると、燃えた油が飛び散って炎が急激に広がり、大やけどにつながります。",
+    b:"消防庁 防災・危機管理eカレッジ「初期消火」",
+    u:"https://www.fdma.go.jp/relocation/e-college/cat67/cat49/cat43/1-14.html"
+  },
+  {
+    q:"こんろを使用中にその場を離れるとき、正しい行動はどれですか。",
+    c:[
+      "弱火にする",
+      "家族にだけ伝える",
+      "必ず火を消す",
+      "窓を開ける"
+    ],
+    a:2,
+    e:"短時間でもその場を離れるときは火を消します。調理中の離席は過熱や着火につながります。",
+    b:"消防庁「住宅防火 いのちを守る10のポイント」",
+    u:"https://www.fdma.go.jp/publication/movie/juutaku_bouka/10.html"
+  },
+  {
+    q:"ガスこんろの周囲で最も安全な状態はどれですか。",
+    c:[
+      "布巾を置く",
+      "スプレー缶を置く",
+      "燃えやすい物を置かず整理する",
+      "カーテンを近づける"
+    ],
+    a:2,
+    e:"こんろの周囲に紙、布、油、スプレー缶などを置くと、着火や破裂の危険があります。",
+    b:"消防庁「住宅防火 いのちを守る10のポイント」",
+    u:"https://www.fdma.go.jp/publication/movie/juutaku_bouka/10.html"
+  },
+  {
+    q:"衣服に火がついたときの正しい行動はどれですか。",
+    c:[
+      "走る",
+      "止まり、倒れ、転がる",
+      "エレベーターに乗る",
+      "手で強くあおぐ"
+    ],
+    a:1,
+    e:"走ると炎が大きくなることがあります。止まり、倒れ、転がる「ストップ・ドロップ＆ロール」で消火します。",
+    b:"消防研究センター「着衣着火の対処法」",
+    u:"https://nrifd.fdma.go.jp/news/caution/heat_generator/index.html"
+  },
+  {
+    q:"プラグ周辺のほこりが湿気を含んで出火する現象はどれですか。",
+    c:[
+      "バックドラフト",
+      "トラッキング火災",
+      "フラッシュオーバー",
+      "自然発火"
+    ],
+    a:1,
+    e:"差込プラグとコンセントの間のほこりが湿気を含み、電気が流れて発熱・発火する現象です。",
+    b:"消防庁「電気器具等の安全な取扱い」",
+    u:"https://www.fdma.go.jp/publication/ugoki/items/rei_0608_25.pdf"
+  },
+  {
+    q:"たこ足配線が危険な理由はどれですか。",
+    c:[
+      "電気が遅くなる",
+      "許容量を超えると過熱する",
+      "音が小さくなる",
+      "電池が減る"
+    ],
+    a:1,
+    e:"コンセントや電源タップの許容量を超えると発熱し、火災につながるおそれがあります。",
+    b:"消防庁「電気器具等の安全な取扱い」",
+    u:"https://www.fdma.go.jp/publication/ugoki/items/rei_0608_25.pdf"
+  },
+  {
+    q:"電気コードの使い方として正しいものはどれですか。",
+    c:[
+      "束ねて使う",
+      "家具の下に敷く",
+      "傷んだコードは交換する",
+      "釘で固定する"
+    ],
+    a:2,
+    e:"傷み、束ね、重い物の下敷きは、断線や発熱による出火の危険があります。",
+    b:"消防庁「電気器具等の安全な取扱い」",
+    u:"https://www.fdma.go.jp/publication/ugoki/items/rei_0608_25.pdf"
+  },
+  {
+    q:"使用していない電気器具の扱いとして適切なのはどれですか。",
+    c:[
+      "スイッチを入れたまま",
+      "必要に応じてプラグを抜く",
+      "布をかぶせて通電",
+      "コードを引いて抜く"
+    ],
+    a:1,
+    e:"使用しないときはスイッチを切り、必要に応じてプラグを持って抜きます。",
+    b:"消防庁「電気器具等の安全な取扱い」",
+    u:"https://www.fdma.go.jp/publication/ugoki/items/rei_0608_25.pdf"
+  },
+  {
+    q:"充電式製品に異常な発熱や膨らみがある場合の対応はどれですか。",
+    c:[
+      "充電を続ける",
+      "布団の上で充電",
+      "使用を中止し相談する",
+      "強く押して戻す"
+    ],
+    a:2,
+    e:"異常な発熱、膨張、異臭は故障や発火の兆候です。使用・充電を中止して販売店やメーカーに相談します。",
+    b:"消防庁「電気器具等の安全な取扱い」",
+    u:"https://www.fdma.go.jp/publication/ugoki/items/rei_0608_25.pdf"
+  },
+  {
+    q:"ストーブの近くに置いてはいけないものはどれですか。",
+    c:[
+      "不燃性の壁",
+      "カーテンや洗濯物",
+      "安全な空間",
+      "適切な防護柵"
+    ],
+    a:1,
+    e:"カーテンや洗濯物などの可燃物は、接触や放射熱で燃える危険があります。",
+    b:"消防庁「住宅防火 いのちを守る10のポイント」",
+    u:"https://www.fdma.go.jp/relocation/html/life/yobou_contents/qa/"
+  },
+  {
+    q:"石油ストーブへの給油で正しい方法はどれですか。",
+    c:[
+      "点火したまま給油",
+      "熱いまま給油",
+      "必ず消火してから給油",
+      "別の燃料を混ぜる"
+    ],
+    a:2,
+    e:"給油時は必ず消火し、安全を確認します。こぼれた灯油を拭き、タンクのふたも確実に閉めます。",
+    b:"消防庁「住宅防火 いのちを守る10のポイント」",
+    u:"https://www.fdma.go.jp/publication/movie/juutaku_bouka/10.html"
+  },
+  {
+    q:"寝たばこが危険な主な理由はどれですか。",
+    c:[
+      "煙で目が覚める",
+      "布団などで火種がくすぶり燃え広がる",
+      "たばこが短くなる",
+      "室温が下がる"
+    ],
+    a:1,
+    e:"火種が寝具などに落ち、内部でくすぶった後に燃え広がることがあります。",
+    b:"消防庁「住宅防火 いのちを守る10のポイント」",
+    u:"https://www.fdma.go.jp/publication/movie/juutaku_bouka/10.html"
+  },
+  {
+    q:"たばこの吸い殻を捨てるときの正しい方法はどれですか。",
+    c:[
+      "ごみ箱へ直接捨てる",
+      "完全に消火したことを確認する",
+      "ベランダから捨てる",
+      "紙に包んですぐ捨てる"
+    ],
+    a:1,
+    e:"消えたように見えても火種が残ることがあります。水をかけるなどして完全に消火します。",
+    b:"消防庁「住宅防火 いのちを守る10のポイント」",
+    u:"https://www.fdma.go.jp/publication/movie/juutaku_bouka/10.html"
+  },
+  {
+    q:"放火されにくい環境づくりとして適切なのはどれですか。",
+    c:[
+      "段ボールを積む",
+      "ごみを前夜から出す",
+      "家の周りを整理する",
+      "物置を無施錠にする"
+    ],
+    a:2,
+    e:"建物周囲に段ボールや新聞紙、ごみなどの燃えやすい物を放置しないことが大切です。",
+    b:"消防庁 火災予防情報",
+    u:"https://www.fdma.go.jp/mission/prevention/prevention001.html"
+  },
+  {
+    q:"夜間の放火対策として有効なものはどれですか。",
+    c:[
+      "家の周りを暗くする",
+      "センサーライトで明るくする",
+      "門を開けたままにする",
+      "ごみを道路に置く"
+    ],
+    a:1,
+    e:"建物周囲を明るくし、人の目が届く環境をつくることは放火対策につながります。",
+    b:"消防庁 火災予防情報",
+    u:"https://www.fdma.go.jp/mission/prevention/prevention001.html"
+  },
+  {
+    q:"火災を発見したとき、周囲に知らせる行動はどれですか。",
+    c:[
+      "黙って一人で消火",
+      "大声で火事を知らせる",
+      "窓を全部開ける",
+      "荷物を先に運ぶ"
+    ],
+    a:1,
+    e:"大声や非常ベルで周囲に知らせ、119番通報、避難、初期消火につなげます。",
+    b:"消防庁 防災・危機管理eカレッジ",
+    u:"https://www.fdma.go.jp/relocation/e-college/"
+  },
+  {
+    q:"119番通報で最初に伝える重要な内容はどれですか。",
+    c:[
+      "自分の趣味",
+      "火事か救急か",
+      "今日の天気",
+      "建物の築年数"
+    ],
+    a:1,
+    e:"指令管制員の質問に答え、まず火事か救急かを伝え、その後に住所や状況を伝えます。",
+    b:"消防庁 119番通報に関する案内",
+    u:"https://www.fdma.go.jp/mission/enrichment/appropriate/appropriate007.html"
+  },
+  {
+    q:"煙が充満した場所から避難するときの基本姿勢はどれですか。",
+    c:[
+      "低い姿勢で進む",
+      "立って天井付近を進む",
+      "走りながら深呼吸する",
+      "煙の中で待つ"
+    ],
+    a:0,
+    e:"煙や熱は上方にたまりやすいため、姿勢を低くして煙を吸わないよう避難します。",
+    b:"消防庁 防災・危機管理eカレッジ",
+    u:"https://www.fdma.go.jp/relocation/e-college/"
+  },
+  {
+    q:"火災時にエレベーターを避ける理由はどれですか。",
+    c:[
+      "遅いから",
+      "停電や故障で閉じ込められる危険がある",
+      "階段より明るいから",
+      "必ず消防隊専用だから"
+    ],
+    a:1,
+    e:"停電、故障、煙の侵入などにより閉じ込められる危険があるため、原則として階段で避難します。",
+    b:"消防庁 防災・危機管理eカレッジ",
+    u:"https://www.fdma.go.jp/relocation/e-college/"
+  },
+  {
+    q:"避難した後の正しい行動はどれですか。",
+    c:[
+      "忘れ物を取りに戻る",
+      "安全な場所にとどまり戻らない",
+      "火を見に戻る",
+      "窓を開けに戻る"
+    ],
+    a:1,
+    e:"一度避難したら、煙や炎が急速に広がる可能性があるため建物内へ戻りません。",
+    b:"消防庁 防災・危機管理eカレッジ",
+    u:"https://www.fdma.go.jp/relocation/e-college/"
+  },
+  {
+    q:"初期消火を行う判断として適切なのはどれですか。",
+    c:[
+      "天井まで炎が届いても続ける",
+      "安全と避難経路を確保できる範囲で行う",
+      "煙で見えなくても続ける",
+      "必ず一人で消す"
+    ],
+    a:1,
+    e:"初期消火は小さい火の段階で、自分の安全と避難経路が確保できる場合に限ります。",
+    b:"消防庁「個室型店舗の消防訓練フロー図」",
+    u:"https://www.fdma.go.jp/mission/prevention/suisin/item/suisin001_12_koshitsu_kunren_manual.pdf"
+  },
+  {
+    q:"一般的な消火器を使うとき、最初の操作はどれですか。",
+    c:[
+      "安全栓を抜く",
+      "逆さにする",
+      "ホースを自分に向ける",
+      "炎へ投げる"
+    ],
+    a:0,
+    e:"一般的な消火器は「安全栓を抜く、ホースを火元に向ける、レバーを握る」の順で使用します。",
+    b:"消防庁 防災・危機管理eカレッジ「初期消火」",
+    u:"https://www.fdma.go.jp/relocation/e-college/cat67/cat49/cat43/1-14.html"
+  },
+  {
+    q:"消火器の薬剤を向ける場所はどれですか。",
+    c:[
+      "炎の上部",
+      "燃えている物の根元",
+      "天井",
+      "自分の足元"
+    ],
+    a:1,
+    e:"炎の上ではなく、燃えている物の根元を狙い、手前から掃くように放射します。",
+    b:"消防庁 防災・危機管理eカレッジ「初期消火」",
+    u:"https://www.fdma.go.jp/relocation/e-college/cat67/cat49/cat43/1-14.html"
+  },
+  {
+    q:"消火器の点検で異常と判断すべきものはどれですか。",
+    c:[
+      "本体にさびや変形がある",
+      "安全栓がある",
+      "圧力計が正常",
+      "表示が読める"
+    ],
+    a:0,
+    e:"さび、変形、ホースのひび、圧力異常などがある消火器は使用せず、販売店やメーカー等に相談します。",
+    b:"消防庁 防災・危機管理eカレッジ「初期消火」",
+    u:"https://www.fdma.go.jp/relocation/e-college/cat67/cat49/cat43/1-14.html"
+  },
+  {
+    q:"地震で強い揺れを感じたとき最優先することはどれですか。",
+    c:[
+      "揺れている間に火元へ走る",
+      "まず自分の身を守る",
+      "窓を全部開ける",
+      "荷物を運ぶ"
+    ],
+    a:1,
+    e:"強い揺れの最中に移動すると危険です。まず身を守り、揺れが収まってから火元や電気を確認します。",
+    b:"消防庁「地震火災への備え」",
+    u:"https://www.fdma.go.jp/publication/hakusho/r5/report7/68438.html"
+  },
+  {
+    q:"地震後、避難のため自宅を離れる際の電気火災対策はどれですか。",
+    c:[
+      "可能ならブレーカーを落とす",
+      "電気ストーブをつける",
+      "コードを水で濡らす",
+      "家電を一つのタップにつなぐ"
+    ],
+    a:0,
+    e:"復電時に損傷した配線や倒れた器具から出火する通電火災があります。安全を確認し、可能ならブレーカーを落とします。",
+    b:"消防庁「地震火災への備え」",
+    u:"https://www.fdma.go.jp/publication/hakusho/r5/report7/68438.html"
+  },
+  {
+    q:"防炎品の説明として正しいものはどれですか。",
+    c:[
+      "絶対に燃えない製品",
+      "燃え広がりにくい性能を持つ製品",
+      "自動で水を出す製品",
+      "警報音を鳴らす製品"
+    ],
+    a:1,
+    e:"防炎品は、火が接しても燃え広がりにくい性能を持つ製品です。まったく燃えないという意味ではありません。",
+    b:"消防庁「住宅防火 いのちを守る10のポイント」",
+    u:"https://www.fdma.go.jp/relocation/html/life/yobou_contents/qa/"
+  },
+  {
+    q:"家庭で火災に備える行動として最も適切なのはどれですか。",
+    c:[
+      "避難経路に物を置く",
+      "消火器の場所と使い方を家族で確認する",
+      "警報器の電池を外す",
+      "防火訓練に参加しない"
+    ],
+    a:1,
+    e:"避難経路を整理し、警報器を維持管理し、消火器の場所と使い方を家族で確認しておくことが大切です。",
+    b:"消防庁「住宅防火 いのちを守る10のポイント」",
+    u:"https://www.fdma.go.jp/relocation/html/life/yobou_contents/qa/"
+  }
+];
 
-            ctx.fillStyle = '#fff';
-            ctx.font = '13px sans-serif';
-            ctx.textAlign = 'left';
-            const lines = quizData[currentIdx].q.split('\n');
-            for (let i = 0; i < lines.length; i++) {
-                ctx.fillText(lines[i], 20, 85 + (i * 24));
-            }
+const N = 10;
 
-            // トライくんの3D立体配置
-            draw3DTryKun(170, 180, currentRankIdx);
+const $ = id => document.getElementById(id);
 
-            // 解説表示
-            if (showDesc) {
-                ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
-                ctx.fillRect(8, 56, canvas.width - 16, 315);
-                ctx.strokeStyle = isCorrect ? '#00ff00' : '#e63946';
-                ctx.strokeRect(8, 56, canvas.width - 16, 315);
+let list = [];
+let i = 0;
+let correct = 0;
+let ans = [];
+let player = "";
 
-                ctx.font = 'bold 22px sans-serif';
-                ctx.textAlign = 'center';
-                if (isCorrect) {
-                    ctx.fillStyle = '#00ff00';
-                    ctx.fillText('【 判定：合格 】', canvas.width / 2, 95);
-                } else {
-                    ctx.fillStyle = '#e63946';
-                    ctx.fillText('【 判定：不合格 】', canvas.width / 2, 95);
-                }
+function show(id){
+  document
+    .querySelectorAll(".s")
+    .forEach(element => element.classList.remove("on"));
 
-                // 解説
-                ctx.fillStyle = '#e2e8f0';
-                ctx.font = '13px sans-serif';
-                ctx.textAlign = 'left';
-                const desc = quizData[currentIdx].desc;
-                const descLines = [];
-                // 24文字ごとに自動改行
-                for (let i = 0; i < desc.length; i += 24) {
-                    descLines.push(desc.substring(i, i + 24));
-                }
-                for (let i = 0; i < descLines.length; i++) {
-                    ctx.fillText(descLines[i], 24, 140 + (i * 22));
-                }
+  $(id).classList.add("on");
 
-                ctx.fillStyle = '#f1c40f';
-                ctx.font = '11px sans-serif';
-                ctx.textAlign = 'center';
-                ctx.fillText('▼ 画面をタップして次の訓練ステージへ', canvas.width / 2, 350);
-            }
-        }
+  window.scrollTo(0,0);
+}
 
-        function animate() {
-            if (gameState === 'END') return;
-            draw();
-            requestAnimationFrame(animate);
-        }
-    </script>
+function shuffle(array){
+  const copied = [...array];
+
+  for(let index = copied.length - 1; index > 0; index--){
+    const randomIndex = Math.floor(
+      Math.random() * (index + 1)
+    );
+
+    [
+      copied[index],
+      copied[randomIndex]
+    ] = [
+      copied[randomIndex],
+      copied[index]
+    ];
+  }
+
+  return copied;
+}
+
+function start(){
+  player = $("name").value.trim() || "チャレンジャー";
+
+  list = shuffle(Q).slice(0,N);
+
+  i = 0;
+  correct = 0;
+  ans = [];
+
+  $("pl").textContent = player + "さん";
+
+  show("quiz");
+  render();
+}
+
+function render(){
+  const question = list[i];
+
+  $("pg").textContent = `${i + 1} / ${N}`;
+
+  $("bar").style.width =
+    (i / N * 100) + "%";
+
+  $("qn").textContent =
+    `第${i + 1}問`;
+
+  $("qt").textContent =
+    question.q;
+
+  $("fb").className = "fb";
+
+  $("next").style.display = "none";
+
+  $("cs").innerHTML = "";
+
+  question.c.forEach((text,index) => {
+    const button = document.createElement("button");
+
+    button.className = "choice";
+
+    const alphabet = ["A","B","C","D"][index];
+
+    button.innerHTML = `
+      <span>${alphabet}</span>
+      <div>${text}</div>
+    `;
+
+    button.onclick = () => answer(index);
+
+    $("cs").appendChild(button);
+  });
+}
+
+function answer(selectedIndex){
+  const question = list[i];
+
+  const isCorrect =
+    selectedIndex === question.a;
+
+  if(isCorrect){
+    correct++;
+  }
+
+  ans.push({
+    q:question,
+    x:selectedIndex,
+    ok:isCorrect
+  });
+
+  [...$("cs").children].forEach(
+    (button,index) => {
+
+      button.classList.add("off");
+
+      if(index === question.a){
+        button.classList.add("ok");
+      }
+      else if(index === selectedIndex){
+        button.classList.add("ng");
+      }
+    }
+  );
+
+  $("fb").className =
+    "fb on " +
+    (isCorrect ? "good" : "bad");
+
+  $("fbt").textContent =
+    isCorrect
+      ? "正解！ ✅"
+      : "不正解… 正解は「" +
+        question.c[question.a] +
+        "」";
+
+  $("ex").textContent =
+    question.e;
+
+  $("src").textContent =
+    question.b;
+
+  $("src").href =
+    question.u;
+
+  $("next").style.display =
+    "block";
+
+  $("next").textContent =
+    i === N - 1
+      ? "結果を見る"
+      : "次の問題へ";
+
+  setTimeout(() => {
+    $("fb").scrollIntoView({
+      behavior:"smooth",
+      block:"center"
+    });
+  },100);
+}
+
+function finish(){
+  const score = correct * 10;
+
+  const oldBest =
+    Number(
+      localStorage.getItem("fireQuizBest") || 0
+    );
+
+  const bestScore =
+    Math.max(score,oldBest);
+
+  localStorage.setItem(
+    "fireQuizBest",
+    bestScore
+  );
+
+  let rank;
+  let message;
+  let icon;
+
+  if(score === 100){
+    rank = "火災予防マスター";
+    message =
+      "全問正解！火災予防の知識は完璧です。";
+    icon = "👑";
+  }
+  else if(score >= 80){
+    rank = "火災予防リーダー";
+    message =
+      "すばらしい成績です。家族にも伝えましょう。";
+    icon = "🏆";
+  }
+  else if(score >= 60){
+    rank = "火災予防隊員";
+    message =
+      "合格ラインです。間違えた問題を復習しましょう。";
+    icon = "🚒";
+  }
+  else if(score >= 40){
+    rank = "見習い予防隊員";
+    message =
+      "もう一度挑戦して知識を身につけましょう。";
+    icon = "🧯";
+  }
+  else{
+    rank = "火災予防チャレンジャー";
+    message =
+      "解説を確認し、命を守る行動を覚えましょう。";
+    icon = "🔥";
+  }
+
+  $("ico").textContent = icon;
+
+  $("rn").textContent =
+    player + "さんの結果";
+
+  $("sc").textContent = score;
+
+  $("cn").textContent =
+    correct + " / " + N;
+
+  $("best").textContent =
+    bestScore + "点";
+
+  $("rk").textContent =
+    rank;
+
+  $("msg").textContent =
+    message;
+
+  $("reviews").innerHTML = "";
+
+  ans.forEach((answerData,index) => {
+    const div =
+      document.createElement("div");
+
+    div.className =
+      "card review " +
+      (answerData.ok ? "ok" : "ng");
+
+    div.innerHTML = `
+      <b>
+        ${index + 1}．${answerData.q.q}
+      </b>
+
+      <p>
+        ${answerData.ok ? "✅ 正解" : "❌ 不正解"}
+        <br>
+        正解：${answerData.q.c[answerData.q.a]}
+        <br>
+        ${answerData.q.e}
+      </p>
+
+      <a
+        href="${answerData.q.u}"
+        target="_blank"
+        rel="noopener"
+      >
+        根拠：${answerData.q.b}
+      </a>
+    `;
+
+    $("reviews").appendChild(div);
+  });
+
+  show("result");
+}
+
+$("go").onclick = start;
+
+$("next").onclick = () => {
+  i++;
+
+  if(i >= N){
+    finish();
+  }
+  else{
+    render();
+    window.scrollTo(0,0);
+  }
+};
+
+$("retry").onclick = start;
+
+$("home").onclick = () => {
+  show("start");
+};
+
+$("quit").onclick = () => {
+  const result =
+    confirm(
+      "クイズを終了して、はじめに戻りますか？"
+    );
+
+  if(result){
+    show("start");
+  }
+};
+
+$("name").onkeydown = event => {
+  if(event.key === "Enter"){
+    start();
+  }
+};
+</script>
+
 </body>
 </html>
