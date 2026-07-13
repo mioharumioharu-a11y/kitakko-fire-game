@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>8-BIT RETRO BASEBALL</title>
+    <title>8-BIT FIRE PREVENTION QUIZ</title>
     <style>
         * {
             box-sizing: border-box;
@@ -21,7 +21,6 @@
             align-items: center;
             justify-content: flex-start;
             min-height: 100vh;
-            overflow-x: hidden;
             padding-top: 10px;
         }
         #game-wrapper {
@@ -33,15 +32,15 @@
             align-items: center;
         }
         canvas {
-            background-color: #008800;
+            background-color: #000;
             display: block;
             width: 384px;
-            height: 320px;
+            height: 360px;
             image-rendering: pixelated;
             border: 4px solid #fff;
             box-shadow: 0 0 20px rgba(0,0,0,0.8);
         }
-        /* コントローラーエリア */
+        /* コントローラー（4択ボタン） */
         #controller {
             width: 384px;
             margin-top: 10px;
@@ -49,35 +48,31 @@
             border: 2px solid #555;
             padding: 10px;
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
+            grid-template-columns: 1fr;
+            gap: 8px;
         }
         .ctrl-btn {
             background: #444;
             color: #fff;
             border: 2px solid #aaa;
-            padding: 8px;
+            padding: 10px;
             font-size: 12px;
             font-weight: bold;
             cursor: pointer;
-            text-align: center;
+            text-align: left;
+            line-height: 1.4;
         }
         .ctrl-btn:active {
-            background: #aaa;
+            background: #ff0;
             color: #000;
         }
-        /* 設定・リザルト用オーバーレイ */
+        /* オーバーレイ */
         .overlay {
             position: absolute;
             top: 4px;
             left: 4px;
             width: 376px;
-            height: 312px;
+            height: 352px;
             background: rgba(0,0,0,0.95);
             display: flex;
             flex-direction: column;
@@ -87,53 +82,43 @@
             text-align: center;
             padding: 20px;
         }
-        .overlay h1 { color: #ff0; font-size: 24px; margin-bottom: 20px; letter-spacing: 2px; }
-        .overlay p { margin-bottom: 15px; font-size: 14px; }
+        .overlay h1 { color: #ff3300; font-size: 24px; margin-bottom: 20px; letter-spacing: 2px; }
+        .overlay p { margin-bottom: 15px; font-size: 14px; line-height: 1.6; }
         .overlay button {
-            background: #ff0; color: #000; border: none; padding: 10px 20px;
+            background: #ff3300; color: #fff; border: none; padding: 10px 20px;
             font-size: 16px; font-weight: bold; cursor: pointer; margin-top: 10px;
+            border: 2px solid #fff;
         }
-        .overlay button:active { background: #fff; }
+        .overlay button:active { background: #fff; color: #000; }
     </style>
 </head>
 <body>
 
     <div id="game-wrapper">
+        <!-- キャンバス -->
         <canvas id="gameCanvas"></canvas>
 
+        <!-- スタート画面 -->
         <div id="start-overlay" class="overlay">
-            <h1>RETRO BASEBALL</h1>
-            <p>イニング数を選択してください</p>
-            <div>
-                <select id="inning-select" style="font-size:16px; padding:5px;">
-                    <option value="3">3回制 (ショート)</option>
-                    <option value="5">5回制 (ハーフ)</option>
-                    <option value="9">9回制 (フル)</option>
-                </select>
-            </div>
-            <button onclick="startGame()">PLAY START</button>
+            <h1>火災予防 QUIZ</h1>
+            <p>全5問の4択クイズに挑戦！<br>目指せ、火災予防マスター！</p>
+            <button onclick="startGame()">START GAME</button>
         </div>
 
+        <!-- リザルト画面 -->
         <div id="result-overlay" class="overlay" style="display:none;">
-            <h1 id="result-title">GAME OVER</h1>
-            <p id="result-score">0 - 0</p>
-            <button onclick="location.reload()">RESET</button>
+            <h1 id="result-title">結果発表</h1>
+            <p id="result-score">0 / 5 正解</p>
+            <p id="result-comment"></p>
+            <button onclick="location.reload()">もう一度挑戦</button>
         </div>
 
+        <!-- 操作パネル（選択肢） -->
         <div id="controller">
-            <div class="btn-group" id="pitcher-controls">
-                <div style="font-size:11px; color:#aaa; text-align:center;">PITCHER (YOU)</div>
-                <button class="ctrl-btn" onclick="selectPitch('course', 'left')">内角</button>
-                <button class="ctrl-btn" onclick="selectPitch('course', 'center')">真ん中</button>
-                <button class="ctrl-btn" onclick="selectPitch('course', 'right')">外角</button>
-                <button class="ctrl-btn" onclick="selectPitch('type', 'straight')" style="margin-top:5px; background:#0055aa;">ストレート</button>
-                <button class="ctrl-btn" onclick="selectPitch('type', 'curve')" style="background:#aa5500;">カーブ</button>
-                <button class="ctrl-btn" onclick="pitchBall()" style="background:#ff0055; font-size:14px;">投球!!</button>
-            </div>
-            <div class="btn-group" id="batter-controls" style="opacity: 0.3; pointer-events: none;">
-                <div style="font-size:11px; color:#aaa; text-align:center;">BATTER (YOU)</div>
-                <button class="ctrl-btn" id="swing-btn" mousedown="swingBat()" touchstart="swingBat()" style="height: 100%; background:#00aa55; font-size:18px;">SWING<br>(SPACEキー可)</button>
-            </div>
+            <button class="ctrl-btn" id="btn-0" onclick="selectAnswer(1)">1. </button>
+            <button class="ctrl-btn" id="btn-1" onclick="selectAnswer(2)">2. </button>
+            <button class="ctrl-btn" id="btn-2" onclick="selectAnswer(3)">3. </button>
+            <button class="ctrl-btn" id="btn-3" onclick="selectAnswer(4)">4. </button>
         </div>
     </div>
 
@@ -141,38 +126,45 @@
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
 
-        // --- ファミコン風カラーパレット ---
-        const PALETTE = {
-            BG_GREEN: '#008800',
-            DIRT: '#b84400',
-            WHITE: '#ffffff',
-            BLACK: '#000000',
-            SKY: '#3cbcfc',
-            STRIKE: '#ff0000',
-            BALL: '#00ff00',
-            OUT: '#3cbcfc'
-        };
+        // --- クイズデータ ---
+        const quizData = [
+            {
+                q: "コンロで揚げ物中に急な来客！\nどうするのが一番正しい？",
+                opts: ["弱火にしてから離れる", "数十秒ならそのまま急いで戻る", "必ず完全に消火してから離れる", "鍋にフタをしてから離れる"],
+                ans: 3,
+                desc: "油は約360℃以上で火がなくても自然発火します。短時間でも必ず消火！"
+            },
+            {
+                q: "コンセントのホコリと湿気で\n突然発火する現象の名前は？",
+                opts: ["スパーク現象", "トラッキング現象", "ショート現象", "オーバーロード現象"],
+                ans: 2,
+                desc: "プラグを挿しっぱなしの場所に溜まるホコリが原因。定期的に掃除を！"
+            },
+            {
+                q: "住宅用火災警報器の交換目安は\n一般的に何年とされている？",
+                opts: ["約3年", "約5年", "約10年", "約20年"],
+                ans: 3,
+                desc: "電子部品の寿命や電池切れを防ぐため、10年での本体交換が推奨されます。"
+            },
+            {
+                q: "消火器を使うとき、レバーを\n握る前に最初に行う動作は？",
+                opts: ["本体を逆さまにする", "黄色い安全ピンを引き抜く", "ホースを力いっぱい引っ張る", "本体を強く揺らす"],
+                ans: 2,
+                desc: "「ピン・ポン・パン」の順！まずは黄色の安全ピンを抜かないと動きません。"
+            },
+            {
+                q: "自力での初期消火を諦めて\n避難すべき限界の基準はどれ？",
+                opts: ["煙が部屋に充満したとき", "炎が自分の背丈を超えたとき", "炎が天井に届いたとき", "消火器の薬剤が切れたとき"],
+                ans: 3,
+                desc: "火が天井に届くと一気に拡大します。迷わず大声で知らせて避難して！"
+            }
+        ];
 
-        // --- ゲーム状態 ---
-        let maxInnings = 3;
-        let gameState = 'START'; // START, PITCHING, BATTER_VIEW, FIELD_VIEW, GAMEOVER
-        let currentInning = 1;
-        let isTop = true; // true = 表(自分投手/CPU打者), false = 裏(自分打者/CPU投手)
-        
-        let score = { player: 0, cpu: 0 };
-        let hits = { player: 0, cpu: 0 };
-        let count = { s: 0, b: 0, o: 0 };
-        let runners = [false, false, false]; // 1塁、2塁、3塁
-
-        // 球・バット物理
-        let ball = { x: 0, y: 0, vx: 0, vy: 0, active: false, type: 'straight', course: 'center', speed: 4 };
-        let bat = { active: false, timer: 0, frame: 0 };
-        let playMsg = "";
-        let msgTimer = 0;
-
-        // 投手選択メモリ
-        let selectedCourse = 'center';
-        let selectedType = 'straight';
+        let currentIdx = 0;
+        let score = 0;
+        let gameState = 'START'; // START, QUESTION, JUDGE, END
+        let isCorrect = false;
+        let showDesc = false;
 
         // --- Web Audio API (ピコピコ効果音) ---
         const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -181,463 +173,191 @@
             const gain = audioCtx.createGain();
             osc.connect(gain);
             gain.connect(audioCtx.destination);
-
             const now = audioCtx.currentTime;
 
-            if (type === 'pitch') {
+            if (type === 'select') {
                 osc.type = 'triangle';
-                osc.frequency.setValueAtTime(440, now);
-                osc.frequency.exponentialRampToValueAtTime(880, now + 0.1);
-                gain.gain.setValueAtTime(0.3, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.1);
-                osc.start(now); osc.stop(now + 0.1);
-            } else if (type === 'hit') {
-                osc.type = 'square';
-                osc.frequency.setValueAtTime(150, now);
-                osc.frequency.exponentialRampToValueAtTime(600, now + 0.15);
-                gain.gain.setValueAtTime(0.5, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.15);
-                osc.start(now); osc.stop(now + 0.15);
-            } else if (type === 'catch') {
-                osc.type = 'noise' || 'triangle';
-                osc.frequency.setValueAtTime(200, now);
-                gain.gain.setValueAtTime(0.4, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.05);
-                osc.start(now); osc.stop(now + 0.05);
-            } else if (type === 'cheer') {
-                osc.type = 'square';
                 osc.frequency.setValueAtTime(600, now);
                 gain.gain.setValueAtTime(0.2, now);
-                gain.gain.linearRampToValueAtTime(0, now + 0.5);
-                osc.start(now); osc.stop(now + 0.5);
+                gain.gain.linearRampToValueAtTime(0, now + 0.05);
+                osc.start(now); osc.stop(now + 0.05);
+            } else if (type === 'correct') {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(523.25, now); // ド
+                osc.frequency.setValueAtTime(659.25, now + 0.1); // ミ
+                osc.frequency.setValueAtTime(783.99, now + 0.2); // ソ
+                gain.gain.setValueAtTime(0.3, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.4);
+                osc.start(now); osc.stop(now + 0.4);
+            } else if (type === 'wrong') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(200, now);
+                osc.frequency.linearRampToValueAtTime(100, now + 0.3);
+                gain.gain.setValueAtTime(0.4, now);
+                gain.gain.linearRampToValueAtTime(0, now + 0.3);
+                osc.start(now); osc.stop(now + 0.3);
             }
         }
 
-        // --- 初期設定・ゲームループ ---
         function startGame() {
-            maxInnings = parseInt(document.getElementById('inning-select').value);
             document.getElementById('start-overlay').style.display = 'none';
-            initInning();
-            gameState = 'PITCHING';
+            currentIdx = 0;
+            score = 0;
+            loadQuestion();
+            gameState = 'QUESTION';
             animate();
         }
 
-        function initInning() {
-            count.s = 0; count.b = 0;
-            // 攻守交代時にランナークリア
-            runners = [false, false, false];
-            updateControlUI();
-        }
-
-        function updateControlUI() {
-            const pCtrl = document.getElementById('pitcher-controls');
-            const bCtrl = document.getElementById('batter-controls');
-            if (isTop) { // 自分投手
-                pCtrl.style.opacity = "1"; pCtrl.style.pointerEvents = "auto";
-                bCtrl.style.opacity = "0.3"; bCtrl.style.pointerEvents = "none";
-            } else { // 自分打者
-                pCtrl.style.opacity = "0.3"; pCtrl.style.pointerEvents = "none";
-                bCtrl.style.opacity = "1"; bCtrl.style.pointerEvents = "auto";
+        function loadQuestion() {
+            showDesc = false;
+            gameState = 'QUESTION';
+            const q = quizData[currentIdx];
+            for (let i = 0; i < 4; i++) {
+                document.getElementById(`btn-${i}`).innerText = `${i+1}. ${q.opts[i]}`;
+                document.getElementById(`btn-${i}`).style.pointerEvents = "auto";
+                document.getElementById(`btn-${i}`).style.opacity = "1";
             }
         }
 
-        // --- 投手アクション（選択・投球） ---
-        function selectPitch(category, value) {
-            if (category === 'course') selectedCourse = value;
-            if (category === 'type') selectedType = value;
-            playSound('catch');
-        }
-
-        function pitchBall() {
-            if (ball.active) return;
-            setupBallAnimation(selectedCourse, selectedType);
-        }
-
-        function setupBallAnimation(course, type) {
-            gameState = 'BATTER_VIEW';
-            ball.active = true;
-            ball.x = 192; // マウンド中央
-            ball.y = 80;  // 画面奥から
-            ball.vy = 3.5;
-            ball.type = type;
-            ball.course = course;
-
-            // コースによる変化マージン
-            if (course === 'left') ball.vx = -0.6;
-            else if (course === 'right') ball.vx = 0.6;
-            else ball.vx = 0;
-
-            playSound('pitch');
-
-            // CPUが打者の場合の自動スイングロジック
-            if (isTop) {
-                const cpuDelay = 600 + Math.random() * 400; // ランダムな反応速度
-                setTimeout(() => { if (gameState === 'BATTER_VIEW') swingBat(); }, cpuDelay);
-            }
-        }
-
-        // --- 打者アクション（スイング） ---
-        function swingBat() {
-            if (bat.active || !ball.active) return;
-            bat.active = true;
-            bat.timer = 10; // スイング持続フレーム数
-
-            // タイミング判定
-            // ホームベース位置は y = 240 付近
-            const dist = Math.abs(ball.y - 240);
+        function selectAnswer(userAns) {
+            if (gameState !== 'QUESTION') return;
             
-            if (dist < 15) {
-                // ジャストミート
-                judgeHit('JUST');
-            } else if (dist >= 15 && dist < 35) {
-                // タイミングが早いか遅い
-                judgeHit(ball.y > 240 ? 'LATE' : 'EARLY');
+            const q = quizData[currentIdx];
+            isCorrect = (userAns === q.ans);
+            if (isCorrect) {
+                score++;
+                playSound('correct');
             } else {
-                // 空振り
-                count.s++;
-                showMsg("空振り!");
-                checkCount();
-            }
-        }
-
-        // キーボード対応
-        window.addEventListener('keydown', (e) => {
-            if (e.key === ' ' && !isTop) swingBat();
-        });
-        document.getElementById('swing-btn').addEventListener('mousedown', () => { if(!isTop) swingBat(); });
-
-        // --- 判定ロジック ---
-        function judgeHit(timing) {
-            ball.active = false;
-            playSound('hit');
-
-            let rand = Math.random();
-            if (timing === 'JUST') {
-                if (rand < 0.25) triggerInPlay('HOMERUN!!');
-                else if (rand < 0.7) triggerInPlay('HIT!');
-                else triggerInPlay('FLY OUT');
-            } else { // EARLY or LATE
-                if (rand < 0.3) triggerInPlay('HIT!');
-                else if (rand < 0.7) triggerInPlay('GROUND OUT');
-                else triggerInPlay('FLY OUT');
-            }
-        }
-
-        function triggerInPlay(result) {
-            gameState = 'FIELD_VIEW';
-            playMsg = result;
-            msgTimer = 90; // メッセージ表示フレーム数
-
-            setTimeout(() => {
-                resolvePlay(result);
-            }, 1500);
-        }
-
-        function resolvePlay(result) {
-            if (result === 'HOMERUN!!') {
-                let scoreEarned = 1; // バッター分
-                for (let i = 0; i < 3; i++) { if (runners[i]) { scoreEarned++; runners[i] = false; } }
-                addScore(scoreEarned);
-                addHit();
-                playSound('cheer');
-            } else if (result === 'HIT!') {
-                addHit();
-                // ランナー進塁処理（簡易的に全員2ベース進塁とする）
-                let scoreEarned = 0;
-                if (runners[2]) { scoreEarned++; runners[2] = false; }
-                if (runners[1]) { runners[2] = true; runners[1] = false; }
-                if (runners[0]) { runners[1] = true; }
-                runners[0] = true; // バッター1塁へ
-                if (scoreEarned > 0) addScore(scoreEarned);
-                playSound('cheer');
-            } else {
-                // アウト（フライ・ゴロ）
-                count.o++;
+                playSound('wrong');
             }
 
-            // カウントを戻して次へ
-            count.s = 0; count.b = 0;
-            checkOuts();
-        }
+            gameState = 'JUDGE';
+            showDesc = true;
 
-        function addScore(pts) {
-            if (isTop) score.cpu += pts;
-            else score.player += pts;
-        }
-
-        function addHit() {
-            if (isTop) hits.cpu++;
-            else hits.player++;
-        }
-
-        function showMsg(text) {
-            playMsg = text;
-            msgTimer = 60;
-        }
-
-        function checkCount() {
-            if (count.s >= 3) {
-                count.o++;
-                count.s = 0; count.b = 0;
-                showMsg("三振!");
-                setTimeout(checkOuts, 1000);
-            }
-            if (count.b >= 4) {
-                // ファアボール
-                showMsg("フォアボール");
-                // 押し出し判定含む簡易進塁
-                if (runners[0] && runners[1] && runners[2]) { addScore(1); }
-                else if (runners[0] && runners[1]) { runners[2] = true; }
-                else if (runners[0]) { runners[1] = true; }
-                runners[0] = true;
-                count.s = 0; count.b = 0;
-                setTimeout(checkOuts, 1000);
-            }
-        }
-
-        function checkOuts() {
-            if (count.o >= 3) {
-                count.o = 0; count.s = 0; count.b = 0;
-                if (!isTop) {
-                    // 裏が終わればイニング進行
-                    if (currentInning >= maxInnings) {
-                        endGame();
-                        return;
-                    }
-                    currentInning++;
-                    isTop = true;
-                } else {
-                    isTop = false;
+            // ボタンを一時無効化
+            for (let i = 0; i < 4; i++) {
+                document.getElementById(`btn-${i}`).style.pointerEvents = "none";
+                if (i !== q.ans - 1) {
+                    document.getElementById(`btn-${i}`).style.opacity = "0.4";
                 }
-                showMsg(`${currentInning}回 ${isTop ? '表':'裏'}へ`);
-                initInning();
-                gameState = 'PITCHING';
+            }
+
+            // 画面クリック/タップで次へ進むための判定用
+            setTimeout(() => {
+                canvas.addEventListener('click', nextStep, { once: true });
+            }, 500);
+        }
+
+        function nextStep() {
+            playSound('select');
+            currentIdx++;
+            if (currentIdx < quizData.length) {
+                loadQuestion();
             } else {
-                gameState = 'PITCHING';
+                endGame();
             }
         }
 
         function endGame() {
-            gameState = 'GAMEOVER';
+            gameState = 'END';
             document.getElementById('result-overlay').style.display = 'flex';
-            document.getElementById('result-score').innerText = `YOU ${score.player} - ${score.cpu} CPU`;
-            if (score.player > score.cpu) document.getElementById('result-title').innerText = "YOU WIN!!";
-            else if (score.player < score.cpu) document.getElementById('result-title').innerText = "YOU LOSE";
-            else document.getElementById('result-title').innerText = "DRAW GAME";
+            document.getElementById('result-score').innerText = `${quizData.length}問中 ${score}問 正解！`;
+            
+            let comment = "";
+            if (score === 5) comment = "素晴らしい！完璧な防災知識です！";
+            else if (score >= 3) comment = "お見事！日頃の意識の高さが伺えます。";
+            else comment = "もう一度復習して、火の用心を徹底しましょう！";
+            document.getElementById('result-comment').innerText = comment;
         }
 
-        // --- 更新 & 描画コア ---
-        function update() {
-            // ボールアニメーション
-            if (gameState === 'BATTER_VIEW' && ball.active) {
-                ball.y += ball.vy;
-                ball.x += ball.vx;
-
-                // カーブの変化
-                if (ball.type === 'curve' && ball.y > 140) {
-                    ball.x -= 0.8; // 左へ曲がる
-                }
-
-                // キャッチャー到達（通過）判定
-                if (ball.y > 260) {
-                    ball.active = false;
-                    // 見逃し判定
-                    let isStrike = Math.abs(ball.x - 192) < 30; // ストライクゾーン判定
-                    if (isStrike) {
-                        count.s++;
-                        showMsg("ストライク!");
-                    } else {
-                        count.b++;
-                        showMsg("ボール");
-                    }
-                    playSound('catch');
-                    checkCount();
-                }
-            }
-
-            // バットスイングアニメーション
-            if (bat.active) {
-                bat.timer--;
-                if (bat.timer <= 0) bat.active = false;
-            }
-
-            if (msgTimer > 0) msgTimer--;
-        }
-
+        // --- 描画処理 ---
         function draw() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            if (gameState === 'FIELD_VIEW') {
-                drawFieldView();
-            } else {
-                drawBatterView();
-            }
-
-            drawScoreboard();
-            drawHUD();
-
-            // メッセージ表示
-            if (msgTimer > 0) {
-                ctx.fillStyle = 'rgba(0,0,0,0.7)';
-                ctx.fillRect(40, 140, 304, 40);
-                ctx.fillStyle = '#fff';
-                ctx.font = '16px "Courier New"';
-                ctx.textAlign = 'center';
-                ctx.fillText(playMsg, 192, 165);
-            }
-        }
-
-        // 【視点1】投球・打撃画面
-        function drawBatterView() {
-            // 空とスタンド
-            ctx.fillStyle = PALETTE.SKY;
-            ctx.fillRect(0, 0, canvas.width, 100);
-            ctx.fillStyle = '#555';
-            ctx.fillRect(0, 85, canvas.width, 15);
-
-            // グラウンド
-            ctx.fillStyle = PALETTE.BG_GREEN;
-            ctx.fillRect(0, 100, canvas.width, 220);
-
-            // バッターボックスライン（砂）
-            ctx.fillStyle = PALETTE.DIRT;
-            ctx.beginPath();
-            ctx.moveTo(100, 320); ctx.lineTo(150, 200);
-            ctx.lineTo(234, 200); ctx.lineTo(284, 320);
-            ctx.fill();
-
-            // ホームベース
-            ctx.fillStyle = PALETTE.WHITE;
-            ctx.beginPath();
-            ctx.moveTo(192, 240); ctx.lineTo(204, 250);
-            ctx.lineTo(204, 260); ctx.lineTo(180, 260);
-            ctx.lineTo(180, 250);
-            ctx.fill();
-
-            // ピッチャー（ドット表現）
-            ctx.fillStyle = isTop ? '#00ffff' : '#ff5555'; // 自分シアン、CPU赤
-            ctx.fillRect(184, 80, 16, 24); // 体
-            ctx.fillStyle = '#f3a35f';
-            ctx.fillRect(188, 72, 8, 8);   // 顔
-
-            // バッター
-            ctx.fillStyle = isTop ? '#ff5555' : '#00ffff';
-            ctx.fillRect(140, 220, 16, 32);
-            ctx.fillStyle = '#f3a35f';
-            ctx.fillRect(144, 210, 8, 8);
-
-            // バット描画
-            if (bat.active) {
-                ctx.strokeStyle = '#ffff00';
-                ctx.lineWidth = 4;
-                ctx.beginPath();
-                ctx.moveTo(156, 230);
-                ctx.lineTo(190 - (bat.timer * 3), 235 + (bat.timer * 2));
-                ctx.stroke();
-            }
-
-            // ボール
-            if (ball.active) {
-                ctx.fillStyle = PALETTE.WHITE;
-                ctx.beginPath();
-                // 遠近感を出すためにy座標に応じてサイズを変える
-                let size = 2 + (ball.y / 80);
-                ctx.arc(ball.x, ball.y, size, 0, Math.PI * 2);
-                ctx.fill();
-            }
-        }
-
-        // 【視点2】フィールド全体（インプレイ時）
-        function drawFieldView() {
-            ctx.fillStyle = PALETTE.BG_GREEN;
+            // 背景グラデーション風（レトロダークグリーン）
+            ctx.fillStyle = '#004411';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 内野のダイヤモンド（砂色）
-            ctx.strokeStyle = PALETTE.DIRT;
-            ctx.lineWidth = 8;
-            ctx.beginPath();
-            ctx.moveTo(192, 280); // 本塁
-            ctx.lineTo(280, 192); // 1塁
-            ctx.lineTo(192, 104); // 2塁
-            ctx.lineTo(104, 192); // 3塁
-            ctx.closePath();
-            ctx.stroke();
+            // ヘッダー枠
+            ctx.fillStyle = '#000';
+            ctx.fillRect(5, 5, canvas.width - 10, 40);
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.strokeRect(5, 5, canvas.width - 10, 40);
 
-            // ベース
-            ctx.fillStyle = PALETTE.WHITE;
-            ctx.fillRect(186, 274, 12, 12); // 本塁
-            ctx.fillRect(274, 186, 12, 12); // 1塁
-            ctx.fillRect(186, 98, 12, 12);  // 2塁
-            ctx.fillRect(98, 186, 12, 12);  // 3塁
-
-            // 野手配置（固定ドット）
-            ctx.fillStyle = isTop ? '#00ffff' : '#ff5555';
-            ctx.fillRect(188, 150, 8, 8); // ピッチャー
-            ctx.fillRect(188, 50, 8, 8);  // センター
-            ctx.fillRect(110, 110, 8, 8); // サード
-
-            // ランナー表示
-            ctx.fillStyle = isTop ? '#ff5555' : '#00ffff';
-            if (runners[0]) ctx.fillRect(276, 170, 8, 8);
-            if (runners[1]) ctx.fillRect(188, 85, 8, 8);
-            if (runners[2]) ctx.fillRect(110, 170, 8, 8);
-        }
-
-        // 上部スコアボード
-        function drawScoreboard() {
-            ctx.fillStyle = PALETTE.BLACK;
-            ctx.fillRect(0, 0, canvas.width, 45);
-            ctx.strokeStyle = PALETTE.WHITE;
-            ctx.lineWidth = 1;
-            ctx.strokeRect(2, 2, canvas.width - 4, 41);
-
-            ctx.fillStyle = PALETTE.WHITE;
-            ctx.font = '12px "Courier New"';
+            ctx.fillStyle = '#ff0';
+            ctx.font = 'bold 14px "Courier New", sans-serif';
             ctx.textAlign = 'left';
+            ctx.fillText(`第 ${currentIdx + 1} 問 / 全 ${quizData.length} 問`, 15, 29);
 
-            // スコアテキスト
-            ctx.fillText(`YOU: ${score.player} H:${hits.player}`, 10, 18);
-            ctx.fillText(`CPU: ${score.cpu} H:${hits.cpu}`, 10, 34);
+            // 問題文表示エリア
+            ctx.fillStyle = '#000';
+            ctx.fillRect(5, 50, canvas.width - 10, 100);
+            ctx.strokeRect(5, 50, canvas.width - 10, 100);
 
-            // イニング
-            ctx.textAlign = 'right';
-            ctx.fillText(`${currentInning}回${isTop ? '表':'裏'}`, canvas.width - 10, 26);
+            ctx.fillStyle = '#fff';
+            ctx.font = '12px "Courier New", sans-serif';
+            const lines = quizData[currentIdx].q.split('\n');
+            for (let i = 0; i < lines.length; i++) {
+                ctx.fillText(lines[i], 15, 80 + (i * 22));
+            }
+
+            // マスコット（簡易ドット消防車・消火栓風のレトロアートオブジェクト）
+            drawMascot();
+
+            // 解説・判定エリア
+            if (showDesc) {
+                ctx.fillStyle = 'rgba(0,0,0,0.9)';
+                ctx.fillRect(5, 160, canvas.width - 10, 195);
+                ctx.strokeRect(5, 160, canvas.width - 10, 195);
+
+                // まる・ばつ判定
+                ctx.font = 'bold 24px "Courier New"';
+                ctx.textAlign = 'center';
+                if (isCorrect) {
+                    ctx.fillStyle = '#00ff00';
+                    ctx.fillText('【 正 解 】', canvas.width / 2, 195);
+                } else {
+                    ctx.fillStyle = '#ff3300';
+                    ctx.fillText('【 不正解 】', canvas.width / 2, 195);
+                }
+
+                // 解説文（自動折り返し簡易実装）
+                ctx.fillStyle = '#fff';
+                ctx.font = '11px "Courier New", sans-serif';
+                ctx.textAlign = 'left';
+                const desc = quizData[currentIdx].desc;
+                const descLines = [];
+                for (let i = 0; i < desc.length; i += 15) {
+                    descLines.push(desc.substring(i, i + 15));
+                }
+                for (let i = 0; i < descLines.length; i++) {
+                    ctx.fillText(descLines[i], 20, 230 + (i * 18));
+                }
+
+                ctx.fillStyle = '#ff0';
+                ctx.font = '10px "Courier New"';
+                ctx.textAlign = 'center';
+                ctx.fillText('▼ 画面をタッチして次の問題へ', canvas.width / 2, 340);
+            }
         }
 
-        // BSOカウント表示
-        function drawHUD() {
-            const startX = 220;
-            const startY = 12;
-
-            ctx.fillStyle = PALETTE.WHITE;
-            ctx.font = '10px "Courier New"';
-            ctx.textAlign = 'left';
-
-            ctx.fillText("S", startX, startY);
-            ctx.fillText("B", startX, startY + 12);
-            ctx.fillText("O", startX, startY + 24);
-
-            // Sランプ
-            for(let i=0; i<2; i++) {
-                ctx.fillStyle = i < count.s ? PALETTE.STRIKE : '#333';
-                ctx.fillRect(startX + 15 + (i*12), startY - 8, 8, 8);
-            }
-            // Bランプ
-            for(let i=0; i<3; i++) {
-                ctx.fillStyle = i < count.b ? PALETTE.BALL : '#333';
-                ctx.fillRect(startX + 15 + (i*12), startY + 4, 8, 8);
-            }
-            // Oランプ
-            for(let i=0; i<2; i++) {
-                ctx.fillStyle = i < count.o ? PALETTE.OUT : '#333';
-                ctx.fillRect(startX + 15 + (i*12), startY + 16, 8, 8);
-            }
+        function drawMascot() {
+            // レトロな消火栓風ドット絵オブジェクトをCanvas上に描画
+            const cx = 310;
+            const cy = 90;
+            ctx.fillStyle = '#ff3300'; // 赤
+            ctx.fillRect(cx, cy, 24, 36);
+            ctx.fillStyle = '#fff';    // 帽子・キャップ
+            ctx.fillRect(cx - 2, cy + 4, 28, 6);
+            ctx.fillRect(cx + 6, cy - 4, 12, 4);
+            ctx.fillStyle = '#ff0';    // ライト・目
+            ctx.fillRect(cx + 4, cy + 14, 4, 4);
+            ctx.fillRect(cx + 16, cy + 14, 4, 4);
         }
 
-        // メインアニメーションループ
         function animate() {
-            if (gameState === 'GAMEOVER') return;
-            update();
+            if (gameState === 'END') return;
             draw();
             requestAnimationFrame(animate);
         }
