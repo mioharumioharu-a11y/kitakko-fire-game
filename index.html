@@ -4324,6 +4324,333 @@
       }
     }
 
+    /* 小学生コース、マスコット図鑑、軽量ガチャ演出 */
+    .app.is-start .mode-btn[data-mode="elementary"] {
+      position: relative;
+      border-color: #0877b5;
+      background: linear-gradient(135deg, #0a7eb8, #075495);
+    }
+
+    .app.is-start .mode-btn {
+      height: 84px;
+      min-height: 84px;
+    }
+
+    .app.is-start .mode-btn > span {
+      min-height: 2.7em;
+    }
+
+    .app.is-start .mode-btn[data-mode="preventive"] {
+      background: linear-gradient(135deg, #149364, #087044);
+    }
+
+    .app.is-start .mode-btn[data-mode="call119"] {
+      background: linear-gradient(135deg, #ee3548, #c9142c);
+    }
+
+    .app.is-start .mode-btn[data-mode="master"] {
+      background: linear-gradient(135deg, #174c8b, #51379a);
+    }
+
+    .elementary-course .question-text {
+      font-size: clamp(20px, 5vw, 26px);
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+      word-break: normal;
+    }
+
+    .elementary-course .answer-btn {
+      width: 100%;
+      min-height: 58px;
+      height: auto;
+      padding: 14px 16px;
+      font-size: clamp(16px, 4.2vw, 20px);
+      line-height: 1.5;
+      white-space: normal;
+      overflow-wrap: anywhere;
+    }
+
+    .feedback-basis {
+      margin-top: 8px !important;
+      padding-top: 8px;
+      border-top: 1px solid #cfdeeb;
+      color: #3f5268 !important;
+      font-size: clamp(13px, 3.4vw, 15px) !important;
+      line-height: 1.65 !important;
+    }
+
+    .feedback-basis[hidden] {
+      display: none !important;
+    }
+
+    .app.is-quiz .mascot-side {
+      display: none !important;
+    }
+
+    .app.is-quiz .shell {
+      grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    .mascot-collection-summary {
+      grid-template-columns: repeat(6, minmax(0, auto));
+      align-items: center;
+    }
+
+    .collection-tabs {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin: 12px 0;
+    }
+
+    .collection-tabs button {
+      min-height: 48px;
+      border: 1px solid #7ba4cd;
+      border-radius: 8px;
+      color: #eaf5ff;
+      background: #123967;
+      font-weight: 900;
+    }
+
+    .collection-tabs button.active {
+      border-color: #ffe277;
+      color: #08264c;
+      background: #ffe277;
+      box-shadow: 0 0 0 2px rgba(255, 226, 119, 0.22);
+    }
+
+    .collection-card.rank {
+      border-color: rgba(255, 215, 92, 0.75);
+      background: linear-gradient(180deg, rgba(31, 77, 126, 0.9), rgba(5, 26, 55, 0.98));
+    }
+
+    .collection-card.gacha[data-rarity="rare"] .hero-card-image,
+    .hero-card-result.rarity-rare .hero-card-image {
+      background: #fff;
+    }
+
+    .collection-card.rank .hero-card-image {
+      background: radial-gradient(circle at 50% 42%, rgba(62, 131, 197, .48), rgba(4, 24, 52, .12) 62%, transparent 76%);
+    }
+
+    .collection-card .hero-card-image img,
+    .gacha-silhouette .hero-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    .gacha-cinematic {
+      position: relative;
+      display: grid;
+      min-height: min(610px, 72vh);
+      place-items: center;
+      overflow: hidden;
+      padding: 56px 16px 72px;
+      border: 2px solid #d6ad3b;
+      border-radius: 10px;
+      isolation: isolate;
+      color: #fff;
+      background: radial-gradient(circle at 50% 42%, #174f91 0, #071a3a 52%, #020a18 100%);
+    }
+
+    .gacha-skip {
+      position: absolute;
+      z-index: 12;
+      top: 10px;
+      right: 10px;
+      min-height: 42px;
+      padding: 8px 14px;
+      border: 1px solid rgba(255,255,255,.7);
+      border-radius: 7px;
+      color: #fff;
+      background: rgba(2, 14, 34, .82);
+      font-weight: 900;
+    }
+
+    .gacha-cinematic-machine {
+      width: min(300px, 78vw);
+      transform: translate3d(0, 0, 0);
+      transition: opacity .25s ease, transform .25s ease;
+    }
+
+    .gacha-light-orbit {
+      position: absolute;
+      z-index: -1;
+      width: min(390px, 92vw);
+      aspect-ratio: 1;
+      border: 3px solid rgba(255, 223, 107, .55);
+      border-radius: 50%;
+      opacity: .45;
+      animation: gachaOrbit 1.1s linear infinite;
+    }
+
+    .gacha-rugby-ball {
+      position: absolute;
+      z-index: 5;
+      display: none;
+      width: 132px;
+      aspect-ratio: 1.72;
+      overflow: hidden;
+      border: 5px solid #f4d276;
+      border-radius: 50% / 58%;
+      background:
+        linear-gradient(90deg, transparent 0 12%, rgba(255,255,255,.95) 12% 16%, transparent 16% 84%, rgba(255,255,255,.95) 84% 88%, transparent 88%),
+        linear-gradient(180deg, #b54a1f, #6e230d 52%, #9f3919);
+      box-shadow: 0 0 30px rgba(255, 220, 84, .9), inset 0 0 16px rgba(255,255,255,.3);
+      will-change: transform, opacity;
+      transform: translate3d(0, -230px, 0);
+    }
+
+    .gacha-rugby-ball::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: 48px;
+      height: 5px;
+      border-radius: 5px;
+      background: #fff;
+      box-shadow: -15px -9px 0 -1px #fff, 0 -9px 0 -1px #fff, 15px -9px 0 -1px #fff,
+                  -15px 9px 0 -1px #fff, 0 9px 0 -1px #fff, 15px 9px 0 -1px #fff;
+      transform: translate(-50%, -50%) rotate(-8deg);
+    }
+
+    .gacha-rugby-ball i {
+      position: absolute;
+      z-index: 1;
+      inset: 50% auto auto 50%;
+      width: 5px;
+      height: 39px;
+      border-radius: 5px;
+      background: #fff;
+      transform: translate(-50%, -50%) rotate(-8deg);
+    }
+
+    .gacha-silhouette {
+      position: absolute;
+      z-index: 6;
+      display: none;
+      width: min(250px, 65vw);
+      aspect-ratio: 3 / 4;
+      border-radius: 8px;
+      filter: drop-shadow(0 0 22px #f8dd65);
+      animation: silhouetteSway .42s ease-in-out infinite alternate;
+    }
+
+    .gacha-silhouette .hero-card-image {
+      height: 100%;
+    }
+
+    .gacha-silhouette img {
+      filter: brightness(0) !important;
+    }
+
+    .gacha-cinematic-message {
+      position: absolute;
+      z-index: 10;
+      bottom: 18px;
+      inset-inline: 12px;
+      color: #fff;
+      font-size: clamp(22px, 6vw, 32px);
+      font-weight: 1000;
+      line-height: 1.35;
+      text-align: center;
+      text-shadow: 0 3px 0 #07244d, 0 0 14px #227dcc;
+    }
+
+    .gacha-cinematic[data-gacha-stage="rugby"] .gacha-cinematic-machine,
+    .gacha-cinematic[data-gacha-stage="silhouette"] .gacha-cinematic-machine,
+    .gacha-cinematic[data-gacha-stage="reveal"] .gacha-cinematic-machine {
+      opacity: .18;
+      transform: scale(.88);
+    }
+
+    .gacha-cinematic[data-gacha-stage="rugby"] .gacha-rugby-ball {
+      display: block;
+      animation: rugbyBallDrop 1.05s cubic-bezier(.2,.75,.32,1) both;
+    }
+
+    .gacha-cinematic[data-gacha-stage="silhouette"] .gacha-silhouette {
+      display: block;
+    }
+
+    .gacha-cinematic[data-gacha-stage="reveal"]::after {
+      content: "";
+      position: absolute;
+      z-index: 9;
+      inset: 0;
+      background: #fff8bd;
+      animation: singleFlash .28s ease-out both;
+    }
+
+    .gacha-get-label {
+      color: #ffe27a;
+      font-size: clamp(24px, 7vw, 36px);
+      font-weight: 1000;
+      line-height: 1.25;
+      text-align: center;
+      text-shadow: 0 3px 0 #8b1422, 0 0 18px #ffd54d;
+    }
+
+    .hero-card-result.rarity-super_rare {
+      border-color: #ffd758;
+      box-shadow: inset 0 0 40px rgba(255, 206, 55, .16), 0 0 28px rgba(255, 206, 55, .22);
+    }
+
+    @keyframes gachaOrbit {
+      to { transform: rotate(360deg); }
+    }
+
+    @keyframes rugbyBallDrop {
+      0% { opacity: 0; transform: translate3d(0, -230px, 0) rotate(-210deg) scale(.55); }
+      62% { opacity: 1; transform: translate3d(0, 46px, 0) rotate(24deg) scale(1.08); }
+      78% { transform: translate3d(0, 8px, 0) rotate(-12deg) scale(.98); }
+      90% { transform: translate3d(0, 34px, 0) rotate(8deg) scale(1.03); }
+      100% { opacity: 1; transform: translate3d(0, 28px, 0) rotate(0) scale(1); }
+    }
+
+    @keyframes silhouetteSway {
+      from { transform: rotate(-2deg) scale(.98); }
+      to { transform: rotate(2deg) scale(1.02); }
+    }
+
+    @keyframes singleFlash {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+
+    @media (max-width: 430px) {
+      .mascot-collection-summary {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .gacha-cinematic {
+        min-height: min(570px, 70vh);
+        padding-inline: 10px;
+      }
+
+      .feedback,
+      .feedback p,
+      .collection-card,
+      .collection-card h3,
+      .collection-card p {
+        overflow-wrap: anywhere;
+        word-break: normal;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .gacha-cinematic *,
+      .gacha-rugby-ball,
+      .gacha-silhouette,
+      .gacha-light-orbit {
+        animation-duration: .2s !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
+
     @media print {
       @page {
         size: A4 portrait;
@@ -4433,6 +4760,10 @@
           </div>
           <h3 class="mode-heading">任務を選ぼう！</h3>
           <div class="mode-grid">
+            <button class="mode-btn elementary-mode" type="button" data-mode="elementary" data-count="15">
+              <strong>小学生向けコース</strong>
+              <span>30問の中からランダムで15問！ やさしいことばで予防救急を学ぼう！</span>
+            </button>
             <button class="mode-btn" type="button" data-mode="preventive" data-count="30">
               <strong>予防救急 30問</strong>
               <span>熱中症、入浴、窒息、転倒をしっかり確認</span>
@@ -4515,6 +4846,7 @@
             <div class="feedback">
               <h3 id="feedbackTitle"></h3>
               <p id="feedbackText"></p>
+              <p class="feedback-basis" id="feedbackBasis"></p>
             </div>
           </div>
           <div class="quiz-bottom-actions">
@@ -5887,6 +6219,9 @@ window.QUIZ_QUESTIONS = [
       const GACHA_DRAW_COUNT_STORAGE_KEY = "higashiosaka_preventive_emergency_gacha_draw_count";
       const GACHA_POINTS_STORAGE_KEY = "higashiosaka_preventive_emergency_gacha_points";
       const GACHA_HISTORY_STORAGE_KEY = "higashiosaka_preventive_emergency_gacha_history";
+      const ELEMENTARY_BEST_SCORE_KEY = "elementaryBestScore";
+      const RANK_MASCOT_STORAGE_KEY = "unlockedRankMascots";
+      const SELECTED_MASCOT_STORAGE_KEY = "selectedMascotId";
       const LEGEND_RANK_LABEL = "予防救急レジェンド";
       const FIREBASE_REMOTE_COUNT_PATH = "higashiosakaPreventiveEmergency/participantCount";
       const FIREBASE_GACHA_USERS_PATH = "higashiosakaPreventiveEmergency/gachaUsers";
@@ -5900,11 +6235,435 @@ window.QUIZ_QUESTIONS = [
         appId: ""
       };
       const questions = Array.isArray(window.QUIZ_QUESTIONS) ? window.QUIZ_QUESTIONS : [];
+
+      const elementaryQuestions = [
+        {
+          id: "elementary-01",
+          question: "あつい日に外であそぶ前に、したほうがよいことは？",
+          choices: [
+            "水分をとっておく",
+            "あつい服を着る",
+            "朝ごはんをぬく",
+            "水分をとらない"
+          ],
+          answer: 0,
+          explanation: "あつい場所へ行く前から水分をとっておくと、体の水分が足りなくなるのをふせげます。",
+          basis: "環境省「熱中症環境保健マニュアル」：のどがかわく前から、こまめに水分をとることが大切です。"
+        },
+      
+        {
+          id: "elementary-02",
+          question: "あつい日に、外であそぶときにかぶるとよいものは？",
+          choices: [
+            "ヘルメットだけ",
+            "ぼうし",
+            "毛糸のぼうし",
+            "フードを深くかぶる"
+          ],
+          answer: 1,
+          explanation: "ぼうしをかぶると、強い日ざしが頭にあたるのをへらすことができます。",
+          basis: "環境省「熱中症予防情報サイト」：外出するときは、日がさやぼうしを使い、暑さをさけることがすすめられています。"
+        },
+      
+        {
+          id: "elementary-03",
+          question: "外であそんでいて、頭がいたくなったらどうする？",
+          choices: [
+            "がまんしてあそぶ",
+            "もっと走る",
+            "すずしい場所で休み、大人に知らせる",
+            "水分をとらずにねる"
+          ],
+          answer: 2,
+          explanation: "頭のいたみや気分のわるさは、熱中症のはじまりかもしれません。すぐに大人へ知らせましょう。",
+          basis: "環境省「熱中症予防情報サイト」：体調がわるいときは、すずしい場所へうつり、体を冷やすことが大切です。"
+        },
+      
+        {
+          id: "elementary-04",
+          question: "あつい日に休けいするなら、どこがよい？",
+          choices: [
+            "日なた",
+            "しめ切った車の中",
+            "日かげや冷ぼうのある場所",
+            "アスファルトの上"
+          ],
+          answer: 2,
+          explanation: "日かげや冷ぼうのある場所では、体にたまった熱をにがしやすくなります。",
+          basis: "環境省「熱中症を防ぐためには」：屋外では日かげをえらび、室内ではエアコンなどを使うことがすすめられています。"
+        },
+      
+        {
+          id: "elementary-05",
+          question: "あつい日の運動で大切なことは？",
+          choices: [
+            "休まずにつづける",
+            "水分と休けいをこまめにとる",
+            "気分がわるくても言わない",
+            "あつい服を何まいも着る"
+          ],
+          answer: 1,
+          explanation: "運動をすると、あせで体の水分がへります。水分と休けいをこまめにとりましょう。",
+          basis: "環境省「熱中症環境保健マニュアル」：運動中は、暑さに合わせて休けいし、水分をとることが必要です。"
+        },
+      
+        {
+          id: "elementary-06",
+          question: "あつい日に、子どもだけを車の中にのこしてもよい？",
+          choices: [
+            "日かげならよい",
+            "まどを少し開ければよい",
+            "ねていればよい",
+            "短い時間でものこさない"
+          ],
+          answer: 3,
+          explanation: "車の中は、短い時間でもとてもあつくなります。子どもだけをのこしてはいけません。",
+          basis: "消費者庁「子どもの事故防止」：車の中の温度は急に上がるため、子どもを車内にのこさないことが大切です。"
+        },
+      
+        {
+          id: "elementary-07",
+          question: "おもちを安全に食べるには、どうすればよい？",
+          choices: [
+            "大きいままのみこむ",
+            "小さくして、よくかんで食べる",
+            "走りながら食べる",
+            "口いっぱいに入れる"
+          ],
+          answer: 1,
+          explanation: "おもちは、のどにつまりやすい食べものです。小さくして、ゆっくりよくかみましょう。",
+          basis: "消費者庁「食品による窒息事故に注意」：食べものは小さく切り、よくかんで食べることが大切です。"
+        },
+      
+        {
+          id: "elementary-08",
+          question: "小さい子がブドウやミニトマトを食べるときは？",
+          choices: [
+            "丸ごと食べる",
+            "口いっぱいに入れる",
+            "4つなどに切って食べる",
+            "走りながら食べる"
+          ],
+          answer: 2,
+          explanation: "丸くてつるつるした食べものは、のどをふさぐことがあります。小さく切りましょう。",
+          basis: "消費者庁「子どもの窒息事故に注意」：ブドウなどの丸い食べものは、4つに切るなど小さくすることがすすめられています。"
+        },
+      
+        {
+          id: "elementary-09",
+          question: "あめ玉を口に入れているときに、してはいけないことは？",
+          choices: [
+            "すわって食べる",
+            "大人の近くで食べる",
+            "ゆっくりなめる",
+            "走ったり、ふざけたりする"
+          ],
+          answer: 3,
+          explanation: "口にあめ玉を入れたまま走ると、息といっしょにすいこんで、のどにつまることがあります。",
+          basis: "消費者庁「子どもの事故防止」：あめなどの丸い食べものは、窒息の原因になるため注意が必要です。"
+        },
+      
+        {
+          id: "elementary-10",
+          question: "食べものが口に入っているときは、どうする？",
+          choices: [
+            "走り回る",
+            "わらわせ合う",
+            "すわって、よくかんで食べる",
+            "大声で話す"
+          ],
+          answer: 2,
+          explanation: "食べながら走ったり話したりすると、食べものをのどにつまらせることがあります。",
+          basis: "消費者庁「子どもの事故防止」：食べるときは姿勢をよくし、食べることに集中することが大切です。"
+        },
+      
+        {
+          id: "elementary-11",
+          question: "小さい子の近くに置いてはいけないものは？",
+          choices: [
+            "絵本",
+            "大きなクッション",
+            "小さなおもちゃや部品",
+            "大きなタオル"
+          ],
+          answer: 2,
+          explanation: "小さなおもちゃや部品は、口に入れて、のどにつまらせることがあります。",
+          basis: "消費者庁「子どもの事故防止」：小さな物は、子どもの手がとどかない場所にしまうことが大切です。"
+        },
+      
+        {
+          id: "elementary-12",
+          question: "ボタン電池は、どこにしまう？",
+          choices: [
+            "ゆかの上",
+            "おかしの箱の中",
+            "子どもの手がとどかない場所",
+            "おもちゃ箱の中"
+          ],
+          answer: 2,
+          explanation: "ボタン電池をのみこむと、体の中をきずつけ、重い事故になることがあります。",
+          basis: "消費者庁「ボタン電池の誤飲事故に注意」：ボタン電池は、子どもの手がとどかない場所に保管します。"
+        },
+      
+        {
+          id: "elementary-13",
+          question: "強いじしゃくをのみこむと、どうなることがある？",
+          choices: [
+            "おなかの中をきずつけることがある",
+            "すぐにせきが止まる",
+            "体が強くなる",
+            "声が大きくなる"
+          ],
+          answer: 0,
+          explanation: "じしゃくをいくつものみこむと、おなかの中でくっつき、ちょうをきずつけることがあります。",
+          basis: "消費者庁「マグネットセットの誤飲事故に注意」：複数のじしゃくの誤飲は、ちょうに穴があくなどの事故につながります。"
+        },
+      
+        {
+          id: "elementary-14",
+          question: "くすりを安全にしまう場所は？",
+          choices: [
+            "テーブルの上",
+            "子どもの手がとどかず、見えない場所",
+            "おかしの箱の中",
+            "ゆかの上"
+          ],
+          answer: 1,
+          explanation: "くすりをまちがえてのむと、体に大きな害が出ることがあります。",
+          basis: "消費者庁「子どもの医薬品誤飲事故に注意」：くすりは、子どもの手がとどかず、見えない場所にしまいます。"
+        },
+      
+        {
+          id: "elementary-15",
+          question: "せんざいを、飲みもののペットボトルに入れてもよい？",
+          choices: [
+            "少しならよい",
+            "まちがえて飲むので入れない",
+            "色がついていればよい",
+            "冷ぞうこに入れればよい"
+          ],
+          answer: 1,
+          explanation: "飲みものとまちがえて、せんざいを飲んでしまうおそれがあります。",
+          basis: "消費者庁「家庭用品の誤飲事故防止」：せんざいなどを飲みものの入れものへうつさないことが大切です。"
+        },
+      
+        {
+          id: "elementary-16",
+          question: "川や海であそぶときに、着けるとよいものは？",
+          choices: [
+            "長ぐつ",
+            "大きな上着",
+            "体の大きさに合ったライフジャケット",
+            "うきわだけ"
+          ],
+          answer: 2,
+          explanation: "ライフジャケットは、水に落ちたときに体をうかせ、命を守るためのものです。",
+          basis: "国土交通省・海上保安庁の水の事故防止資料：水辺では、体に合ったライフジャケットを正しく着けることが大切です。"
+        },
+      
+        {
+          id: "elementary-17",
+          question: "川や海へ、子どもだけであそびに行ってもよい？",
+          choices: [
+            "泳げればよい",
+            "友だちがいればよい",
+            "昼ならよい",
+            "大人といっしょに行く"
+          ],
+          answer: 3,
+          explanation: "水の流れや深さは、急にかわることがあります。子どもだけでは行かず、大人といっしょに行きましょう。",
+          basis: "国土交通省・海上保安庁の水難事故防止資料：子どもが水辺であそぶときは、大人の見守りが必要です。"
+        },
+      
+        {
+          id: "elementary-18",
+          question: "友だちが川で流されているのを見つけたら？",
+          choices: [
+            "自分もすぐ水に入る",
+            "一人で泳いで助ける",
+            "大人に知らせ、119番をたのむ",
+            "そのまま帰る"
+          ],
+          answer: 2,
+          explanation: "助けようとして水に入ると、自分も流されることがあります。大人をよび、119番をたのみましょう。",
+          basis: "国土交通省・海上保安庁の水難事故防止資料：水に入って助けようとせず、助けをよび、うく物などを使います。"
+        },
+      
+        {
+          id: "elementary-19",
+          question: "雨がたくさんふったあとの川は、どうする？",
+          choices: [
+            "水がふえているので近づかない",
+            "いつもより安全",
+            "一人で見に行く",
+            "橋の下であそぶ"
+          ],
+          answer: 0,
+          explanation: "雨のあとの川は、水が急にふえたり、流れが強くなったりします。近づかないようにしましょう。",
+          basis: "国土交通省「河川水難事故防止」：雨のあとや水がふえている川には、近づかないことが大切です。"
+        },
+      
+        {
+          id: "elementary-20",
+          question: "熱いお茶やスープは、どこに置くと安全？",
+          choices: [
+            "テーブルのはし",
+            "ゆかの上",
+            "子どもの手がとどかない場所",
+            "子どものすぐ前"
+          ],
+          answer: 2,
+          explanation: "熱い飲みものをこぼすと、ひどいやけどになることがあります。",
+          basis: "消費者庁「子どものやけど事故防止」：熱い飲食物は、子どもの手がとどかない場所に置きます。"
+        },
+      
+        {
+          id: "elementary-21",
+          question: "ストーブの近くで、してはいけないことは？",
+          choices: [
+            "安全さくからはなれる",
+            "大人といっしょに使う",
+            "近くで走ったり、あそんだりする",
+            "あたたかさをたしかめる"
+          ],
+          answer: 2,
+          explanation: "ストーブにさわったり、ぶつかったりすると、やけどや火事になることがあります。",
+          basis: "消費者庁「暖房器具による子どもの事故防止」：暖房器具には近づけないようにし、安全さくなどを使います。"
+        },
+      
+        {
+          id: "elementary-22",
+          question: "アイロンを使ったあとは、どうする？",
+          choices: [
+            "ゆかに置く",
+            "子どもの手がとどかない場所で冷ます",
+            "コードをたらしたままにする",
+            "すぐにおもちゃ箱へ入れる"
+          ],
+          answer: 1,
+          explanation: "使いおわったあとも、アイロンはしばらく熱いままです。安全な場所で冷ましましょう。",
+          basis: "消費者庁「子どものやけど事故防止」：高い温度になる物は、使用中も使用後も子どもからはなします。"
+        },
+      
+        {
+          id: "elementary-23",
+          question: "家の中で転ばないために、通り道はどうする？",
+          choices: [
+            "おもちゃをたくさん置く",
+            "物をかたづけ、通りやすくする",
+            "電気のコードをのばす",
+            "暗くしておく"
+          ],
+          answer: 1,
+          explanation: "通り道に物やコードがあると、足をひっかけて転ぶことがあります。",
+          basis: "消費者庁「転倒事故防止」：通り道の物やコードをかたづけ、転びにくい環境をつくることが大切です。"
+        },
+      
+        {
+          id: "elementary-24",
+          question: "階だんを安全に上り下りするには？",
+          choices: [
+            "走って下りる",
+            "一だんずつとばす",
+            "手すりを使い、ゆっくり進む",
+            "友だちをおす"
+          ],
+          answer: 2,
+          explanation: "手すりを使ってゆっくり進むと、転んだり落ちたりする事故をへらせます。",
+          basis: "消費者庁「転倒・転落事故防止」：階だんでは手すりを使い、ゆっくり移動することが大切です。"
+        },
+      
+        {
+          id: "elementary-25",
+          question: "ベランダやまどの近くに、置いてはいけないものは？",
+          choices: [
+            "子どもがよじのぼれるイスや箱",
+            "小さなタオル",
+            "時計",
+            "カーテン"
+          ],
+          answer: 0,
+          explanation: "イスや箱にのぼると、ベランダやまどから落ちることがあります。",
+          basis: "消費者庁「子どもの転落事故に注意」：まどやベランダの近くに、足場になる物を置かないことが大切です。"
+        },
+      
+        {
+          id: "elementary-26",
+          question: "おふろで、子どもだけにしてもよい？",
+          choices: [
+            "少しの時間ならよい",
+            "うきわがあればよい",
+            "水が少なければよい",
+            "短い時間でも子どもだけにしない"
+          ],
+          answer: 3,
+          explanation: "おふろでは、少ない水でもおぼれることがあります。大人がそばで見守りましょう。",
+          basis: "消費者庁「子どもの水の事故防止」：浴室では、子どもから目をはなさないことが大切です。"
+        },
+      
+        {
+          id: "elementary-27",
+          question: "冬、お年よりがおふろに入る前にするとよいことは？",
+          choices: [
+            "浴室やだつい所をあたためる",
+            "とても熱いお湯にする",
+            "水分をとらない",
+            "家族に何も言わない"
+          ],
+          answer: 0,
+          explanation: "あたたかい部屋と寒い浴室の温度のちがいを小さくすると、体への負たんをへらせます。",
+          basis: "消費者庁「高齢者の入浴中の事故に注意」：入浴前に、だつい所や浴室をあたためることがすすめられています。"
+        },
+      
+        {
+          id: "elementary-28",
+          question: "お年よりがおふろに入る前に、家族へ伝えるとよいことは？",
+          choices: [
+            "好きな食べもの",
+            "テレビの番組",
+            "おふろに入ること",
+            "明日の天気"
+          ],
+          answer: 2,
+          explanation: "家族に声をかけておくと、長い時間出てこないときに、早く気づいてもらえます。",
+          basis: "消費者庁「高齢者の入浴中の事故に注意」：入浴前に家族へ声をかけ、家族もようすをたしかめます。"
+        },
+      
+        {
+          id: "elementary-29",
+          question: "自転車に乗るとき、頭を守るためにかぶるものは？",
+          choices: [
+            "タオル",
+            "フード",
+            "ヘルメット",
+            "ニットぼう"
+          ],
+          answer: 2,
+          explanation: "転んだり、車とぶつかったりしたとき、ヘルメットが頭へのしょうげきをへらします。",
+          basis: "警察庁「自転車の安全利用」：自転車に乗る人は、乗車用ヘルメットをかぶるよう努めます。"
+        },
+      
+        {
+          id: "elementary-30",
+          question: "予防救急とは、どのようなこと？",
+          choices: [
+            "救急車をたくさんよぶこと",
+            "病院の名前をおぼえること",
+            "事故や病気をふせぐこと",
+            "消防車を早く走らせること"
+          ],
+          answer: 2,
+          explanation: "毎日の生活の中で、あぶないことに気づき、事故や病気をふせぐことが予防救急です。",
+          basis: "消防庁の予防救急に関する資料：転倒、熱中症、誤飲などは、生活の中で気をつけることで防げる場合があります。"
+        }
+      ];
       const MODES = {
+        elementary: { count: 15, label: "小学生向けコース", certificateLabel: "小学生向けコース15問", section: "elementary", mission: "やさしいことばで予防救急を学ぼう" },
         preventive: { count: 30, label: "予防救急 30問", certificateLabel: "予防救急30問", section: "予防救急", mission: "病気やけがを防げ" },
         call119: { count: 15, label: "119番通報 15問", certificateLabel: "119番通報15問", section: "119番通報", mission: "正しい119番通報を成功させろ" },
         master: { count: 50, label: "マスター編 50問", certificateLabel: "マスター編50問", section: "all", mission: "予防救急マスター試験" }
       };
+      const LEGEND_REQUIRED_MODES = Object.freeze(["preventive", "call119", "master"]);
       const el = {
         app: document.getElementById("appRoot"),
         participantCount: document.getElementById("participantCount"),
@@ -5964,6 +6723,7 @@ window.QUIZ_QUESTIONS = [
         illustration: document.getElementById("illustration"),
         feedbackTitle: document.getElementById("feedbackTitle"),
         feedbackText: document.getElementById("feedbackText"),
+        feedbackBasis: document.getElementById("feedbackBasis"),
         nextButton: document.getElementById("nextButton"),
         quizHome: document.getElementById("quizHome"),
         finishTitle: document.getElementById("finishTitle"),
@@ -5997,6 +6757,9 @@ window.QUIZ_QUESTIONS = [
       let currentChallengeNumber = 0;
       let answered = false;
       let gachaDrawing = false;
+      let collectionFilter = "all";
+      let activeGachaRun = null;
+      let gachaRunToken = 0;
       let gachaRemoteSyncTimer = 0;
       let gachaRemoteLoaded = false;
       const remoteCounter = {
@@ -6032,6 +6795,15 @@ window.QUIZ_QUESTIONS = [
         master: "assets/master.png",
         legend: "assets/legend.jpg"
       });
+      const rankCollectionImageSources = Object.freeze({
+        trainee: "assets/rank-cutouts/trainee.png",
+        rescue: "assets/rank-cutouts/rescue.png",
+        advanced: "assets/rank-cutouts/advanced.png",
+        paramedic: "assets/rank-cutouts/paramedic.png",
+        instructor: "assets/rank-cutouts/instructor.png",
+        master: "assets/rank-cutouts/master.png",
+        legend: rankImageSources.legend
+      });
 
       const GACHA_RARITIES = Object.freeze([
         { id: "rare", label: "レア", weight: 1, point: 0 },
@@ -6045,8 +6817,8 @@ window.QUIZ_QUESTIONS = [
           rarity: "rare",
           stars: 2,
           maxStars: 2,
-          cardImage: "images/gacha/hero/card01-emergency-member.jpg",
-          costumeImage: "images/gacha/hero/card01-emergency-member.jpg",
+          cardImage: "images/gacha/hero/card01-emergency-member-white.jpg",
+          costumeImage: "images/gacha/hero/card01-emergency-member-white.jpg",
           fallbackAsset: rankImageSources.rescue,
           description: "AEDを携行する救急隊員のカードです。"
         },
@@ -6067,8 +6839,8 @@ window.QUIZ_QUESTIONS = [
           rarity: "rare",
           stars: 2,
           maxStars: 2,
-          cardImage: "images/gacha/hero/card03-rescue-member.jpg",
-          costumeImage: "images/gacha/hero/card03-rescue-member.jpg",
+          cardImage: "images/gacha/hero/card03-rescue-member-white.jpg",
+          costumeImage: "images/gacha/hero/card03-rescue-member-white.jpg",
           fallbackAsset: rankImageSources.advanced,
           description: "救助装備を身につけた救助隊員のカードです。"
         },
@@ -6089,8 +6861,8 @@ window.QUIZ_QUESTIONS = [
           rarity: "rare",
           stars: 2,
           maxStars: 2,
-          cardImage: "images/gacha/hero/card05-fire-member.jpg",
-          costumeImage: "images/gacha/hero/card05-fire-member.jpg",
+          cardImage: "images/gacha/hero/card05-fire-member-white.jpg",
+          costumeImage: "images/gacha/hero/card05-fire-member-white.jpg",
           fallbackAsset: rankImageSources.advanced,
           description: "放水装備を携行する消防隊員のカードです。"
         },
@@ -6148,6 +6920,17 @@ window.QUIZ_QUESTIONS = [
         { min: 50, max: 50, label: "予防救急マスター", level: 5, asset: rankImageSources.master },
         { min: 51, max: Infinity, label: LEGEND_RANK_LABEL, level: 6, asset: rankImageSources.legend }
       ];
+      const RANK_MASCOTS = Object.freeze(ranks.map((rank) => ({
+        id: `rank-${rank.level}`,
+        name: rank.label,
+        image: rank.asset,
+        collectionImage: rank.level === 6
+          ? rankCollectionImageSources.legend
+          : rankCollectionImageSources[Object.keys(rankImageSources).find((key) => rankImageSources[key] === rank.asset)],
+        fallbackAsset: rank.asset,
+        requiredRank: rank.level,
+        source: "rank"
+      })));
 
       function readStoredCount(key) {
         try {
@@ -6281,6 +7064,65 @@ window.QUIZ_QUESTIONS = [
         saveCardCounts(counts);
       }
 
+      function unlockedRankMascotIds() {
+        const stored = readStoredJson(RANK_MASCOT_STORAGE_KEY, []);
+        return Array.isArray(stored)
+          ? Array.from(new Set(stored)).filter((id) => RANK_MASCOTS.some((mascot) => mascot.id === id))
+          : [];
+      }
+
+      function unlockRankMascots(currentRank) {
+        const rank = currentRank || rankForSavedProgress();
+        const unlocked = unlockedRankMascotIds();
+        RANK_MASCOTS.forEach((mascot) => {
+          if (rank.level >= mascot.requiredRank && !unlocked.includes(mascot.id)) {
+            unlocked.push(mascot.id);
+          }
+        });
+        writeStoredJson(RANK_MASCOT_STORAGE_KEY, unlocked);
+        queueGachaRemoteSync();
+        return unlocked;
+      }
+
+      function findMascotById(mascotId) {
+        const normalizedId = LEGACY_GACHA_CARD_IDS[mascotId] || mascotId;
+        const card = GACHA_CARDS.find((item) => item.id === normalizedId);
+        if (card) {
+          return {
+            ...card,
+            image: card.costumeImage || card.cardImage,
+            source: "gacha"
+          };
+        }
+        return RANK_MASCOTS.find((item) => item.id === normalizedId) || null;
+      }
+
+      function isMascotUnlocked(mascotId) {
+        const mascot = findMascotById(mascotId);
+        if (!mascot) return false;
+        return mascot.source === "gacha"
+          ? ownedCardIds().includes(mascot.id)
+          : unlockedRankMascotIds().includes(mascot.id);
+      }
+
+      function selectedMascotId() {
+        const selected = readStoredText(SELECTED_MASCOT_STORAGE_KEY, "");
+        if (selected && isMascotUnlocked(selected)) return selected;
+        const legacyCostume = currentCostumeId();
+        if (legacyCostume) {
+          writeStoredText(SELECTED_MASCOT_STORAGE_KEY, legacyCostume);
+          return legacyCostume;
+        }
+        return "";
+      }
+
+      function selectedMascot() {
+        const selected = findMascotById(selectedMascotId());
+        if (selected) return selected;
+        const currentRank = rankForSavedProgress();
+        return RANK_MASCOTS.find((mascot) => mascot.requiredRank === currentRank.level) || RANK_MASCOTS[0];
+      }
+
       function currentCostumeId() {
         const currentCostume = readStoredText(CURRENT_COSTUME_STORAGE_KEY, "");
         const legacyEquipped = readStoredText(GACHA_EQUIPPED_CARD_STORAGE_KEY, "");
@@ -6297,7 +7139,7 @@ window.QUIZ_QUESTIONS = [
       }
 
       function activeCostumeLabel() {
-        return currentCostumeId() ? equippedCard().name : "ランク画像";
+        return selectedMascot().name;
       }
 
       function starText(card) {
@@ -6323,14 +7165,10 @@ window.QUIZ_QUESTIONS = [
       }
 
       function applyCurrentCostumeToMascot() {
-        const costumeId = currentCostumeId();
-        if (!costumeId) {
-          if (el.mascotCard) el.mascotCard.dataset.costumeLabel = "";
-          return;
-        }
-        const card = cardById(costumeId);
-        setImageSourceWithFallback(el.rankImage, card.costumeImage, card.fallbackAsset, `${card.name}のトライくん`);
-        if (el.mascotCard) el.mascotCard.dataset.costumeLabel = card.name;
+        const mascot = selectedMascot();
+        if (!mascot) return;
+        setImageSourceWithFallback(el.rankImage, mascot.image, mascot.fallbackAsset || mascot.image, `${mascot.name}のトライくん`);
+        if (el.mascotCard) el.mascotCard.dataset.costumeLabel = mascot.name;
       }
 
       function applyEquippedCostumeToTop() {
@@ -6404,6 +7242,8 @@ window.QUIZ_QUESTIONS = [
           cardCounts: cardCounts(),
           cardStats: cardStats(),
           currentCostume: currentCostumeId(),
+          selectedMascotId: selectedMascotId(),
+          unlockedRankMascots: unlockedRankMascotIds(),
           lastDrawDate: readStoredText(GACHA_LAST_DRAW_DATE_STORAGE_KEY, ""),
           drawCount: readStoredCount(GACHA_DRAW_COUNT_STORAGE_KEY),
           points: gachaPoints(),
@@ -6445,11 +7285,19 @@ window.QUIZ_QUESTIONS = [
             writeStoredText(CURRENT_COSTUME_STORAGE_KEY, LEGACY_GACHA_CARD_IDS[remote.currentCostume] || remote.currentCostume);
             writeStoredText(GACHA_EQUIPPED_CARD_STORAGE_KEY, LEGACY_GACHA_CARD_IDS[remote.currentCostume] || remote.currentCostume);
           }
+          if (Array.isArray(remote.unlockedRankMascots)) {
+            const mergedRankMascots = Array.from(new Set([...unlockedRankMascotIds(), ...remote.unlockedRankMascots]));
+            writeStoredJson(RANK_MASCOT_STORAGE_KEY, mergedRankMascots);
+          }
+          if (remote.selectedMascotId) {
+            writeStoredText(SELECTED_MASCOT_STORAGE_KEY, remote.selectedMascotId);
+          }
           if (remote.lastDrawDate) writeStoredText(GACHA_LAST_DRAW_DATE_STORAGE_KEY, remote.lastDrawDate);
           if (Number.isFinite(Number(remote.drawCount))) writeStoredCount(GACHA_DRAW_COUNT_STORAGE_KEY, Number(remote.drawCount));
           if (Number.isFinite(Number(remote.points))) writeStoredCount(GACHA_POINTS_STORAGE_KEY, Number(remote.points));
           if (Array.isArray(remote.history)) writeStoredJson(GACHA_HISTORY_STORAGE_KEY, remote.history.slice(0, 20));
           updateGachaHome();
+          unlockRankMascots(rankForSavedProgress());
           applyCurrentCostumeToMascot();
         } catch (error) {
           // Firebaseから読めない場合もローカル保存で続行します。
@@ -6504,6 +7352,33 @@ window.QUIZ_QUESTIONS = [
             <span class="image-fallback-message">${escapeHtml(card.name)}<br>画像を読み込めません</span>
           </div>
         `;
+      }
+
+      function collectionMascotImageHtml(mascot) {
+        return `
+          <div class="hero-card-image">
+            <img data-collection-mascot-image="${escapeHtml(mascot.id)}" alt="${escapeHtml(mascot.name)}">
+            <span class="image-fallback-message">${escapeHtml(mascot.name)}<br>画像を読み込めません</span>
+          </div>
+        `;
+      }
+
+      function wireCollectionMascotImages(root = el.gachaBody) {
+        if (!root) return;
+        root.querySelectorAll("[data-collection-mascot-image]").forEach((img) => {
+          const mascot = findMascotById(img.dataset.collectionMascotImage);
+          if (!mascot) return;
+          const fallback = img.parentElement && img.parentElement.querySelector(".image-fallback-message");
+          img.onload = () => {
+            img.style.display = "block";
+            if (fallback) fallback.classList.remove("show");
+          };
+          img.onerror = () => {
+            img.style.display = "none";
+            if (fallback) fallback.classList.add("show");
+          };
+          img.src = mascot.collectionImage || mascot.image || mascot.cardImage;
+        });
       }
 
       function wireHeroImages(root = el.gachaBody) {
@@ -6649,26 +7524,44 @@ window.QUIZ_QUESTIONS = [
         }, 1600);
       }
 
-      function openCollectionModal() {
+      function openCollectionModal(filter = collectionFilter) {
+        collectionFilter = ["all", "gacha", "rank"].includes(filter) ? filter : "all";
         const owned = ownedCardIds();
+        const unlockedRanks = unlockRankMascots(rankForSavedProgress());
         const counts = cardCounts();
-        const rate = Math.round((owned.length / GACHA_CARDS.length) * 100);
+        const selectedId = selectedMascotId();
+        const gachaItems = GACHA_CARDS.map((card) => ({ ...card, image: card.cardImage, source: "gacha" }));
+        const items = collectionFilter === "gacha"
+          ? gachaItems
+          : collectionFilter === "rank"
+          ? RANK_MASCOTS
+          : [...gachaItems, ...RANK_MASCOTS];
+        const allOwnedCount = owned.length + unlockedRanks.length;
         el.gachaModal.classList.remove("hidden");
-        el.gachaModalTitle.textContent = "カード図鑑";
+        el.gachaModalTitle.textContent = "マスコット図鑑";
         el.gachaBody.innerHTML = `
-          <div class="collection-summary">
-            <span>獲得カード</span><strong>${owned.length} / ${GACHA_CARDS.length}枚</strong>
-            <span>コンプリート率</span><strong>${rate}%</strong>
+          <div class="collection-summary mascot-collection-summary">
+            <span>ガチャ</span><strong>${owned.length} / ${GACHA_CARDS.length}</strong>
+            <span>ランク</span><strong>${unlockedRanks.length} / ${RANK_MASCOTS.length}</strong>
+            <span>ぜんぶ</span><strong>${allOwnedCount} / ${GACHA_CARDS.length + RANK_MASCOTS.length}</strong>
+          </div>
+          <div class="collection-tabs" role="tablist" aria-label="図鑑の表示切り替え">
+            <button type="button" data-collection-filter="all" class="${collectionFilter === "all" ? "active" : ""}">すべて</button>
+            <button type="button" data-collection-filter="gacha" class="${collectionFilter === "gacha" ? "active" : ""}">ガチャ</button>
+            <button type="button" data-collection-filter="rank" class="${collectionFilter === "rank" ? "active" : ""}">ランク</button>
           </div>
           <div class="hero-collection-grid">
-            ${GACHA_CARDS.map((card) => {
-              const hasCard = owned.includes(card.id);
+            ${items.map((mascot) => {
+              const hasMascot = mascot.source === "gacha" ? owned.includes(mascot.id) : unlockedRanks.includes(mascot.id);
+              const isSelected = selectedId === mascot.id;
               return `
-                <article class="collection-card${hasCard ? "" : " locked"}">
-                  ${heroImageHtml(card)}
-                  <h3>${hasCard ? escapeHtml(card.name) : "？？？"}</h3>
-                  <p>${hasCard ? `所持枚数 × ${Number(counts[card.id] || 0)}` : "未取得"}</p>
-                  ${hasCard ? `<button class="gacha-primary" type="button" data-equip-card="${escapeHtml(card.id)}">着せ替える</button>` : ""}
+                <article class="collection-card ${escapeHtml(mascot.source)}${hasMascot ? "" : " locked"}"${mascot.rarity ? ` data-rarity="${escapeHtml(mascot.rarity)}"` : ""}>
+                  ${collectionMascotImageHtml(mascot)}
+                  <h3>${hasMascot ? escapeHtml(mascot.name) : "？？？"}</h3>
+                  <p>${mascot.source === "gacha"
+                    ? (hasMascot ? `所持枚数 × ${Number(counts[mascot.id] || 0)}` : "未取得")
+                    : (hasMascot ? "ランクでゲット！" : `🔒 ランク${Number(mascot.requiredRank) + 1}でゲット`)}</p>
+                  ${hasMascot ? `<button class="gacha-primary" type="button" data-equip-mascot="${escapeHtml(mascot.id)}" ${isSelected ? "disabled" : ""}>${isSelected ? "いま使っています" : "着せ替える"}</button>` : ""}
                 </article>
               `;
             }).join("")}
@@ -6678,7 +7571,7 @@ window.QUIZ_QUESTIONS = [
             <button class="gacha-secondary" type="button" data-close-gacha>トップに戻る</button>
           </div>
         `;
-        wireHeroImages();
+        wireCollectionMascotImages();
       }
 
       function openDressupModal() {
@@ -6688,7 +7581,7 @@ window.QUIZ_QUESTIONS = [
       function renderCardDetail(cardId) {
         const card = cardById(cardId);
         const owned = ownedCardIds().includes(card.id);
-        const isEquipped = currentCostumeId() === card.id;
+        const isEquipped = selectedMascotId() === card.id;
         const count = Number(cardCounts()[card.id] || 0);
         el.gachaModal.classList.remove("hidden");
         el.gachaModalTitle.textContent = card.name;
@@ -6744,69 +7637,209 @@ window.QUIZ_QUESTIONS = [
         }
       }
 
-      function renderGachaBackCard() {
-        el.gachaModalTitle.textContent = "カード出現";
+      function gachaSoundEnabled() {
+        const values = [
+          readStoredText("soundEnabled", ""),
+          readStoredText("higashiosaka_preventive_emergency_sound_enabled", "")
+        ].map((value) => String(value).toLowerCase());
+        return !values.some((value) => ["false", "off", "0", "mute"].includes(value));
+      }
+
+      function playGachaTone(stage, rarity = "rare") {
+        if (!gachaSoundEnabled()) return;
+        try {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          if (!AudioContext) return;
+          const audio = new AudioContext();
+          const frequencies = stage === "reveal"
+            ? (rarity === "super_rare" ? [523, 659, 784, 1047] : [440, 554, 659])
+            : stage === "rugby" ? [180, 230] : [260, 320];
+          const now = audio.currentTime;
+          frequencies.forEach((frequency, toneIndex) => {
+            const oscillator = audio.createOscillator();
+            const gain = audio.createGain();
+            oscillator.type = stage === "reveal" ? "triangle" : "sine";
+            oscillator.frequency.value = frequency;
+            gain.gain.setValueAtTime(0.001, now + toneIndex * 0.07);
+            gain.gain.exponentialRampToValueAtTime(0.055, now + toneIndex * 0.07 + 0.015);
+            gain.gain.exponentialRampToValueAtTime(0.001, now + toneIndex * 0.07 + 0.18);
+            oscillator.connect(gain).connect(audio.destination);
+            oscillator.start(now + toneIndex * 0.07);
+            oscillator.stop(now + toneIndex * 0.07 + 0.2);
+          });
+          window.setTimeout(() => audio.close().catch(() => {}), 800);
+        } catch (error) {
+          // 音声が使えない端末でもガチャは続行します。
+        }
+      }
+
+      function safeVibrate(pattern) {
+        try {
+          if ("vibrate" in navigator && typeof navigator.vibrate === "function") {
+            navigator.vibrate(pattern);
+          }
+        } catch (error) {
+          // 振動非対応端末では何もしません。
+        }
+      }
+
+      function gachaDelay(milliseconds) {
+        return new Promise((resolve) => window.setTimeout(resolve, milliseconds));
+      }
+
+      function isActiveGachaRun(token) {
+        return Boolean(activeGachaRun && activeGachaRun.token === token && !activeGachaRun.revealed);
+      }
+
+      function renderGachaAnimation(card, token) {
+        el.gachaModalTitle.textContent = "なにが出るかな？";
         el.gachaBody.innerHTML = `
-          <div class="gacha-result-card reveal">
-            <div class="gacha-back-card">?</div>
-            <p class="gacha-note">カードを開封しています...</p>
+          <div class="gacha-cinematic" data-gacha-stage="machine" data-gacha-token="${token}">
+            <button class="gacha-skip" type="button" data-skip-gacha>スキップ</button>
+            <div class="gacha-cinematic-machine hero-gacha-visual is-drawing">
+              <img data-hero-gacha-image alt="ヒーローガチャのガチャマシン">
+              <span class="image-fallback-message">ヒーローガチャ<br>画像を読み込めません</span>
+            </div>
+            <div class="gacha-light-orbit" aria-hidden="true"></div>
+            <div class="gacha-rugby-ball" aria-hidden="true"><i></i></div>
+            <div class="gacha-silhouette" aria-hidden="true">
+              ${heroImageHtml(card, "silhouette-image")}
+            </div>
+            <div class="gacha-cinematic-message" aria-live="polite">なにが出るかな？</div>
           </div>
         `;
+        wireHeroImages();
+      }
+
+      function updateGachaAnimation(stage, message) {
+        const cinematic = el.gachaBody.querySelector(".gacha-cinematic");
+        if (!cinematic) return;
+        cinematic.dataset.gachaStage = stage;
+        const messageNode = cinematic.querySelector(".gacha-cinematic-message");
+        if (messageNode) messageNode.textContent = message;
       }
 
       function renderGachaResult(card, wasNew, stats) {
+        const rarity = rarityById(card.rarity);
+        const count = Number(cardCounts()[card.id] || 1);
         el.gachaModalTitle.textContent = wasNew ? "NEW！カード獲得" : "カード獲得";
         el.gachaBody.innerHTML = `
-          <div class="hero-card-result is-revealing">
+          <div class="hero-card-result is-revealing rarity-${escapeHtml(card.rarity)}">
+            ${legendConfettiHtml()}
+            <div class="gacha-get-label">${card.rarity === "super_rare" ? "すごいカードが出た！" : "ゲット！"}</div>
             ${heroImageHtml(card)}
-            <div class="${wasNew ? "new-badge" : "owned-badge"}">${wasNew ? "NEW！" : `所持枚数 × ${Number(cardCounts()[card.id] || 1)}`}</div>
+            <div class="${wasNew ? "new-badge" : "owned-badge"}">${wasNew ? "はじめてゲット！" : `${count}枚目ゲット！`}</div>
             <h3>${escapeHtml(card.name)}</h3>
-            <p>${wasNew ? "新しいカードを獲得しました！" : "同じカードの所持枚数が増えました。"}</p>
+            <p>${escapeHtml(rarity.label)} / 所持数 ×${count}</p>
             <div class="hero-result-actions">
-              <button class="gacha-primary" type="button" data-equip-card="${escapeHtml(card.id)}">このカードを設定する</button>
+              <button class="gacha-primary" type="button" data-equip-mascot="${escapeHtml(card.id)}">このカードに着せ替える</button>
               <button class="gacha-secondary" type="button" data-draw-gacha>もう一度引く</button>
               <button class="gacha-secondary" type="button" data-open-collection>カード図鑑</button>
+              <button class="gacha-secondary" type="button" data-close-gacha>トップに戻る</button>
             </div>
           </div>
         `;
         wireHeroImages();
       }
 
-      function drawGacha() {
+      function revealGachaRun(run) {
+        if (!run || run.revealed) return;
+        run.revealed = true;
+        playGachaTone("reveal", run.card.rarity);
+        safeVibrate(run.card.rarity === "super_rare" ? [40, 30, 60] : 40);
+        renderGachaResult(run.card, run.wasNew, run.stats);
+        window.setTimeout(() => {
+          if (el.gachaBody) el.gachaBody.querySelectorAll(".confetti").forEach((node) => node.remove());
+        }, 2100);
+        gachaDrawing = false;
+        activeGachaRun = null;
+        updateGachaHome();
+      }
+
+      function skipGachaAnimation() {
+        if (!gachaDrawing || !activeGachaRun) return;
+        const run = activeGachaRun;
+        gachaRunToken += 1;
+        run.token = gachaRunToken;
+        revealGachaRun(run);
+      }
+
+      async function drawGacha() {
         if (gachaDrawing) return;
-        if (!el.gachaBody.querySelector(".hero-gacha-visual")) renderGachaHome();
         gachaDrawing = true;
         updateGachaHome();
         const card = rollGachaCard();
         const owned = ownedCardIds();
         const wasNew = !owned.includes(card.id);
-        const stats = recordGachaDraw(card, wasNew);
-        const machine = document.querySelector(".hero-gacha-visual");
+        let saved = false;
+        let stats = null;
+        const saveResultOnce = () => {
+          if (saved) return stats;
+          saved = true;
+          stats = recordGachaDraw(card, wasNew);
+          return stats;
+        };
+        saveResultOnce();
+        const token = ++gachaRunToken;
+        const run = { token, card, wasNew, stats, revealed: false };
+        activeGachaRun = run;
         const reducedMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-        if (machine) machine.classList.add("is-drawing");
-        const button = el.gachaBody.querySelector("[data-draw-gacha]");
-        if (button) button.disabled = true;
-        window.setTimeout(() => {
-          renderGachaBackCard();
-          window.setTimeout(() => {
-            gachaDrawing = false;
-            renderGachaResult(card, wasNew, stats);
-            updateGachaHome();
-          }, reducedMotion ? 80 : 720);
-        }, reducedMotion ? 120 : 850);
+        const duration = (regular) => reducedMotion ? Math.min(90, regular) : regular;
+        renderGachaAnimation(card, token);
+        try {
+          playGachaTone("start");
+          await gachaDelay(duration(520));
+          if (!isActiveGachaRun(token)) return;
+          updateGachaAnimation("machine", "ワクワク…");
+          await gachaDelay(duration(520));
+          if (!isActiveGachaRun(token)) return;
+          updateGachaAnimation("machine", "もうすぐ出るよ！");
+          await gachaDelay(duration(420));
+          if (!isActiveGachaRun(token)) return;
+          updateGachaAnimation("rugby", "ラグビーボールが飛び出した！");
+          playGachaTone("rugby");
+          safeVibrate(30);
+          await gachaDelay(duration(1150));
+          if (!isActiveGachaRun(token)) return;
+          updateGachaAnimation("silhouette", "これは…？");
+          safeVibrate(50);
+          await gachaDelay(duration(720));
+          if (!isActiveGachaRun(token)) return;
+          updateGachaAnimation("reveal", "ゲット！");
+          await gachaDelay(duration(280));
+          if (isActiveGachaRun(token)) revealGachaRun(run);
+        } catch (error) {
+          console.error("ガチャ処理に失敗しました", error);
+          if (activeGachaRun === run) revealGachaRun(run);
+        } finally {
+          if (activeGachaRun === run && isActiveGachaRun(run.token)) {
+            revealGachaRun(run);
+          }
+        }
       }
 
-      function equipGachaCard(cardId) {
-        if (!ownedCardIds().includes(cardId)) return;
-        const card = cardById(cardId);
-        writeStoredText(CURRENT_COSTUME_STORAGE_KEY, card.id);
-        writeStoredText(GACHA_EQUIPPED_CARD_STORAGE_KEY, card.id);
+      function equipMascot(mascotId) {
+        const mascot = findMascotById(mascotId);
+        if (!mascot || !isMascotUnlocked(mascot.id)) return false;
+        writeStoredText(SELECTED_MASCOT_STORAGE_KEY, mascot.id);
+        if (mascot.source === "gacha") {
+          writeStoredText(CURRENT_COSTUME_STORAGE_KEY, mascot.id);
+          writeStoredText(GACHA_EQUIPPED_CARD_STORAGE_KEY, mascot.id);
+        } else {
+          writeStoredText(CURRENT_COSTUME_STORAGE_KEY, "");
+          writeStoredText(GACHA_EQUIPPED_CARD_STORAGE_KEY, "");
+        }
         updateGachaHome();
         applyCurrentCostumeToMascot();
         queueGachaRemoteSync();
         closeGachaModal();
         home();
         showGachaToast("着せ替え完了！");
+        return true;
+      }
+
+      function equipGachaCard(cardId) {
+        return equipMascot(cardId);
       }
 
       function rankForScore(value) {
@@ -6823,7 +7856,7 @@ window.QUIZ_QUESTIONS = [
 
       function hasLegendUnlocked() {
         const completed = perfectCourses();
-        return Object.keys(MODES).every((modeKey) => completed[modeKey] === true);
+        return LEGEND_REQUIRED_MODES.every((modeKey) => completed[modeKey] === true);
       }
 
       function rankForCurrentProgress(value) {
@@ -6896,6 +7929,7 @@ window.QUIZ_QUESTIONS = [
       }
 
       function showRankUp(rank) {
+        unlockRankMascots(rank);
         if (!el.rankMessage) return;
         el.rankMessage.textContent = `ランクアップ！ ${rank.label}になりました。市民を守る力が上がりました！`;
         el.rankMessage.classList.add("show");
@@ -6950,6 +7984,7 @@ window.QUIZ_QUESTIONS = [
 
       function updateHomeRank() {
         const rank = rankForSavedProgress();
+        unlockRankMascots(rank);
         const bestScore = readStoredCount(BEST_SCORE_STORAGE_KEY);
         el.sideRank.textContent = rank.label;
         updateMascotRank(rank, bestScore, { useCostume: true });
@@ -7108,6 +8143,7 @@ window.QUIZ_QUESTIONS = [
         el.app.classList.toggle("is-start", screen === el.startScreen);
         el.app.classList.toggle("is-quiz", screen === el.quizScreen);
         el.app.classList.toggle("is-finish", screen === el.finishScreen);
+        el.app.classList.toggle("elementary-course", currentMode === "elementary" && screen !== el.startScreen);
         if (screen === el.startScreen) {
           updateGachaHome();
           applyEquippedCostumeToTop();
@@ -7133,8 +8169,49 @@ window.QUIZ_QUESTIONS = [
         return copy;
       }
 
+      function shuffleArray(array) {
+        const copiedArray = [...array];
+        for (let i = copiedArray.length - 1; i > 0; i -= 1) {
+          const randomIndex = Math.floor(Math.random() * (i + 1));
+          [copiedArray[i], copiedArray[randomIndex]] = [copiedArray[randomIndex], copiedArray[i]];
+        }
+        return copiedArray;
+      }
+
+      function getElementaryQuestions() {
+        return shuffleArray(elementaryQuestions).slice(0, 15);
+      }
+
+      function normalizeElementaryQuestion(question) {
+        const keys = ["A", "B", "C", "D"];
+        return {
+          ...question,
+          section: "小学生向け",
+          category: "小学生向け",
+          options: question.choices.map((text, optionIndex) => ({ key: keys[optionIndex], text })),
+          answer: keys[question.answer],
+          elementary: true
+        };
+      }
+
+      function createQuizQuestions(courseId) {
+        if (courseId === "elementary") {
+          return getElementaryQuestions().map(normalizeElementaryQuestion);
+        }
+        const config = MODES[courseId];
+        if (!config) {
+          console.error("存在しないコースです:", courseId);
+          return [];
+        }
+        const pool = config.section === "all"
+          ? questions
+          : questions.filter((question) => question.section === config.section);
+        return shuffleArray(pool).slice(0, Math.min(config.count, pool.length));
+      }
+
       function pickPhrase(items, q) {
-        return items[(q.id + index) % items.length];
+        const seed = String(q.id).split("").reduce((sum, character) => sum + character.charCodeAt(0), 0);
+        return items[(seed + index) % items.length];
       }
 
       function shuffledOptionsFor(q) {
@@ -7157,9 +8234,6 @@ window.QUIZ_QUESTIONS = [
       async function startGame(mode) {
         currentMode = mode;
         const config = MODES[currentMode] || MODES.master;
-        const pool = config.section === "all"
-          ? questions
-          : questions.filter((question) => question.section === config.section);
         index = 0;
         score = 0;
         combo = 0;
@@ -7167,7 +8241,7 @@ window.QUIZ_QUESTIONS = [
         safetyScore = 0;
         safetyReached = false;
         lastCorrectDisplayKey = "";
-        deck = shuffle(pool).slice(0, Math.min(config.count, pool.length));
+        deck = createQuizQuestions(currentMode);
         await beginChallengeNumber();
         el.sideTotal.textContent = `${deck.length}問`;
         el.sideScore.textContent = "0問";
@@ -7203,6 +8277,10 @@ window.QUIZ_QUESTIONS = [
         el.questionNumber.textContent = `第${index + 1}問`;
         el.questionText.textContent = q.question;
         el.resultBand.classList.remove("show");
+        if (el.feedbackBasis) {
+          el.feedbackBasis.textContent = "";
+          el.feedbackBasis.hidden = true;
+        }
         el.nextButton.disabled = true;
         el.nextButton.textContent = "次へ";
         el.comboMessage.classList.remove("show");
@@ -7256,7 +8334,19 @@ window.QUIZ_QUESTIONS = [
           el.comboMessage.classList.add("show");
         }
         el.feedbackTitle.textContent = pickPhrase(isCorrect ? correctTitles : incorrectTitles, q);
-        el.feedbackText.textContent = `${pickPhrase(answerLeads, q)}「${correct.text}」。${tips[q.category] || tips[q.section] || "予防と通報のポイントを日ごろから確認しましょう。"}`;
+        if (q.elementary) {
+          el.feedbackText.textContent = q.explanation;
+          if (el.feedbackBasis) {
+            el.feedbackBasis.textContent = `根拠：${q.basis}`;
+            el.feedbackBasis.hidden = false;
+          }
+        } else {
+          el.feedbackText.textContent = `${pickPhrase(answerLeads, q)}「${correct.text}」。${tips[q.category] || tips[q.section] || "予防と通報のポイントを日ごろから確認しましょう。"}`;
+          if (el.feedbackBasis) {
+            el.feedbackBasis.textContent = "";
+            el.feedbackBasis.hidden = true;
+          }
+        }
         el.illustration.innerHTML = illustrationFor(q.category);
         el.safetyMessage.textContent = "";
         el.nextButton.textContent = index + 1 >= deck.length ? "結果へ" : "次へ";
@@ -7304,10 +8394,15 @@ window.QUIZ_QUESTIONS = [
         const config = MODES[currentMode] || MODES.master;
         const modeLabel = config.certificateLabel;
         recordPerfectCourse(currentMode, score, total);
+        if (currentMode === "elementary") {
+          writeStoredCount(ELEMENTARY_BEST_SCORE_KEY, Math.max(score, readStoredCount(ELEMENTARY_BEST_SCORE_KEY)));
+        }
         const rank = rankForCurrentProgress(score);
         const title = titleForResult(score, maxCombo, safetyScore);
         const recipient = (el.recipientName && el.recipientName.value.trim()) || readStoredText(RECIPIENT_STORAGE_KEY, "") || "受講者";
-        const message = rank.label === LEGEND_RANK_LABEL
+        const message = currentMode === "elementary"
+          ? `${total}問中 ${score}問正解！ よくできました！`
+          : rank.label === LEGEND_RANK_LABEL
           ? "全てのコースを全問正解しました。予防救急レジェンドとして、学びを家庭や地域で生かしましょう。"
           : safetyScore >= 100
           ? "まちの安全を守りました。学んだポイントを、家庭や地域での声かけに生かしましょう。"
@@ -7324,14 +8419,16 @@ window.QUIZ_QUESTIONS = [
         }
         if (el.resultRankHeroText) el.resultRankHeroText.textContent = rank.label;
         el.resultCombo.textContent = String(maxCombo);
-        el.resultTitle.textContent = title;
+        el.resultTitle.textContent = currentMode === "elementary" ? "小学生向けコース" : title;
         el.certificateNumber.textContent = formatCertificateNumber(certificateNo);
         el.certificateCourse.textContent = "予防救急と119番通報 講習";
         el.certificateRecipient.textContent = recipient;
         el.certificateRankImage.src = rank.asset;
         el.certificateRankImage.alt = `${rank.label}のマスコット`;
         el.certificateRankLabel.textContent = rank.label;
-        el.certificateBody.innerHTML = rank.label === LEGEND_RANK_LABEL
+        el.certificateBody.innerHTML = currentMode === "elementary"
+          ? `<span>あなたは「小学生向けコース」を最後まで学習しました。</span><span>${total}問中 ${score}問正解しました。よくできました！</span>`
+          : rank.label === LEGEND_RANK_LABEL
           ? `<span>あなたは全てのコースを全問正解しました。</span><span>予防救急と119番通報を深く理解し、予防救急レジェンドに到達したことを証します。</span>`
           : `<span>あなたは「${modeLabel}」を最後まで学習しました。</span><span>日ごろの予防と、緊急時の落ち着いた通報について学習したことを証します。</span>`;
         el.certificateDate.textContent = formatDate(new Date());
@@ -7517,6 +8614,11 @@ window.QUIZ_QUESTIONS = [
       }
       if (el.gachaBody) {
         el.gachaBody.addEventListener("click", (event) => {
+          const skipButton = event.target.closest("[data-skip-gacha]");
+          if (skipButton) {
+            skipGachaAnimation();
+            return;
+          }
           const drawButton = event.target.closest("[data-draw-gacha]");
           if (drawButton) {
             drawGacha();
@@ -7552,6 +8654,16 @@ window.QUIZ_QUESTIONS = [
             equipGachaCard(equipButton.dataset.equipCard);
             return;
           }
+          const equipMascotButton = event.target.closest("[data-equip-mascot]");
+          if (equipMascotButton) {
+            equipMascot(equipMascotButton.dataset.equipMascot);
+            return;
+          }
+          const collectionFilterButton = event.target.closest("[data-collection-filter]");
+          if (collectionFilterButton) {
+            openCollectionModal(collectionFilterButton.dataset.collectionFilter);
+            return;
+          }
           const cardButton = event.target.closest("[data-card-id]");
           if (cardButton) {
             renderCardDetail(cardButton.dataset.cardId);
@@ -7577,11 +8689,4 @@ window.QUIZ_QUESTIONS = [
       initializeParticipantCount();
       updateBestDisplay();
       updateHomeRank();
-      updateGachaHome();
-      applyEquippedCostumeToTop();
-      loadGachaRemoteState();
-      el.sideTotal.textContent = `${questions.length || 50}問`;
-    })();
-  </script>
-</body>
-</html>
+      upd
