@@ -1088,6 +1088,13 @@
         linear-gradient(180deg, #fff8f1, #fff);
       box-shadow: 0 20px 34px rgba(220, 37, 55, 0.24), 0 0 22px rgba(255, 210, 63, 0.24);
     }
+    .trykun-card.secret {
+      border-color: #f3c83f;
+      background:
+        radial-gradient(circle at 50% 34%, rgba(255, 232, 117, 0.46), transparent 45%),
+        linear-gradient(180deg, #fffdf1, #fff2b8);
+      box-shadow: 0 20px 36px rgba(255, 204, 45, 0.30), 0 0 28px rgba(255, 232, 117, 0.34);
+    }
     .trykun-card.ultra_rare { border-color: #7b2bbd; }
     .trykun-card.legend {
       border-color: #d99b10;
@@ -1109,6 +1116,10 @@
 
     .trykun-card.rare .card-rarity { background: #12805c; }
     .trykun-card.super_rare .card-rarity { background: #dc2537; }
+    .trykun-card.secret .card-rarity {
+      color: #321700;
+      background: linear-gradient(135deg, #fff18a, #f2b51f);
+    }
     .trykun-card.ultra_rare .card-rarity { background: #7b2bbd; }
     .trykun-card.legend .card-rarity {
       color: #2d2100;
@@ -4267,6 +4278,36 @@
       text-shadow: 0 2px 8px #000;
     }
 
+    .collection-card.rank .hero-card-image {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      min-height: 0;
+      padding: 0;
+      border: 1px solid rgba(255,255,255,0.72);
+      background: #fff;
+    }
+
+    .collection-card.rank .hero-card-image img {
+      position: absolute;
+      inset: 0;
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+      filter: none;
+      opacity: 1;
+    }
+
+    .collection-card.rank.rank-preview {
+      grid-template-rows: auto auto auto 1fr;
+    }
+
+    .collection-card.rank.rank-preview p {
+      color: #ffe8a0;
+    }
+
     .collection-card h3 {
       margin: 0;
       min-height: 2.8em;
@@ -4550,12 +4591,17 @@
       background: #fff;
     }
 
+    .collection-card.gacha[data-rarity="secret"] {
+      border-color: #ffe27a;
+      background: linear-gradient(180deg, rgba(116, 58, 6, 0.88), rgba(38, 18, 3, 0.98));
+      box-shadow: inset 0 0 24px rgba(255, 225, 103, 0.12), 0 0 18px rgba(255, 215, 69, 0.16);
+    }
+
     .collection-card.rank .hero-card-image {
       background: radial-gradient(circle at 50% 42%, rgba(62, 131, 197, .48), rgba(4, 24, 52, .12) 62%, transparent 76%);
     }
 
-    .collection-card .hero-card-image img,
-    .gacha-silhouette .hero-card-image img {
+    .collection-card .hero-card-image img {
       width: 100%;
       height: 100%;
       object-fit: contain;
@@ -4668,25 +4714,6 @@
       transform: translate(-50%, -50%);
     }
 
-    .gacha-silhouette {
-      position: absolute;
-      z-index: 6;
-      display: none;
-      width: min(250px, 65vw);
-      aspect-ratio: 3 / 4;
-      border-radius: 8px;
-      filter: drop-shadow(0 0 22px #f8dd65);
-      animation: silhouetteSway .42s ease-in-out infinite alternate;
-    }
-
-    .gacha-silhouette .hero-card-image {
-      height: 100%;
-    }
-
-    .gacha-silhouette img {
-      filter: brightness(0) !important;
-    }
-
     .gacha-cinematic-message {
       position: absolute;
       z-index: 10;
@@ -4702,7 +4729,6 @@
 
     .gacha-cinematic[data-gacha-stage="capsule"] .gacha-cinematic-machine,
     .gacha-cinematic[data-gacha-stage="capsule-open"] .gacha-cinematic-machine,
-    .gacha-cinematic[data-gacha-stage="silhouette"] .gacha-cinematic-machine,
     .gacha-cinematic[data-gacha-stage="reveal"] .gacha-cinematic-machine {
       opacity: .52;
       transform: none;
@@ -4733,16 +4759,6 @@
       animation: capsuleCoreFlash .55s ease both;
     }
 
-    .gacha-cinematic[data-gacha-stage="capsule-open"] .gacha-silhouette {
-      display: block;
-      width: min(190px, 52vw);
-      animation: cardRiseFromCapsule .65s cubic-bezier(.2,.8,.25,1) both;
-    }
-
-    .gacha-cinematic[data-gacha-stage="silhouette"] .gacha-silhouette {
-      display: block;
-    }
-
     .gacha-cinematic[data-gacha-stage="reveal"]::after {
       content: "";
       position: absolute;
@@ -4766,6 +4782,12 @@
       box-shadow: inset 0 0 40px rgba(255, 206, 55, .16), 0 0 28px rgba(255, 206, 55, .22);
     }
 
+    .hero-card-result.rarity-secret {
+      border-color: #fff18a;
+      background: radial-gradient(circle at 50% 30%, rgba(255, 226, 95, 0.30), transparent 48%), #241101;
+      box-shadow: inset 0 0 54px rgba(255, 226, 95, .20), 0 0 34px rgba(255, 210, 48, .28);
+    }
+
     @keyframes gachaOrbit {
       to { transform: rotate(360deg); }
     }
@@ -4781,16 +4803,6 @@
       0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
       60% { opacity: 1; transform: translate(-50%, -50%) scale(1.75); }
       100% { opacity: 0; transform: translate(-50%, -50%) scale(2.2); }
-    }
-
-    @keyframes cardRiseFromCapsule {
-      0% { opacity: 0; transform: translate3d(0, 80px, 0) scale(.35); }
-      100% { opacity: 1; transform: translate3d(0, -42px, 0) scale(.82); }
-    }
-
-    @keyframes silhouetteSway {
-      from { transform: rotate(-2deg) scale(.98); }
-      to { transform: rotate(2deg) scale(1.02); }
     }
 
     @keyframes singleFlash {
@@ -4829,7 +4841,6 @@
     @media (prefers-reduced-motion: reduce) {
       .gacha-cinematic *,
       .gacha-capsule,
-      .gacha-silhouette,
       .gacha-light-orbit {
         animation-duration: .2s !important;
         animation-iteration-count: 1 !important;
@@ -4906,7 +4917,7 @@
             <strong id="currentRankName">見習い救急隊員</strong>
             <em id="nextRankText">次のランクまであと5問</em>
           </div>
-          <img id="rankImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="見習い救急隊員のマスコット">
+          <img id="rankImage" src="assets/trainee.png" alt="見習い救急隊員のマスコット" loading="eager" decoding="async" fetchpriority="high">
         </div>
         <div class="side-stats stat-hidden" aria-hidden="true">
           <div class="stat stat-total stat-hidden" aria-hidden="true">
@@ -5042,7 +5053,7 @@
           <div class="summary-card" id="resultSummary">
             <h2>任務完了</h2>
             <div class="result-rank-hero">
-              <img id="resultRankImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="最終ランクのマスコット">
+              <img id="resultRankImage" src="assets/trainee.png" alt="最終ランクのマスコット" loading="eager" decoding="async">
               <div>
                 <span>最終ランク</span>
                 <strong id="resultRankHeroText">見習い救急隊員</strong>
@@ -5079,14 +5090,14 @@
               <div class="certificate-no" id="certificateNumber">No. 0</div>
               <div class="certificate-title">
                 <div class="certificate-emblem" aria-hidden="true">
-                  <img src="assets/certificate-emblem.png" alt="">
+                  <img id="certificateEmblem" src="assets/certificate-emblem.png" alt="消防章" loading="eager" decoding="async">
                 </div>
                 <h2 id="finishTitle">修了証</h2>
               </div>
               <div class="certificate-course" id="certificateCourse">予防救急と119番通報 講習</div>
               <div class="certificate-recipient" id="certificateRecipient">受講者</div>
               <div class="certificate-rank-showcase">
-                <img id="certificateRankImage" src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==" alt="最終ランクのマスコット">
+                <img id="certificateRankImage" src="assets/trainee.png" alt="最終ランクのマスコット" loading="eager" decoding="async">
                 <div>
                   <span>最終ランク</span>
                   <strong id="certificateRankLabel">見習い救急隊員</strong>
@@ -6915,6 +6926,7 @@ window.QUIZ_QUESTIONS = [
         finishRank: document.getElementById("finishRank"),
         finishMessage: document.getElementById("finishMessage"),
         certificate: document.getElementById("certificate"),
+        certificateEmblem: document.getElementById("certificateEmblem"),
         certificateNumber: document.getElementById("certificateNumber"),
         certificateCourse: document.getElementById("certificateCourse"),
         certificateRecipient: document.getElementById("certificateRecipient"),
@@ -6981,7 +6993,8 @@ window.QUIZ_QUESTIONS = [
 
       const GACHA_RARITIES = Object.freeze([
         { id: "rare", label: "レア", weight: 1, point: 0 },
-        { id: "super_rare", label: "スーパーレア", weight: 1, point: 0 }
+        { id: "super_rare", label: "スーパーレア", weight: 1, point: 0 },
+        { id: "secret", label: "シークレット", weight: 1, point: 0 }
       ]);
 
       const GACHA_CARDS = Object.freeze([
@@ -7061,6 +7074,39 @@ window.QUIZ_QUESTIONS = [
           costumeImage: "images/gacha/hero/card07-try-rescue-fire.png",
           fallbackAsset: rankImageSources.master,
           description: "救急・救助・消防の力をひとつにした合体ヒーローのカードです。"
+        },
+        {
+          id: "card08",
+          name: "らっくん",
+          rarity: "secret",
+          stars: 4,
+          maxStars: 4,
+          cardImage: "images/gacha/hero/card08-rakkun-secret.jpg",
+          costumeImage: "images/gacha/hero/card08-rakkun-secret.jpg",
+          fallbackAsset: rankImageSources.master,
+          description: "東大阪市消防局オリジナルキャラクター、らっくんのシークレットカードです。"
+        },
+        {
+          id: "card09",
+          name: "ふっこちゃん",
+          rarity: "secret",
+          stars: 4,
+          maxStars: 4,
+          cardImage: "images/gacha/hero/card09-fukkocyan-secret.jpg",
+          costumeImage: "images/gacha/hero/card09-fukkocyan-secret.jpg",
+          fallbackAsset: rankImageSources.master,
+          description: "東大阪市消防局オリジナルキャラクター、ふっこちゃんのシークレットカードです。"
+        },
+        {
+          id: "card10",
+          name: "モールくん",
+          rarity: "secret",
+          stars: 4,
+          maxStars: 4,
+          cardImage: "images/gacha/hero/card10-mallkun-secret.jpg",
+          costumeImage: "images/gacha/hero/card10-mallkun-secret.jpg",
+          fallbackAsset: rankImageSources.master,
+          description: "東大阪市消防局オリジナルキャラクター、モールくんのシークレットカードです。"
         }
       ]);
       const DEFAULT_GACHA_CARD_ID = "card01";
@@ -7323,16 +7369,44 @@ window.QUIZ_QUESTIONS = [
         return true;
       }
 
-      function setImageSourceWithFallback(img, primarySrc, fallbackSrc, altText) {
-        if (!img) return;
-        img.alt = altText || "";
-        img.onerror = () => {
-          if (fallbackSrc && img.src !== fallbackSrc) {
-            img.onerror = null;
-            img.src = fallbackSrc;
+      function imageSourceCandidates(...sources) {
+        const candidates = [];
+        const isSingleHtml = !window.location.pathname.includes("/yobou-kyukyu-game/");
+        sources.filter(Boolean).forEach((source) => {
+          const path = String(source);
+          candidates.push(path);
+          if (isSingleHtml && !/^(?:data:|blob:|https?:|\/)/i.test(path)) {
+            candidates.push(`yobou-kyukyu-game/${path.replace(/^\.\//, "")}`);
           }
+        });
+        return Array.from(new Set(candidates));
+      }
+
+      function loadImageFromCandidates(img, sources, options = {}) {
+        if (!img) return;
+        const candidates = imageSourceCandidates(...sources);
+        let candidateIndex = 0;
+        if (typeof options.altText === "string") img.alt = options.altText;
+        img.classList.remove("image-load-failed");
+        img.onload = () => {
+          img.classList.remove("image-load-failed");
+          if (typeof options.onLoad === "function") options.onLoad(img);
         };
-        img.src = primarySrc || fallbackSrc;
+        img.onerror = () => {
+          const nextSource = candidates[candidateIndex++];
+          if (nextSource) {
+            img.src = nextSource;
+            return;
+          }
+          img.onerror = null;
+          img.classList.add("image-load-failed");
+          if (typeof options.onFailure === "function") options.onFailure(img);
+        };
+        img.onerror();
+      }
+
+      function setImageSourceWithFallback(img, primarySrc, fallbackSrc, altText) {
+        loadImageFromCandidates(img, [primarySrc, fallbackSrc, rankImageSources.trainee], { altText: altText || "" });
       }
 
       function applyCurrentCostumeToMascot() {
@@ -7540,15 +7614,17 @@ window.QUIZ_QUESTIONS = [
           const mascot = findMascotById(img.dataset.collectionMascotImage);
           if (!mascot) return;
           const fallback = img.parentElement && img.parentElement.querySelector(".image-fallback-message");
-          img.onload = () => {
-            img.style.display = "block";
-            if (fallback) fallback.classList.remove("show");
-          };
-          img.onerror = () => {
-            img.style.display = "none";
-            if (fallback) fallback.classList.add("show");
-          };
-          img.src = mascot.image || mascot.cardImage;
+          loadImageFromCandidates(img, [mascot.image, mascot.cardImage, mascot.fallbackAsset], {
+            altText: `${mascot.name}のマスコット`,
+            onLoad: () => {
+              img.style.display = "block";
+              if (fallback) fallback.classList.remove("show");
+            },
+            onFailure: () => {
+              img.style.display = "none";
+              if (fallback) fallback.classList.add("show");
+            }
+          });
         });
       }
 
@@ -7557,27 +7633,31 @@ window.QUIZ_QUESTIONS = [
         root.querySelectorAll("[data-hero-card-image]").forEach((img) => {
           const card = cardById(img.dataset.heroCardImage);
           const fallback = img.parentElement && img.parentElement.querySelector(".image-fallback-message");
-          img.onload = () => {
-            img.style.display = "block";
-            if (fallback) fallback.classList.remove("show");
-          };
-          img.onerror = () => {
-            img.style.display = "none";
-            if (fallback) fallback.classList.add("show");
-          };
-          img.src = card.cardImage;
+          loadImageFromCandidates(img, [card.cardImage, card.fallbackAsset], {
+            altText: `${card.name}のカード`,
+            onLoad: () => {
+              img.style.display = "block";
+              if (fallback) fallback.classList.remove("show");
+            },
+            onFailure: () => {
+              img.style.display = "none";
+              if (fallback) fallback.classList.add("show");
+            }
+          });
         });
         root.querySelectorAll("[data-hero-gacha-image]").forEach((img) => {
           const fallback = img.parentElement && img.parentElement.querySelector(".image-fallback-message");
-          img.onload = () => {
-            img.style.display = "block";
-            if (fallback) fallback.classList.remove("show");
-          };
-          img.onerror = () => {
-            img.style.display = "none";
-            if (fallback) fallback.classList.add("show");
-          };
-          img.src = "images/gacha/hero/hero-gacha-machine.jpg";
+          loadImageFromCandidates(img, ["images/gacha/hero/hero-gacha-machine.jpg", rankImageSources.master], {
+            altText: "ヒーローガチャのガチャマシン",
+            onLoad: () => {
+              img.style.display = "block";
+              if (fallback) fallback.classList.remove("show");
+            },
+            onFailure: () => {
+              img.style.display = "none";
+              if (fallback) fallback.classList.add("show");
+            }
+          });
         });
       }
 
@@ -7612,15 +7692,21 @@ window.QUIZ_QUESTIONS = [
           const fallbackImg = fallback ? fallback.querySelector("[data-gacha-fallback]") : null;
           const showFallback = () => {
             img.style.display = "none";
-            if (fallbackImg) fallbackImg.src = card.fallbackAsset;
+            if (fallbackImg) {
+              loadImageFromCandidates(fallbackImg, [card.fallbackAsset, rankImageSources.trainee], {
+                altText: `${card.name}の代替画像`
+              });
+            }
             if (fallback) fallback.classList.add("show");
           };
-          img.onload = () => {
-            img.style.display = "";
-            if (fallback) fallback.classList.remove("show");
-          };
-          img.onerror = showFallback;
-          img.src = card.cardImage;
+          loadImageFromCandidates(img, [card.cardImage], {
+            altText: `${card.name}のカード`,
+            onLoad: () => {
+              img.style.display = "";
+              if (fallback) fallback.classList.remove("show");
+            },
+            onFailure: showFallback
+          });
         });
       }
 
@@ -7725,13 +7811,15 @@ window.QUIZ_QUESTIONS = [
             ${items.map((mascot) => {
               const hasMascot = mascot.source === "gacha" ? owned.includes(mascot.id) : unlockedRanks.includes(mascot.id);
               const isSelected = selectedId === mascot.id;
+              const showRankPreview = mascot.source === "rank";
+              const cardStateClass = hasMascot ? "" : (showRankPreview ? " rank-preview" : " locked");
               return `
-                <article class="collection-card ${escapeHtml(mascot.source)}${hasMascot ? "" : " locked"}"${mascot.rarity ? ` data-rarity="${escapeHtml(mascot.rarity)}"` : ""}>
+                <article class="collection-card ${escapeHtml(mascot.source)}${cardStateClass}"${mascot.rarity ? ` data-rarity="${escapeHtml(mascot.rarity)}"` : ""}>
                   ${collectionMascotImageHtml(mascot)}
-                  <h3>${hasMascot ? escapeHtml(mascot.name) : "？？？"}</h3>
+                  <h3>${hasMascot || showRankPreview ? escapeHtml(mascot.name) : "？？？"}</h3>
                   <p>${mascot.source === "gacha"
                     ? (hasMascot ? `所持枚数 × ${Number(counts[mascot.id] || 0)}` : "未取得")
-                    : (hasMascot ? "ランクでゲット！" : `🔒 ランク${Number(mascot.requiredRank) + 1}でゲット`)}</p>
+                    : (hasMascot ? "ランクでゲット！" : `ランク${Number(mascot.requiredRank) + 1}で着せ替え解放`)}</p>
                   ${hasMascot ? `<button class="gacha-primary" type="button" data-equip-mascot="${escapeHtml(mascot.id)}" ${isSelected ? "disabled" : ""}>${isSelected ? "いま使っています" : "着せ替える"}</button>` : ""}
                 </article>
               `;
@@ -7823,7 +7911,7 @@ window.QUIZ_QUESTIONS = [
           if (!AudioContext) return;
           const audio = new AudioContext();
           const frequencies = stage === "reveal"
-            ? (rarity === "super_rare" ? [523, 659, 784, 1047] : [440, 554, 659])
+            ? (["super_rare", "secret"].includes(rarity) ? [523, 659, 784, 1047] : [440, 554, 659])
             : stage === "capsule" ? [180, 230] : [260, 320];
           const now = audio.currentTime;
           frequencies.forEach((frequency, toneIndex) => {
@@ -7877,9 +7965,6 @@ window.QUIZ_QUESTIONS = [
               <span class="capsule-bottom"></span>
               <i class="capsule-core">★</i>
             </div>
-            <div class="gacha-silhouette" aria-hidden="true">
-              ${heroImageHtml(card, "silhouette-image")}
-            </div>
             <div class="gacha-cinematic-message" aria-live="polite">なにが出るかな？</div>
           </div>
         `;
@@ -7901,7 +7986,7 @@ window.QUIZ_QUESTIONS = [
         el.gachaBody.innerHTML = `
           <div class="hero-card-result is-revealing rarity-${escapeHtml(card.rarity)}">
             ${legendConfettiHtml()}
-            <div class="gacha-get-label">${card.rarity === "super_rare" ? "すごいカードが出た！" : "ゲット！"}</div>
+            <div class="gacha-get-label">${card.rarity === "secret" ? "シークレットカード！" : card.rarity === "super_rare" ? "すごいカードが出た！" : "ゲット！"}</div>
             ${heroImageHtml(card)}
             <div class="${wasNew ? "new-badge" : "owned-badge"}">${wasNew ? "はじめてゲット！" : `${count}枚目ゲット！`}</div>
             <h3>${escapeHtml(card.name)}</h3>
@@ -7921,7 +8006,7 @@ window.QUIZ_QUESTIONS = [
         if (!run || run.revealed) return;
         run.revealed = true;
         playGachaTone("reveal", run.card.rarity);
-        safeVibrate(run.card.rarity === "super_rare" ? [40, 30, 60] : 40);
+        safeVibrate(["super_rare", "secret"].includes(run.card.rarity) ? [40, 30, 60] : 40);
         renderGachaResult(run.card, run.wasNew, run.stats);
         window.setTimeout(() => {
           if (el.gachaBody) el.gachaBody.querySelectorAll(".confetti").forEach((node) => node.remove());
@@ -7978,11 +8063,7 @@ window.QUIZ_QUESTIONS = [
           if (!isActiveGachaRun(token)) return;
           updateGachaAnimation("capsule-open", "カプセルからカードが出てきた！");
           safeVibrate([30, 25, 45]);
-          await gachaDelay(duration(700));
-          if (!isActiveGachaRun(token)) return;
-          updateGachaAnimation("silhouette", "これは…？");
-          safeVibrate(50);
-          await gachaDelay(duration(720));
+          await gachaDelay(duration(620));
           if (!isActiveGachaRun(token)) return;
           updateGachaAnimation("reveal", "ゲット！");
           await gachaDelay(duration(280));
@@ -8095,15 +8176,12 @@ window.QUIZ_QUESTIONS = [
         el.mascotCard.dataset.rankLabel = rank.label;
         if (el.currentRankName) el.currentRankName.textContent = rank.label;
         if (el.nextRankText) el.nextRankText.textContent = nextRankTextFor(value);
-        if (el.rankImage) {
-          el.rankImage.src = rank.asset;
-          el.rankImage.alt = `${rank.label}のマスコット`;
-        }
         const useCostume = options.useCostume ?? el.app.classList.contains("is-start");
         if (useCostume) {
           applyCurrentCostumeToMascot();
-        } else if (el.mascotCard) {
-          el.mascotCard.dataset.costumeLabel = "";
+        } else {
+          setImageSourceWithFallback(el.rankImage, rank.asset, rankImageSources.trainee, `${rank.label}のマスコット`);
+          if (el.mascotCard) el.mascotCard.dataset.costumeLabel = "";
         }
       }
 
@@ -8592,18 +8670,14 @@ window.QUIZ_QUESTIONS = [
         el.resultScore.textContent = `${score} / ${total}`;
         el.resultRate.textContent = `${rate}%`;
         el.resultRank.textContent = rank.label;
-        if (el.resultRankImage) {
-          el.resultRankImage.src = rank.asset;
-          el.resultRankImage.alt = `${rank.label}のマスコット`;
-        }
+        setImageSourceWithFallback(el.resultRankImage, rank.asset, rankImageSources.trainee, `${rank.label}のマスコット`);
         if (el.resultRankHeroText) el.resultRankHeroText.textContent = rank.label;
         el.resultCombo.textContent = String(maxCombo);
         el.resultTitle.textContent = currentMode === "elementary" ? "小学生向けコース" : title;
         el.certificateNumber.textContent = formatCertificateNumber(certificateNo);
         el.certificateCourse.textContent = "予防救急と119番通報 講習";
         el.certificateRecipient.textContent = recipient;
-        el.certificateRankImage.src = rank.asset;
-        el.certificateRankImage.alt = `${rank.label}のマスコット`;
+        setImageSourceWithFallback(el.certificateRankImage, rank.asset, rankImageSources.trainee, `${rank.label}のマスコット`);
         el.certificateRankLabel.textContent = rank.label;
         el.certificateBody.innerHTML = currentMode === "elementary"
           ? `<span>あなたは「小学生向けコース」を最後まで学習しました。</span><span>${total}問中 ${score}問正解しました。よくできました！</span>`
@@ -8868,6 +8942,9 @@ window.QUIZ_QUESTIONS = [
       initializeParticipantCount();
       updateBestDisplay();
       updateHomeRank();
+      setImageSourceWithFallback(el.resultRankImage, rankImageSources.trainee, rankImageSources.trainee, "見習い救急隊員のマスコット");
+      setImageSourceWithFallback(el.certificateRankImage, rankImageSources.trainee, rankImageSources.trainee, "見習い救急隊員のマスコット");
+      loadImageFromCandidates(el.certificateEmblem, ["assets/certificate-emblem.png"], { altText: "消防章" });
       updateGachaHome();
       applyEquippedCostumeToTop();
       loadGachaRemoteState();
